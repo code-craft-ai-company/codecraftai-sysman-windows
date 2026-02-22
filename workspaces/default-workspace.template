@@ -1,0 +1,24 @@
+{
+    "folders": [
+        {
+            "path": "../"
+        }
+    ],
+    "settings": {
+        "python.defaultInterpreterPath": "${TMPLT:VENV_PYTHON_BINARY}",
+        "python.envFile": "${TMPLT:REPOSITORY_ENVIRONMENT_FILE}",
+        "terminal.integrated.env.linux": {
+            "PYTHONPATH": "${TMPLT:REPOSITORY_PACKAGES_FOLDER}"
+        },
+        "terminal.integrated.profiles.linux": {
+            "virtual-env": {
+                "path": "${TMPLT:VENV_ACTIVATE_SCRIPT}"
+            }
+        },
+        "python.analysis.extraPaths": [
+            "${TMPLT:VENV_SITEPACKAGES_FOLDER}",
+            "${TMPLT:REPOSITORY_PACKAGES_FOLDER}"
+        ],
+        "python.terminal.activateEnvInCurrentTerminal": true
+    }
+}
