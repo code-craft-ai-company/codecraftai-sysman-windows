@@ -21,6 +21,29 @@ PYTHON_CMD = "python3"
 if platform.system() == "Windows":
     PYTHON_CMD = "python"
 
+SHELL_SCRIPT_PYTHON_ENV = '''
+#!/usr/bin/env bash
+set -euo pipefail
+
+SCRIPT_DIR="$(cd -- "$(dirname -- "$0")" && pwd)"
+
+# Activate the virtual environment located alongside this script
+# shellcheck source=/dev/null
+. "$SCRIPT_DIR/activate"
+
+"$SCRIPT_DIR/python" "$@"
+'''
+
+POWERSHELL_SCRIPT_PYTHON_ENV = """
+#!/usr/bin/env pwsh
+Set-StrictMode -Version Latest
+$ErrorActionPreference = 'Stop'
+
+$ScriptDir = Split-Path -Parent $MyInvocation.MyCommand.Path
+. (Join-Path $ScriptDir 'activate.ps1')
+& (Join-Path $ScriptDir 'python') @args
+"""
+
 # This powershell function is used on Windows to customize the virtual environment so that it will
 # always load the .env file from the repository folder, when the virtual environment is started up.
 
@@ -59,6 +82,30 @@ function Load-Variable-File {
     }
 }
 '''
+
+
+def ensure_python_env_launcher(venv_bin_dir: str):
+    """Create the platform-specific python-env helper next to the venv binaries."""
+
+    if not venv_bin_dir:
+        return
+
+    os.makedirs(venv_bin_dir, exist_ok=True)
+
+    if platform.system() == "Windows":
+        script_name = "python-env.ps1"
+        script_body = POWERSHELL_SCRIPT_PYTHON_ENV.strip() + "\n"
+    else:
+        script_name = "python-env"
+        script_body = SHELL_SCRIPT_PYTHON_ENV.strip() + "\n"
+
+    script_path = os.path.join(venv_bin_dir, script_name)
+
+    with open(script_path, 'w', encoding='utf-8', newline='\n') as script_file:
+        script_file.write(script_body)
+
+    if platform.system() != "Windows":
+        os.chmod(script_path, 0o755)
 
 def customize_activation_script(activate_script: str, env_file: str, cli_alias: str, cli_entry_point_script: str):
 
@@ -211,6 +258,8 @@ def setup_environment_main():
     INITIALIZED_FILE = os.path.join(CACHE_DIR, "initialized")
     VIRTUAL_ENV_DIR = os.path.join(REPOSITORY_DIR, ".venv")
     VIRTUAL_ENV_BIN_DIR = os.path.join(VIRTUAL_ENV_DIR, "bin")
+    if platform.system() == "Windows":
+        VIRTUAL_ENV_BIN_DIR = os.path.join(VIRTUAL_ENV_DIR, "Scripts")
 
     ACTIVATE_SCRIPT = os.path.join(VIRTUAL_ENV_DIR, "bin", "activate")
     if platform.system() == "Windows":
@@ -342,6 +391,8 @@ def setup_environment_main():
         print("")
 
     print("---------------------------------------------------------------------------------------")
+
+    ensure_python_env_launcher(VIRTUAL_ENV_BIN_DIR)
 
     return
 
