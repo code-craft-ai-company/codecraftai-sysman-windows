@@ -3,8 +3,6 @@
     This script is designed to work within a 'python-package-template' based repository in order to
     setup and configure the virtual environment to be easy to use withing a VSCode, Kiro, or other
     similar IDE.
-
-    
 """
 from typing import Tuple
 
