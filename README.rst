@@ -1,31 +1,61 @@
-==============
-<package name>
-==============
+===============================
+Automation Mojo Sysman Windows
+===============================
 
-<package description>
+The ``automojo-sysman-windows`` package provides system-management primitives for Microsoft Windows hosts, parallel to what ``automojo-sysman-linux-redhat`` provides for Red Hat Enterprise Linux. It implements the cross-OS contracts published by ``automojo-sysman-common`` through PowerShell over the standard Windows admin toolchain — ``winget``, ``Get-Service``/``Set-Service``, ``NetSecurity``, ``bcdedit``, the Windows event log, certificate stores, and friends — exposed through the same ``ICommandRunner`` / ``IFileOperator`` abstractions and ``Aspects``-style behaviour parameters used elsewhere in the suite.
 
-Overview
-========
-<package name> is a core component of the Automation Mojo technology stack. It provides robust, reusable foundation code designed to enable and orchestrate complex software automation tasks.
+Status
+======
 
-Installation
-============
-Using Poetry:
+40 cross-OS features implemented (50 modules total). Test suite: 917/917 passing under ``testbase``. See ``specs/3-<feature>/`` for the per-OS requirements/design/tasks for each implemented feature.
+
+Repository Structure
+====================
+
+- ``development/`` - Runtime environment scripts.
+- ``repository-setup/`` - Repository homing and setup scripts.
+- ``source/packages/automojo/sysman/windows/`` - Implementation modules.
+- ``source/testroots/testbase/automojo/tests/sysman/windows/`` - testbase test suite.
+- ``specs/`` - Feature specifications organised by phase and domain area.
+- ``userguide/`` - Standards, conventions, and documentation.
+
+Environment Setup
+=================
+
+When working in a Codex container:
 
 .. code-block:: bash
 
-    poetry add automojo-sysman-windows
+   ./development/setup-agent-container
 
-Development
-===========
-This repository provides a standard Poetry environment.
+For local development:
 
-1. Activate virtual environment:
-   Run `poetry shell` and `poetry install`
-2. Test Execution:
-   Run `poetry run pytest`
+.. code-block:: bash
 
-References
-==========
-- `User Guide <userguide/userguide.rst>`
-- `Coding Standards <userguide/10-00-coding-standards.rst>`
+   ./repository-setup/rehome-repository
+   ./development/setup-environment
+
+Running Tests
+=============
+
+Activate the virtual environment and run the testbase suite:
+
+.. code-block:: bash
+
+   source .venv/bin/activate
+   testbase testing run --root source/testroots/testbase \
+       --includes=testbase.automojo.tests.sysman.windows \
+       --output=./.output
+
+Standards and Conventions
+=========================
+
+- Naming conventions: ``userguide/10-02-naming-conventions.rst``
+- Code organization: ``userguide/10-01-code-organization.rst``
+- Coding standards: ``userguide/10-00-coding-standards.rst``
+
+Additional Resources
+====================
+
+- User guide entry point: ``userguide/userguide.rst``
+- Cross-OS contracts: ``../automojo-sysman-common/specs/contracts/``

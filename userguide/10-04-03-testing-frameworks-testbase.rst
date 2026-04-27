@@ -75,9 +75,10 @@ Running Tests
 - Run a focused ``testbase`` suite using::
 
     source .venv/bin/activate
-    testbase --root source/testroots/automojo --includes=automojo.tests.singlehost --output=<desired output folder>
+    testbase testing run --root source/testroots/testbase --includes=testbase.automojo.tests.sysman.windows --output=<desired output folder>
 
-- Substitute the ``--includes`` path with any other resource-specific subtree (for example ``automojo.tests.simplecluster``) when appropriate infrastructure exists.
+- The ``--includes`` expression is rooted at the **basename of the** ``--root`` **path** (``testbase`` in the example above), then dotted-walks the directory tree beneath. For a test root at ``source/testroots/testbase/automojo/tests/sysman/<os>/``, the include is ``testbase.automojo.tests.sysman.<os>``.
+- Substitute the OS-specific tail (``linux.ubuntu``, ``macos``, ``windows``, ``uefi``) when running other sysman packages, or substitute ``automojo.tests.simplecluster`` when clustered infrastructure exists.
 - Always point ``--output`` to a writable directory created for the current run so artifacts do not overlap between executions.
 
 Evaluating Test Results

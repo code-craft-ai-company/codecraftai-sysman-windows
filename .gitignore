@@ -131,3 +131,6 @@ dmypy.json
 
 # Project Specific Exclusion
 *.code-workspace
+
+# Test runner output
+.output/
