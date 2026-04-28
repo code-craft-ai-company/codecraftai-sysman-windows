@@ -25,10 +25,7 @@ automojo-dataprofiles = { git = "https://github.com/automationmojo/automojo-data
 automojo-interfaces = { git = "https://github.com/automationmojo/automojo-interfaces.git", branch = "main" }
 automojo-testbase = { git = "https://github.com/automationmojo/automojo-testbase.git", branch = "main" }
 automojo-interop = { git = "https://github.com/automationmojo/automojo-interop.git", branch = "main" }
-# automojo-sysman-common: development override using a local path.  The
-# eventual production form is:
-#     automojo-sysman-common = { git = "https://github.com/automationmojo/automojo-sysman-common.git", branch = "main" }
-automojo-sysman-common = { path = "../automojo-sysman-common", develop = true }
+automojo-sysman-common = { git = "https://github.com/automationmojo/automojo-sysman-common.git", branch = "main" }
 automojo-waiting = { git = "https://github.com/automationmojo/automojo-waiting.git", branch = "main" }
 
 [tool.poetry.group.dev.dependencies]

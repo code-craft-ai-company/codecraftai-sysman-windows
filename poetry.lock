@@ -239,7 +239,7 @@ optional = false
 python-versions = ">=3.10,<4.0"
 groups = ["main"]
 files = []
-develop = true
+develop = false
 
 [package.dependencies]
 automojo-errors = {git = "https://github.com/automationmojo/automojo-errors.git", branch = "main"}
@@ -247,8 +247,10 @@ automojo-interfaces = {git = "https://github.com/automationmojo/automojo-interfa
 automojo-waiting = {git = "https://github.com/automationmojo/automojo-waiting.git", branch = "main"}
 
 [package.source]
-type = "directory"
-url = "../automojo-sysman-common"
+type = "git"
+url = "https://github.com/automationmojo/automojo-sysman-common.git"
+reference = "main"
+resolved_reference = "f514189f5967e326c15a1fa634de41023877eab5"
 
 [[package]]
 name = "automojo-testbase"
@@ -1155,4 +1157,4 @@ zstd = ["backports-zstd (>=1.0.0) ; python_version < \"3.14\""]
 [metadata]
 lock-version = "2.1"
 python-versions = ">=3.10,<4.0"
-content-hash = "f7bab083fc90af96dadc273554d60aca9beb8acf5edd90f6a2a08119cf6506ad"
+content-hash = "51a7f319907f8929b4aa85d258dff4ddf6d035c5d618de945d125f2765272ac1"
