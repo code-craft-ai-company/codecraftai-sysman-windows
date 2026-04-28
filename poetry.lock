@@ -132,7 +132,7 @@ develop = false
 type = "git"
 url = "https://github.com/automationmojo/automojo-interfaces.git"
 reference = "main"
-resolved_reference = "24f14099b5e51d6cad5c9e1cb235a26dbab9c648"
+resolved_reference = "22da3391a869b727e54ec27bcbde791dc36e9613"
 
 [[package]]
 name = "automojo-interop"
