@@ -42,6 +42,23 @@ Methods
 * Methods should have annotated return types
 
 
+Classes
+=======
+* Class names should be mixed case (PascalCase / CamelCase) and should not contain underscores
+* The name of the file that contains a class should match the class name but in all lowercase, with no underscores
+
+For example, a class named ``SomeClass`` should be defined in a file named ``someclass.py``.
+
+.. code-block:: python
+
+    # File: someclass.py
+
+    class SomeClass:
+        """
+            This is a documentation comment for a class.
+        """
+
+
 Default Values for Functions or Methods
 =======================================
 Mutable values should not be used as a default value for a function or method parameter.  This is because
