@@ -134,3 +134,6 @@ dmypy.json
 
 # Test runner output
 .output/
+
+# Claude Code worktree metadata
+.claude/
