@@ -102,12 +102,35 @@
 
 ## Follow-ups
 
-- [ ] 45. Cross-OS contract conformance check.
+- [x] 45. Cross-OS contract conformance check.
+  Confirmed: the four per-OS `*VPNClientManager` classes
+  (`WindowsVPNClientManager`, `MacosVPNClientManager`, `RedHatVPNClientManager`,
+  `UbuntuVPNClientManager`) each implement the identical seven-verb surface —
+  `install_tailscale`, `install_twingate_connector`, `configure`, `bring_up`,
+  `bring_down`, `status`, `uninstall` — and all subclass the shared
+  `VPNClientManagementBase` from `automojo-sysman-common`.
 
 - [ ] 46. Confirm the `elevation_blocked` token is identical in shape to
   the value used by `3-firewall-management` and the planned
   `3-service-management` feature on Windows.
+  DISCREPANCY (not flipped): no sibling Windows feature currently defines an
+  `elevation_blocked` token. `3-firewall-management` deliberately defaults to no
+  elevation and lets the command runner surface a raw access-denied error
+  (firewall design.md req 4); its `detail` field carries only service/port/zone
+  strings. `3-service-management` does not reference the token either. The VPN
+  feature's stable `"elevation_blocked"` / `"elevation_blocked: <base_detail>"`
+  detail token is therefore currently the sole definition of the convention —
+  there is nothing to confirm shape-parity against. Recommend either (a) promoting
+  the token to a shared constant in `automojo-sysman-common` so future features
+  adopt it, or (b) re-scoping this task once `3-service-management` lands.
 
-- [ ] 47. Windows Firewall integration follow-up — confirm that installing
+- [x] 47. Windows Firewall integration follow-up — confirm that installing
   Tailscale's MSI also installs the necessary Firewall rules; surface a
   follow-up to coordinate with `3-firewall-management` if not.
+  Confirmed: the Tailscale Windows MSI (`tailscale-setup-*.msi`) bundles its own
+  WireGuard interface and registers the required Windows Firewall rules as part of
+  the `msiexec /i` install — the VPN feature neither needs nor should separately
+  invoke `3-firewall-management`. design.md already documents (line ~184) that
+  callers may inspect the action result and coordinate with `3-firewall-management`
+  / `3-service-management` if a site policy strips inbound rules; no code change
+  required.
