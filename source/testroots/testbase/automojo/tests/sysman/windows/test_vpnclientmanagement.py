@@ -393,11 +393,17 @@ def test_configure_twingate_writes_via_set_content():
         aspects=_aspects(),
     )
     testbase.assert_equal(result.status, WindowsVPNActionStatus.SUCCESS)
-    set_content_calls = [
+    # The connector config is written via a base64 round-trip
+    # (WriteAllText) so multi-line content round-trips byte-exact.
+    write_calls = [
         c for c in runner.calls
-        if any("Set-Content" in arg for arg in c.args if isinstance(arg, str))
+        if any(
+            "WriteAllText" in arg
+            for arg in c.args
+            if isinstance(arg, str)
+        )
     ]
-    testbase.assert_true(len(set_content_calls) > 0)
+    testbase.assert_true(len(write_calls) > 0)
     return
 
 
@@ -739,12 +745,23 @@ def test_uninstall_tailscale_runs_msiexec_x_with_product_code():
     )
     testbase.assert_equal(result.status, WindowsVPNActionStatus.SUCCESS)
 
+    # The uninstall script resolves the ProductCode itself via an
+    # inline Get-Package lookup (S-H8 fix: no un-runnable placeholder),
+    # then runs msiexec /x against the resolved variable.
     msiexec_calls = [
         c for c in runner.calls
-        if any("/x" in arg and "{ABC-123}" in arg
-               for arg in c.args if isinstance(arg, str))
+        if any(
+            "msiexec" in arg and "/x" in arg and "Get-Package" in arg
+            for arg in c.args
+            if isinstance(arg, str)
+        )
     ]
     testbase.assert_true(len(msiexec_calls) > 0)
+    # The literal placeholder must never appear in any dispatched argv.
+    for call in runner.calls:
+        for arg in call.args:
+            if isinstance(arg, str):
+                testbase.assert_true("_product_code>" not in arg)
     return
 
 
@@ -1035,3 +1052,157 @@ if _HYPOTHESIS_AVAILABLE is True:
             )
             self.assertEqual(len(runner.calls), 0)
             return
+
+
+# ----------------------------------------------------------------------
+# Audit regression tests — C3 (authkey redaction), C4 (authkey off
+# cmdline), S-H8 (no placeholder), S-H10 (absent vs empty),
+# S-H11 (msiexec exit-code check)
+# ----------------------------------------------------------------------
+
+
+def test_bring_up_redacts_authkey_in_command():
+    """
+        C3: any auth key embedded in a returned command argv is
+        redacted.
+    """
+    runner = _MockCommandRunner(
+        programmed_results=[
+            (["tailscale.exe", "status"], _StubRunResult(
+                exit_code=0,
+                stdout=json.dumps({"BackendState": "Stopped"}),
+            )),
+        ],
+    )
+    config = WindowsVPNClientManagerConfig(elevated=True)
+    manager = _make_manager(runner=runner, config=config)
+
+    secret = "tskey-auth-SUPERSECRET"
+    result = manager.bring_up(
+        provider=VPNProvider.TAILSCALE,
+        authkey=secret,
+        hostname=None,
+        advertise_tags=None,
+        advertise_routes=None,
+        exit_node=False,
+        aspects=_aspects(),
+    )
+
+    # No returned command, and no recorded argv, may carry the secret.
+    if result.command is not None:
+        joined = " ".join(result.command)
+        testbase.assert_true(secret not in joined)
+    for call in runner.calls:
+        for arg in call.args:
+            if isinstance(arg, str):
+                testbase.assert_true(secret not in arg)
+    return
+
+
+def test_bring_up_keeps_authkey_off_tailscale_up_cmdline():
+    """
+        C4: ``tailscale up`` reads the key from a file, not from the
+        process command line.
+    """
+    runner = _MockCommandRunner(
+        programmed_results=[
+            (["tailscale.exe", "status"], _StubRunResult(
+                exit_code=0,
+                stdout=json.dumps({"BackendState": "Stopped"}),
+            )),
+        ],
+    )
+    config = WindowsVPNClientManagerConfig(elevated=True)
+    manager = _make_manager(runner=runner, config=config)
+
+    manager.bring_up(
+        provider=VPNProvider.TAILSCALE,
+        authkey="tskey-auth-ABC",
+        hostname=None,
+        advertise_tags=None,
+        advertise_routes=None,
+        exit_node=False,
+        aspects=_aspects(),
+    )
+
+    up_calls = [
+        c for c in runner.calls
+        if c.args[:2] == ["tailscale.exe", "up"]
+    ]
+    testbase.assert_equal(len(up_calls), 1)
+    joined = " ".join(up_calls[0].args)
+    testbase.assert_true("--auth-key=file:" in joined)
+    testbase.assert_true("--authkey=tskey" not in joined)
+    return
+
+
+def test_uninstall_dry_run_emits_no_placeholder():
+    """
+        S-H8: a dry-run uninstall must not emit an un-runnable
+        ``<..._product_code>`` placeholder.
+    """
+    runner = _MockCommandRunner()
+    config = WindowsVPNClientManagerConfig(dry_run=True)
+    manager = _make_manager(runner=runner, config=config)
+
+    result = manager.uninstall(
+        provider=VPNProvider.TAILSCALE,
+        purge=False,
+        aspects=_aspects(),
+    )
+
+    testbase.assert_equal(result.status, WindowsVPNActionStatus.DRY_RUN)
+    testbase.assert_true(result.command is not None)
+    joined = " ".join(result.command)
+    testbase.assert_true("_product_code>" not in joined)
+    testbase.assert_true("Get-Package" in joined)
+    return
+
+
+def test_read_file_content_distinguishes_absent_from_empty():
+    """
+        S-H10: an absent file yields ``None``; a present-but-empty
+        file yields an empty string.
+    """
+    runner_absent = _MockCommandRunner(
+        programmed_results=[
+            (["powershell.exe"], _StubRunResult(
+                exit_code=0, stdout="__AUTOMOJO_FILE_ABSENT__\r\n",
+            )),
+        ],
+    )
+    manager_absent = _make_manager(runner=runner_absent)
+    absent = manager_absent._read_file_content(
+        path="C:\\nope.conf", aspects=_aspects(),
+    )
+    testbase.assert_true(absent is None)
+
+    runner_empty = _MockCommandRunner(
+        programmed_results=[
+            (["powershell.exe"], _StubRunResult(
+                exit_code=0, stdout="__AUTOMOJO_FILE_PRESENT__\r\n",
+            )),
+        ],
+    )
+    manager_empty = _make_manager(runner=runner_empty)
+    empty = manager_empty._read_file_content(
+        path="C:\\empty.conf", aspects=_aspects(),
+    )
+    testbase.assert_equal(empty, "")
+    return
+
+
+def test_install_msi_script_checks_exit_code():
+    """
+        S-H11: the install MSI script propagates a non-zero msiexec
+        exit code so a failed install is not reported as SUCCESS.
+    """
+    manager = _make_manager(runner=_MockCommandRunner())
+    script = manager._render_install_msi_script(
+        msi_url="https://example/x.msi",
+        msi_path="C:\\tmp\\x.msi",
+        cache_dir="C:\\tmp",
+    )
+    testbase.assert_true("ExitCode" in script)
+    testbase.assert_true("exit $proc.ExitCode" in script)
+    return

@@ -39,6 +39,7 @@
           :class:`automojo.sysman.common.vpnclientmanagementbase.VPNClientManagementBase`
 """
 
+import base64
 import json
 import os
 
@@ -51,7 +52,6 @@ from automojo.interfaces.icommandrunner import ICommandRunner, RunResult
 from automojo.sysman.common.vpnactionresult import VPNActionResult
 from automojo.sysman.common.vpnactionstatus import VPNActionStatus
 from automojo.sysman.common.vpnclientmanagementbase import (
-    VERB_KIND_READ,
     VERB_KIND_WRITE,
     VPNClientManagementBase,
 )
@@ -88,6 +88,12 @@ _DEFAULT_TWINGATE_PRODUCT = "Twingate Connector"
 _DEFAULT_TAILSCALE_STATE_DIR = "C:\\ProgramData\\Tailscale"
 _DEFAULT_TWINGATE_STATE_DIR = "C:\\ProgramData\\Twingate"
 
+# Path of the short-lived file the Tailscale auth key is staged to so
+# that ``tailscale up`` can read it via ``--auth-key=file:<path>``
+# instead of carrying the secret on the process command line (visible
+# to ``Get-Process`` / Sysmon for the process lifetime).
+_DEFAULT_AUTHKEY_FILE = "C:\\Windows\\Temp\\automojo-vpn-msi\\tailscale-authkey"
+
 _TAILSCALE_MSI_URL_TEMPLATE = (
     "https://pkgs.tailscale.com/{channel}/tailscale-setup-{version}.msi"
 )
@@ -96,6 +102,12 @@ _TWINGATE_MSI_URL_TEMPLATE = (
 )
 
 _ELEVATION_BLOCKED_TOKEN = "elevation_blocked"
+
+# Sentinel lines emitted by the ``_read_file_content`` probe script so
+# the "file absent" case can be distinguished from "file present but
+# empty" — ``Get-Content -Raw`` alone returns an empty string for both.
+_FILE_PRESENT_SENTINEL = "__AUTOMOJO_FILE_PRESENT__"
+_FILE_ABSENT_SENTINEL = "__AUTOMOJO_FILE_ABSENT__"
 
 _SUPPORTED_PROVIDERS = (VPNProvider.TAILSCALE, VPNProvider.TWINGATE)
 
@@ -143,6 +155,7 @@ class WindowsVPNClientManagerConfig(VPNClientManagerConfig):
     powershell_executable: str = _DEFAULT_POWERSHELL
     tailscale_state_dir: str = _DEFAULT_TAILSCALE_STATE_DIR
     twingate_state_dir: str = _DEFAULT_TWINGATE_STATE_DIR
+    authkey_file_path: str = _DEFAULT_AUTHKEY_FILE
 
 
 # ----------------------------------------------------------------------
@@ -803,14 +816,20 @@ class WindowsVPNClientManager(VPNClientManagementBase):
             product_name = cfg.twingate_product_name
             state_dir = cfg.twingate_state_dir
 
-        product_code_placeholder = "<{}_product_code>".format(product_name)
+        detail = "uninstall:{}".format(product_name)
+
+        # The uninstall script resolves the MSI ProductCode itself via
+        # an inline ``Get-Package`` lookup and then runs ``msiexec /x``
+        # against the resolved GUID.  This keeps the dry-run command
+        # fully self-contained and runnable — no un-runnable
+        # ``<..._product_code>`` placeholder is ever emitted, and the
+        # dry-run path still never invokes the runner.
         uninstall_script = self._render_uninstall_msi_script(
-            product_code=product_code_placeholder,
+            product_name=product_name,
         )
         uninstall_command = self._build_powershell_argv(
             script=uninstall_script,
         )
-        detail = "uninstall:{}".format(product_name)
 
         dry = self._short_circuit_dry_run(
             provider=provider,
@@ -836,15 +855,9 @@ class WindowsVPNClientManager(VPNClientManagementBase):
             )
             return skipped
 
-        real_uninstall_script = self._render_uninstall_msi_script(
-            product_code=product_code,
-        )
-        real_uninstall_command = self._build_powershell_argv(
-            script=real_uninstall_script,
-        )
         uninstall_result = self._dispatch_write_with_elevation_check(
             provider=provider,
-            command=real_uninstall_command,
+            command=uninstall_command,
             detail=detail,
             aspects=aspects,
         )
@@ -895,7 +908,7 @@ class WindowsVPNClientManager(VPNClientManagementBase):
             name=cfg.tailscale_service_name,
         )
         up_argv = self._render_tailscale_up_argv(
-            authkey=authkey,
+            authkey_file_path=cfg.authkey_file_path,
             hostname=hostname,
             advertise_tags=advertise_tags,
             advertise_routes=advertise_routes,
@@ -955,10 +968,40 @@ class WindowsVPNClientManager(VPNClientManagementBase):
         if result_start.status is not VPNActionStatus.SUCCESS:
             return result_start
 
+        # Stage the auth key to a file so it never appears on the
+        # ``tailscale up`` process command line.  The file is removed
+        # immediately after the bring-up attempt, success or failure.
+        stage_script = self._render_set_content_script(
+            path=cfg.authkey_file_path,
+            body=authkey,
+        )
+        stage_command = self._build_powershell_argv(script=stage_script)
+        result_stage = self._dispatch_write_with_elevation_check(
+            provider=VPNProvider.TAILSCALE,
+            command=stage_command,
+            detail="bring_up_tailscale:stage_authkey",
+            aspects=aspects,
+        )
+        if result_stage.status is not VPNActionStatus.SUCCESS:
+            return result_stage
+
         result_up = self._dispatch_write_with_elevation_check(
             provider=VPNProvider.TAILSCALE,
             command=up_argv,
             detail=detail,
+            aspects=aspects,
+        )
+
+        remove_script = self._render_remove_file_script(
+            path=cfg.authkey_file_path,
+        )
+        remove_command = self._build_powershell_argv(script=remove_script)
+        # Best-effort cleanup: the bring-up outcome is what callers care
+        # about, so a cleanup failure does not override result_up.
+        self._dispatch_write_with_elevation_check(
+            provider=VPNProvider.TAILSCALE,
+            command=remove_command,
+            detail="bring_up_tailscale:remove_authkey",
             aspects=aspects,
         )
         return result_up
@@ -1393,16 +1436,48 @@ class WindowsVPNClientManager(VPNClientManagementBase):
                       cannot be read.
         """
         escaped = _ps_escape_single_quoted(value=path)
+        # ``Get-Content -Raw`` returns an empty string both for an
+        # absent file and for a present-but-empty file.  A ``Test-Path``
+        # guard plus a sentinel line lets the two cases be told apart:
+        # an absent file emits only the sentinel; a present file emits
+        # the sentinel followed by the raw content.
         script = (
-            "Get-Content -Path '{}' -Raw -ErrorAction SilentlyContinue"
-        ).format(escaped)
+            "if (Test-Path -LiteralPath '{path}') {{ "
+            "Write-Output '{sentinel}'; "
+            "Get-Content -LiteralPath '{path}' -Raw "
+            "}} else {{ Write-Output '{absent}' }}"
+        ).format(
+            path=escaped,
+            sentinel=_FILE_PRESENT_SENTINEL,
+            absent=_FILE_ABSENT_SENTINEL,
+        )
         command = self._build_powershell_argv(script=script)
         run_result = self._runner.run(list(command), elevated=False)
         if run_result.exit_code != 0:
             rtnval: Optional[str] = None
             return rtnval
 
-        rtnval = run_result.stdout or ""
+        stdout_text = run_result.stdout or ""
+        if stdout_text.startswith(_FILE_ABSENT_SENTINEL):
+            rtnval = None
+            return rtnval
+
+        if stdout_text.startswith(_FILE_PRESENT_SENTINEL):
+            remainder = stdout_text[len(_FILE_PRESENT_SENTINEL):]
+            # Strip the single line separator the sentinel Write-Output
+            # appended, without disturbing the file's own content.
+            if remainder.startswith("\r\n") is True:
+                rtnval = remainder[2:]
+                return rtnval
+            if remainder.startswith("\n") is True:
+                rtnval = remainder[1:]
+                return rtnval
+            rtnval = remainder
+            return rtnval
+
+        # No sentinel: a runner double that does not execute the
+        # branching script.  Fall back to the legacy behaviour.
+        rtnval = stdout_text
         return rtnval
 
     # ------------------------------------------------------------------
@@ -1430,13 +1505,19 @@ class WindowsVPNClientManager(VPNClientManagementBase):
         escaped_cache = _ps_escape_single_quoted(value=cache_dir)
         escaped_url = _ps_escape_single_quoted(value=msi_url)
         escaped_path = _ps_escape_single_quoted(value=msi_path)
+        # ``msiexec`` exit code 0 (success) and 3010 (success, reboot
+        # required) are the only non-failure outcomes.  The script
+        # propagates any other code via ``exit`` so a failed install is
+        # never mapped to SUCCESS by the dispatch layer.
         rtnval = (
             "New-Item -ItemType Directory -Force -Path '{cache}' "
             "| Out-Null; "
             "Invoke-WebRequest -Uri '{url}' -OutFile '{path}'; "
-            "Start-Process -FilePath 'msiexec.exe' "
+            "$proc = Start-Process -FilePath 'msiexec.exe' "
             "-ArgumentList @('/i','{path}','/quiet','/norestart') "
-            "-Wait -PassThru"
+            "-Wait -PassThru; "
+            "if ($proc.ExitCode -ne 0 -and $proc.ExitCode -ne 3010) "
+            "{{ exit $proc.ExitCode }}"
         ).format(
             cache=escaped_cache,
             url=escaped_url,
@@ -1444,21 +1525,33 @@ class WindowsVPNClientManager(VPNClientManagementBase):
         )
         return rtnval
 
-    def _render_uninstall_msi_script(self, *, product_code: str) -> str:
+    def _render_uninstall_msi_script(self, *, product_name: str) -> str:
         """
-            Render the PowerShell script that runs ``msiexec /x
-            <ProductCode> /quiet /norestart``.
+            Render a self-contained PowerShell script that resolves the
+            installed package's MSI ProductCode via ``Get-Package`` and
+            then runs ``msiexec /x <ProductCode> /quiet /norestart``.
 
-            :param product_code: The MSI ProductCode.
+            Resolving the code inside the script keeps the rendered
+            command runnable as-is (the former design embedded an
+            un-runnable ``<..._product_code>`` placeholder), while the
+            ``exit`` propagates any genuine ``msiexec`` failure.
+
+            :param product_name: The MSI's product name.
 
             :returns: The PowerShell scriptblock.
         """
-        escaped = _ps_escape_single_quoted(value=product_code)
+        escaped = _ps_escape_single_quoted(value=product_name)
         rtnval = (
-            "Start-Process -FilePath 'msiexec.exe' "
-            "-ArgumentList @('/x','{}','/quiet','/norestart') "
-            "-Wait -PassThru"
-        ).format(escaped)
+            "$pkg = Get-Package -Name '{name}' "
+            "-ErrorAction SilentlyContinue; "
+            "if ($null -eq $pkg) {{ exit 0 }}; "
+            "$code = $pkg.FastPackageReference; "
+            "$proc = Start-Process -FilePath 'msiexec.exe' "
+            "-ArgumentList @('/x',$code,'/quiet','/norestart') "
+            "-Wait -PassThru; "
+            "if ($proc.ExitCode -ne 0 -and $proc.ExitCode -ne 3010) "
+            "{{ exit $proc.ExitCode }}"
+        ).format(name=escaped)
         return rtnval
 
     def _render_set_service_startup_script(self, *, name: str) -> str:
@@ -1501,8 +1594,14 @@ class WindowsVPNClientManager(VPNClientManagementBase):
 
     def _render_set_content_script(self, *, path: str, body: str) -> str:
         """
-            Render ``Set-Content -Path <path> -Value <body> -Encoding
-            UTF8``.
+            Render a PowerShell script that writes ``body`` to ``path``.
+
+            The body is base64-encoded and decoded inside PowerShell
+            before the write.  Inlining multi-line content directly into
+            a single-quoted PowerShell string is fragile — embedded
+            quotes and line endings do not round-trip reliably — so the
+            base64 round-trip is used to make arbitrary content
+            (multi-line connector configs included) byte-exact.
 
             :param path: Destination path.
             :param body: File content.
@@ -1510,10 +1609,29 @@ class WindowsVPNClientManager(VPNClientManagementBase):
             :returns: The PowerShell scriptblock.
         """
         escaped_path = _ps_escape_single_quoted(value=path)
-        escaped_body = _ps_escape_single_quoted(value=body)
+        body_bytes = body.encode("utf-8")
+        encoded_body = base64.b64encode(body_bytes).decode("ascii")
         rtnval = (
-            "Set-Content -Path '{path}' -Value '{body}' -Encoding UTF8"
-        ).format(path=escaped_path, body=escaped_body)
+            "$content = [System.Text.Encoding]::UTF8.GetString("
+            "[System.Convert]::FromBase64String('{body}')); "
+            "[System.IO.File]::WriteAllText('{path}', $content, "
+            "(New-Object System.Text.UTF8Encoding $false))"
+        ).format(body=encoded_body, path=escaped_path)
+        return rtnval
+
+    def _render_remove_file_script(self, *, path: str) -> str:
+        """
+            Render ``Remove-Item -Force -Path <path>`` for a single
+            file (used to scrub the staged auth-key file).
+
+            :param path: File path to remove.
+
+            :returns: The PowerShell scriptblock.
+        """
+        escaped = _ps_escape_single_quoted(value=path)
+        rtnval = (
+            "Remove-Item -Force -Path '{}' -ErrorAction SilentlyContinue"
+        ).format(escaped)
         return rtnval
 
     def _render_remove_directory_script(self, *, path: str) -> str:
@@ -1534,7 +1652,7 @@ class WindowsVPNClientManager(VPNClientManagementBase):
     def _render_tailscale_up_argv(
         self,
         *,
-        authkey: str,
+        authkey_file_path: str,
         hostname: Optional[str],
         advertise_tags: Optional[List[str]],
         advertise_routes: Optional[List[str]],
@@ -1543,7 +1661,14 @@ class WindowsVPNClientManager(VPNClientManagementBase):
         """
             Build the ``tailscale.exe up ...`` argv.
 
-            :param authkey: Auth key.
+            The auth key is referenced via ``--auth-key=file:<path>``
+            rather than being embedded directly on the command line, so
+            the secret is never visible to ``Get-Process`` / Sysmon
+            command-line auditing for the process lifetime.
+
+            :param authkey_file_path: Path of the file holding the auth
+                                      key (staged by the caller, removed
+                                      afterwards).
             :param hostname: Optional hostname.
             :param advertise_tags: Optional tags list.
             :param advertise_routes: Optional routes list.
@@ -1553,7 +1678,7 @@ class WindowsVPNClientManager(VPNClientManagementBase):
             :returns: The argv as a list of strings.
         """
         rtnval: List[str] = ["tailscale.exe", "up"]
-        rtnval.append("--authkey={}".format(authkey))
+        rtnval.append("--auth-key=file:{}".format(authkey_file_path))
         if hostname is not None and len(hostname) > 0:
             rtnval.append("--hostname={}".format(hostname))
         if advertise_tags is not None and len(advertise_tags) > 0:
