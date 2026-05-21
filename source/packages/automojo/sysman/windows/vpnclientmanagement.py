@@ -94,8 +94,18 @@ _DEFAULT_TWINGATE_STATE_DIR = "C:\\ProgramData\\Twingate"
 # to ``Get-Process`` / Sysmon for the process lifetime).
 _DEFAULT_AUTHKEY_FILE = "C:\\Windows\\Temp\\automojo-vpn-msi\\tailscale-authkey"
 
+# Architecture token used in the Tailscale MSI file name.  The
+# published MSIs are arch-qualified; an arch-less ``tailscale-setup-
+# <version>.msi`` form does not exist on ``pkgs.tailscale.com`` and
+# 404s.
+_DEFAULT_TAILSCALE_MSI_ARCH = "amd64"
+
+# Stable Tailscale MSI URL pattern.  The published artifacts are
+# ``tailscale-setup-<version>-<arch>.msi`` (and ``tailscale-setup-
+# latest-<arch>.msi`` for the channel head) under the channel folder.
 _TAILSCALE_MSI_URL_TEMPLATE = (
-    "https://pkgs.tailscale.com/{channel}/tailscale-setup-{version}.msi"
+    "https://pkgs.tailscale.com/{channel}/"
+    "tailscale-setup-{version}-{arch}.msi"
 )
 _TWINGATE_MSI_URL_TEMPLATE = (
     "https://binaries.twingate.com/connector/{version}.msi"
@@ -145,6 +155,10 @@ class WindowsVPNClientManagerConfig(VPNClientManagerConfig):
         :param twingate_state_dir: State directory removed when
                                    ``uninstall(purge=True)`` targets
                                    Twingate.
+        :param tailscale_msi_arch: Architecture token used in the
+                                   Tailscale MSI file name (the
+                                   published artifacts are
+                                   arch-qualified).
     """
     tailscale_service_name: str = _DEFAULT_TAILSCALE_SERVICE
     twingate_service_name: str = _DEFAULT_TWINGATE_SERVICE
@@ -156,6 +170,7 @@ class WindowsVPNClientManagerConfig(VPNClientManagerConfig):
     tailscale_state_dir: str = _DEFAULT_TAILSCALE_STATE_DIR
     twingate_state_dir: str = _DEFAULT_TWINGATE_STATE_DIR
     authkey_file_path: str = _DEFAULT_AUTHKEY_FILE
+    tailscale_msi_arch: str = _DEFAULT_TAILSCALE_MSI_ARCH
 
 
 # ----------------------------------------------------------------------
@@ -458,6 +473,7 @@ class WindowsVPNClientManager(VPNClientManagementBase):
         msi_url = _TAILSCALE_MSI_URL_TEMPLATE.format(
             channel=channel,
             version=effective_version,
+            arch=cfg.tailscale_msi_arch,
         )
         msi_path = self._tailscale_msi_path(version=effective_version)
         script = self._render_install_msi_script(
@@ -1858,11 +1874,12 @@ class WindowsVPNClientManager(VPNClientManagementBase):
 
             :param version: Effective version token.
 
-            :returns: ``<msi_cache_dir>\\tailscale-setup-<version>.msi``.
+            :returns: ``<msi_cache_dir>\\tailscale-setup-<version>-
+                      <arch>.msi``.
         """
         cfg = self._typed_config()
-        rtnval = "{}\\tailscale-setup-{}.msi".format(
-            cfg.msi_cache_dir, version,
+        rtnval = "{}\\tailscale-setup-{}-{}.msi".format(
+            cfg.msi_cache_dir, version, cfg.tailscale_msi_arch,
         )
         return rtnval
 
