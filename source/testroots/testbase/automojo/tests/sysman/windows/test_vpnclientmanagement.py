@@ -321,6 +321,48 @@ def test_install_tailscale_failed_on_msiexec_error():
     return
 
 
+def test_install_tailscale_msi_url_is_arch_qualified_stable_form():
+    # Regression: the previous ``tailscale-setup-<version>.msi`` /
+    # ``-latest.msi`` form 404s on pkgs.tailscale.com; the published
+    # artifacts are arch-qualified.
+    runner = _MockCommandRunner()
+    cfg = WindowsVPNClientManagerConfig(dry_run=True)
+    manager = _make_manager(runner=runner, config=cfg)
+
+    result = manager.install_tailscale(
+        version="1.62.0", channel="stable", aspects=_aspects(),
+    )
+    testbase.assert_equal(result.status, WindowsVPNActionStatus.DRY_RUN)
+
+    command_text = " ".join(result.command)
+    expected_url = (
+        "https://pkgs.tailscale.com/stable/"
+        "tailscale-setup-1.62.0-amd64.msi"
+    )
+    testbase.assert_true(expected_url in command_text)
+    testbase.assert_true("tailscale-setup-1.62.0.msi" not in command_text)
+    return
+
+
+def test_install_tailscale_msi_url_honours_arch_override():
+    runner = _MockCommandRunner()
+    cfg = WindowsVPNClientManagerConfig(
+        dry_run=True, tailscale_msi_arch="arm64",
+    )
+    manager = _make_manager(runner=runner, config=cfg)
+
+    result = manager.install_tailscale(
+        version="1.62.0", channel="stable", aspects=_aspects(),
+    )
+    command_text = " ".join(result.command)
+    expected_url = (
+        "https://pkgs.tailscale.com/stable/"
+        "tailscale-setup-1.62.0-arm64.msi"
+    )
+    testbase.assert_true(expected_url in command_text)
+    return
+
+
 # ----------------------------------------------------------------------
 # install_twingate_connector
 # ----------------------------------------------------------------------
