@@ -3,10 +3,10 @@
 ## Overview
 
 The configuration management feature is implemented as a single module,
-`automojo.sysman.windows.configurationmanagement`, that exposes a
+`ccai.sysman.windows.configurationmanagement`, that exposes a
 `WindowsConfigurationManager` class.  This spec implements the
 configuration-management contract defined at
-`automojo-sysman-common/specs/contracts/configuration-management/contract.md`
+`codecraftai-sysman-common/specs/contracts/configuration-management/contract.md`
 for Windows using PowerShell's registry cmdlets (`Get-ItemProperty`,
 `Set-ItemProperty`, `Remove-ItemProperty`, `Get-Item`), `reg.exe` for
 whole-hive import/export, and the `IFileOperator` abstraction for plain-text
@@ -44,7 +44,7 @@ configuration.
                          ▼
 ┌─────────────────────────────────────────────────────────────┐
 │        WindowsConfigurationManager                          │
-│  automojo.sysman.windows.configurationmanagement            │
+│  ccai.sysman.windows.configurationmanagement            │
 │                                                             │
 │  read_setting()     write_setting()                         │
 │  remove_setting()   list_settings()                         │
@@ -84,7 +84,7 @@ configuration.
 
 ### `WindowsConfigurationManager`
 
-**Location:** `source/packages/automojo/sysman/windows/configurationmanagement.py`
+**Location:** `source/packages/ccai/sysman/windows/configurationmanagement.py`
 
 | Method | Signature | Description |
 |---|---|---|
@@ -309,7 +309,7 @@ for idempotency.
 
 - File sources: `<source>.bak.<YYYYMMDDTHHMMSS>`.
 - Registry sources:
-  `C:\ProgramData\Automojo\backups\<registry-basename>.<YYYYMMDDTHHMMSS>.reg`.
+  `C:\ProgramData\CodeCraftAI\backups\<registry-basename>.<YYYYMMDDTHHMMSS>.reg`.
 
 `_restore_route(backup_path)` pattern-matches the path to decide between
 `reg import` and `Copy-Item`.
@@ -441,7 +441,7 @@ Python.
 ### Property 22: `backup_configuration` Registry
 *For any* registry source, `backup_configuration` should invoke `reg export
 '<path>' '<backup>' /y` with a timestamped path under
-`C:\ProgramData\Automojo\backups\`.
+`C:\ProgramData\CodeCraftAI\backups\`.
 **Validates: Requirements 8.2**
 
 ### Property 23: `backup_configuration` File
@@ -500,13 +500,13 @@ with `elevated=True`.
 ## Module Layout
 
 ```
-source/packages/automojo/sysman/windows/
+source/packages/ccai/sysman/windows/
 ├── __init__.py
 └── configurationmanagement.py   ← WindowsConfigurationManager, config, models,
                                     exceptions, ValidatorRegistry
 
 source/testroots/testbase/
-└── automojo/tests/sysman/windows/
+└── ccai/tests/sysman/windows/
     └── test_configurationmanagement.py
 ```
 
@@ -517,9 +517,9 @@ source/testroots/testbase/
 ### Local Execution
 
 ```python
-from automojo.sysman.windows.runners import LocalCommandRunner, LocalRunnerConfig
-from automojo.sysman.windows.fileoperators import LocalFileOperator
-from automojo.sysman.windows.configurationmanagement import (
+from ccai.sysman.windows.runners import LocalCommandRunner, LocalRunnerConfig
+from ccai.sysman.windows.fileoperators import LocalFileOperator
+from ccai.sysman.windows.configurationmanagement import (
     WindowsConfigurationManager,
     WindowsConfigurationManagerConfig,
 )
@@ -562,20 +562,20 @@ print(f"Restart service: {reload_result.status}")
 ### Remote Execution with Aspects
 
 ```python
-from automojo.sysman.windows.runners import SSHCommandRunner, SSHRunnerConfig
-from automojo.sysman.windows.aspects import (
+from ccai.sysman.windows.runners import SSHCommandRunner, SSHRunnerConfig
+from ccai.sysman.windows.aspects import (
     PersistenceAspect, PersistenceAspectConfig,
     RetryAspect, RetryAspectConfig,
     TimeoutAspect, TimeoutAspectConfig,
 )
-from automojo.sysman.windows.storage import SQLiteStorage
-from automojo.sysman.windows.fileoperators import SSHFileOperator
-from automojo.sysman.windows.configurationmanagement import (
+from ccai.sysman.windows.storage import SQLiteStorage
+from ccai.sysman.windows.fileoperators import SSHFileOperator
+from ccai.sysman.windows.configurationmanagement import (
     WindowsConfigurationManager, WindowsConfigurationManagerConfig,
 )
 
 runner = SSHCommandRunner(SSHRunnerConfig(host="remote-win", username="admin"))
-storage = SQLiteStorage(path=r"C:\ProgramData\Automojo\commands.db")
+storage = SQLiteStorage(path=r"C:\ProgramData\CodeCraftAI\commands.db")
 runner.add_aspect(aspect=PersistenceAspect(PersistenceAspectConfig(storage_backend=storage)))
 runner.add_aspect(aspect=RetryAspect(RetryAspectConfig(max_retries=3, retryable_exit_codes=[1])))
 runner.add_aspect(aspect=TimeoutAspect(TimeoutAspectConfig(default_timeout=60.0)))
@@ -622,7 +622,7 @@ print(result.command)  # would invoke Set-ItemProperty
    `Get-Item | ExpandProperty Property` stdout and verifies per-name dispatch.
 6. `backup_configuration` registry test monkey-patches `datetime.utcnow` and
    asserts the computed backup path under
-   `C:\ProgramData\Automojo\backups\`.
+   `C:\ProgramData\CodeCraftAI\backups\`.
 7. Security-hive elevation test proves `HKLM:\SECURITY\*` reads elevate while
    other hives do not.
 8. Dry-run matrix test iterates every write verb and asserts no mutating
@@ -643,7 +643,7 @@ print(result.command)  # would invoke Set-ItemProperty
 | Validators | `certificate`, `groupPolicy`, `sfc`, `testPath`, `xml`, `json` |
 | Reload mechanism | `Restart-Service -Name <service> -Force`; `none` sentinel for registry-only |
 | File backup naming | `<source>.bak.<YYYYMMDDTHHMMSS>` |
-| Registry backup naming | `C:\ProgramData\Automojo\backups\<basename>.<YYYYMMDDTHHMMSS>.reg` |
+| Registry backup naming | `C:\ProgramData\CodeCraftAI\backups\<basename>.<YYYYMMDDTHHMMSS>.reg` |
 
 ---
 

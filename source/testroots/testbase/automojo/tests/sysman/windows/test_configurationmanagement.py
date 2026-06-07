@@ -11,11 +11,11 @@ import json
 from dataclasses import dataclass, field
 from typing import Callable, Optional
 
-from automojo import testbase
+from ccai import testbase
 
-from automojo.interfaces.icommandrunner import RunResult
+from ccai.interfaces.icommandrunner import RunResult
 
-from automojo.sysman.windows.configurationmanagement import (
+from ccai.sysman.windows.configurationmanagement import (
     WindowsConfigActionResult,
     WindowsConfigActionStatus,
     WindowsConfigManagerConfig,
@@ -834,7 +834,7 @@ def test_infer_reg_type_table():
         Type inference covers bool, int, str, expand-var-string, list,
         and bytes.
     """
-    from automojo.sysman.windows.configurationmanagement import (
+    from ccai.sysman.windows.configurationmanagement import (
         _infer_reg_type,
     )
     testbase.assert_equal(_infer_reg_type(value=True), "DWord")

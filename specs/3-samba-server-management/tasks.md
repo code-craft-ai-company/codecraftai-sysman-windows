@@ -4,7 +4,7 @@ All tasks are unchecked — new feature.
 
 ## Module and Models
 
-- [ ] 1. Create `source/packages/automojo/sysman/windows/sambaservermanagement.py`
+- [ ] 1. Create `source/packages/ccai/sysman/windows/sambaservermanagement.py`
 - [ ] 2. Define module-level constants (PowerShell argv pieces,
   delegation messages).
 - [ ] 3. Define `WindowsSambaActionStatus` alias of `ActionStatus`.

@@ -2,10 +2,10 @@
 
 ## Introduction
 
-The firewall management feature provides the `automojo-sysman-windows` package with the
+The firewall management feature provides the `codecraftai-sysman-windows` package with the
 ability to manage Windows Firewall via the PowerShell `NetSecurity` module.  This spec
 implements the firewall-management contract defined at
-`automojo-sysman-common/specs/contracts/firewall-management/contract.md` for
+`codecraftai-sysman-common/specs/contracts/firewall-management/contract.md` for
 Windows using `New-NetFirewallRule`, `Remove-NetFirewallRule`, `Get-NetFirewallRule`,
 and `Get-NetFirewallProfile`.  It includes adding and removing services, ports, and
 rich rules within a firewall profile, querying profile state, and providing the
@@ -15,7 +15,7 @@ A maintenance coordinator running in an external package drives all operations b
 into this feature's public interfaces.  The feature does not decide *what* firewall
 rules to apply — it provides the capability to *do it* reliably, idempotently, and with
 full auditability.  All system commands are executed exclusively through the
-`automojo-interfaces` command-runner abstraction.  On Windows the abstract `zone`
+`codecraftai-interfaces` command-runner abstraction.  On Windows the abstract `zone`
 parameter maps to a Windows Firewall profile — one of `Domain`, `Private`, `Public`,
 or `Any`; any other value is rejected with `FAILED`.
 
@@ -34,7 +34,7 @@ firewall.
 1. WHEN the coordinator provides a service name and a valid profile `zone` THE SYSTEM
    SHALL resolve the service name to a `(port, protocol)` pair via a bundled services
    table and invoke `powershell.exe -NoProfile -Command "New-NetFirewallRule
-   -DisplayName 'automojo-svc-<service>' -Direction Inbound -Action Allow -Protocol
+   -DisplayName 'codecraftai-svc-<service>' -Direction Inbound -Action Allow -Protocol
    <protocol> -LocalPort <port> -Profile <zone>"` via the command runner.
 2. WHEN the service name cannot be resolved via the bundled services table THE SYSTEM
    SHALL return a `WindowsFirewallActionResult` with status `FAILED` and a `detail`
@@ -64,7 +64,7 @@ permitted.
 
 1. WHEN the coordinator provides a service name and a valid profile `zone` THE SYSTEM
    SHALL invoke `powershell.exe -NoProfile -Command "Remove-NetFirewallRule
-   -DisplayName 'automojo-svc-<service>'"` (scoped to the target profile via
+   -DisplayName 'codecraftai-svc-<service>'"` (scoped to the target profile via
    `-Profile` where supported by the cmdlet) via the command runner.
 2. WHEN `zone` is not a valid profile THE SYSTEM SHALL return a
    `WindowsFirewallActionResult` with status `FAILED` and a profile-validation
@@ -89,7 +89,7 @@ protocol in a Windows Firewall profile, so that traffic on that port is permitte
 
 1. WHEN the coordinator provides a port number, protocol, and valid profile `zone`
    THE SYSTEM SHALL invoke `powershell.exe -NoProfile -Command "New-NetFirewallRule
-   -DisplayName 'automojo-port-<port>-<protocol>' -Direction Inbound -Action Allow
+   -DisplayName 'codecraftai-port-<port>-<protocol>' -Direction Inbound -Action Allow
    -Protocol <protocol> -LocalPort <port> -Profile <zone>"` via the command runner.
 2. WHEN `zone` is not a valid profile THE SYSTEM SHALL return a
    `WindowsFirewallActionResult` with status `FAILED` and a profile-validation
@@ -116,7 +116,7 @@ permitted.
 
 1. WHEN the coordinator provides a port number, protocol, and valid profile `zone`
    THE SYSTEM SHALL invoke `powershell.exe -NoProfile -Command "Remove-NetFirewallRule
-   -DisplayName 'automojo-port-<port>-<protocol>'"` via the command runner.
+   -DisplayName 'codecraftai-port-<port>-<protocol>'"` via the command runner.
 2. WHEN `zone` is not a valid profile THE SYSTEM SHALL return a
    `WindowsFirewallActionResult` with status `FAILED` and a profile-validation
    `detail` message.
@@ -246,8 +246,8 @@ action.
    ConvertTo-Json -Compress -Depth 5"` via the command runner without elevation.
 2. WHEN the command succeeds THE SYSTEM SHALL parse the JSON output into a
    `WindowsZoneInfo` record populated with the zone name, services (rules whose
-   `DisplayName` matches `automojo-svc-*`), ports (rules whose `DisplayName` matches
-   `automojo-port-*`), and rich_rules (all other rules, rendered back to splatted-
+   `DisplayName` matches `codecraftai-svc-*`), ports (rules whose `DisplayName` matches
+   `codecraftai-port-*`), and rich_rules (all other rules, rendered back to splatted-
    parameters form).
 3. WHEN `zone` is not a valid profile THE SYSTEM SHALL raise a
    `WindowsFirewallQueryError` explaining the valid profile names.

@@ -5,7 +5,7 @@ identify remaining work.
 
 ## Module and Models
 
-- [x] 1. Create the `automojo.sysman.windows.servicemanagement` module
+- [x] 1. Create the `ccai.sysman.windows.servicemanagement` module
 
 - [x] 2. Define `WindowsServiceActionStatus` and `WindowsServiceScope` enums
 

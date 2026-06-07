@@ -3,10 +3,10 @@
 ## Overview
 
 The kernel parameters feature is implemented as a single module,
-`automojo.sysman.windows.kernelparameters`, that exposes a
+`ccai.sysman.windows.kernelparameters`, that exposes a
 `WindowsKernelParameterManager` class.  This spec implements the
 kernel-parameters contract defined at
-`automojo-sysman-common/specs/contracts/kernel-parameters/contract.md` for
+`codecraftai-sysman-common/specs/contracts/kernel-parameters/contract.md` for
 Windows.
 
 Windows has no `sysctl(8)` equivalent.  The manager translates a bundled
@@ -43,7 +43,7 @@ aspect configuration.
                          ▼
 ┌─────────────────────────────────────────────────────────────┐
 │           WindowsKernelParameterManager                     │
-│  automojo.sysman.windows.kernelparameters                   │
+│  ccai.sysman.windows.kernelparameters                   │
 │                                                             │
 │  get_parameter()                set_parameter()             │
 │  list_parameters()              reload_parameters()         │
@@ -78,7 +78,7 @@ aspect configuration.
 
 ### `WindowsKernelParameterManager`
 
-**Location:** `source/packages/automojo/sysman/windows/kernelparameters.py`
+**Location:** `source/packages/ccai/sysman/windows/kernelparameters.py`
 
 | Method | Signature | Description |
 |---|---|---|
@@ -147,7 +147,7 @@ class WindowsKernelParameterQueryError(Exception):
 
 ## Interfaces
 
-### `ICommandRunner` (from `automojo-interfaces`)
+### `ICommandRunner` (from `codecraftai-interfaces`)
 
 ```python
 class ICommandRunner(Protocol):
@@ -455,13 +455,13 @@ with `status=FAILED`.
 ## Module Layout
 
 ```
-source/packages/automojo/sysman/windows/
+source/packages/ccai/sysman/windows/
 ├── __init__.py
 └── kernelparameters.py         ← WindowsKernelParameterManager, config,
                                    mapping table, models, exceptions
 
 source/testroots/testbase/
-└── automojo/tests/sysman/windows/
+└── ccai/tests/sysman/windows/
     └── test_kernelparameters.py
 ```
 
@@ -472,8 +472,8 @@ source/testroots/testbase/
 ### Local Execution (Default)
 
 ```python
-from automojo.sysman.windows.runners import LocalCommandRunner, LocalRunnerConfig
-from automojo.sysman.windows.kernelparameters import (
+from ccai.sysman.windows.runners import LocalCommandRunner, LocalRunnerConfig
+from ccai.sysman.windows.kernelparameters import (
     WindowsKernelParameterManager,
     WindowsKernelParameterManagerConfig,
 )
@@ -500,8 +500,8 @@ assert "parameter_not_supported" in bad.message
 ### WinRM Execution with Aspects
 
 ```python
-from automojo.sysman.windows.runners import WinRMCommandRunner, WinRMRunnerConfig
-from automojo.sysman.windows.aspects import (
+from ccai.sysman.windows.runners import WinRMCommandRunner, WinRMRunnerConfig
+from ccai.sysman.windows.aspects import (
     PersistenceAspect,
     RetryAspect,
     TimeoutAspect,
@@ -509,15 +509,15 @@ from automojo.sysman.windows.aspects import (
     RetryAspectConfig,
     TimeoutAspectConfig,
 )
-from automojo.sysman.windows.storage import SQLiteStorage
-from automojo.sysman.windows.kernelparameters import (
+from ccai.sysman.windows.storage import SQLiteStorage
+from ccai.sysman.windows.kernelparameters import (
     WindowsKernelParameterManager,
     WindowsKernelParameterManagerConfig,
 )
 
 runner = WinRMCommandRunner(WinRMRunnerConfig(host="win-host", username="Administrator"))
 
-storage = SQLiteStorage(path="C:\\ProgramData\\Automojo\\commands.db")
+storage = SQLiteStorage(path="C:\\ProgramData\\CodeCraftAI\\commands.db")
 runner.add_aspect(aspect=PersistenceAspect(PersistenceAspectConfig(storage_backend=storage)))
 runner.add_aspect(aspect=RetryAspect(RetryAspectConfig(max_retries=3, retryable_exit_codes=[1])))
 runner.add_aspect(aspect=TimeoutAspect(TimeoutAspectConfig(default_timeout=60.0)))

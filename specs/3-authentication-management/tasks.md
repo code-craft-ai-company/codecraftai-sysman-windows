@@ -5,13 +5,13 @@
 ### 1. Module Skeleton
 
 - [ ] Create
-  `source/packages/automojo/sysman/windows/authenticationmanagement.py`.
+  `source/packages/ccai/sysman/windows/authenticationmanagement.py`.
 - [ ] Add module-level constants for the PowerShell executable,
   PowerShell flags, `secedit.exe`, the LSA registry path, the
   `Authentication Packages` registry name, and temp file paths.
 - [ ] Import `ActionStatus`, `BaseFeatureManager`,
   `FeatureActionResult`, `FeatureConfig` from
-  `automojo.sysman.windows.featurebase`.
+  `ccai.sysman.windows.featurebase`.
 
 ---
 
@@ -101,7 +101,7 @@
 ### 8. Tests
 
 - [ ] Create
-  `source/testroots/testbase/automojo/tests/sysman/windows/test_authenticationmanagement.py`.
+  `source/testroots/testbase/ccai/tests/sysman/windows/test_authenticationmanagement.py`.
 - [ ] Add the `_MockCommandRunner` shape.
 - [ ] `test_get_auth_config_parses_secedit_output`.
 - [ ] `test_set_auth_config_invokes_secedit_configure`.

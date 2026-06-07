@@ -2,18 +2,18 @@
 
 ## Introduction
 
-The configuration management feature provides the `automojo-sysman-windows`
+The configuration management feature provides the `codecraftai-sysman-windows`
 package with the ability to read, write, diff, validate, back up, restore, and
 adjust permissions/ownership on Windows configuration artifacts.  This spec
 implements the configuration-management contract defined at
-`automojo-sysman-common/specs/contracts/configuration-management/contract.md`
+`codecraftai-sysman-common/specs/contracts/configuration-management/contract.md`
 for Windows.
 
 A maintenance coordinator running in an external package drives all operations by
 calling into this feature's public interfaces.  The feature does not decide *what*
 configuration values to apply — it provides the capability to *do it* reliably,
 idempotently, and with full auditability.  All system commands are executed
-exclusively through the `automojo-interfaces` command-runner abstraction
+exclusively through the `codecraftai-interfaces` command-runner abstraction
 (PowerShell-based), and all text-file I/O is delegated to the `IFileOperator`
 abstraction.  No `subprocess`, no direct `open`, and no direct `pathlib` calls
 are made inside this module.
@@ -203,7 +203,7 @@ backup of a configuration source, so that I can recover from a bad change.
    does not exist THE SYSTEM SHALL raise `WindowsConfigFileNotFoundError`.
 2. WHEN `source` resolves to a registry path THE SYSTEM SHALL invoke
    `reg export '<path>' <backup_path> /y` where `<backup_path>` is
-   `C:\ProgramData\Automojo\backups\<registry-basename>.<YYYYMMDDTHHMMSS>.reg`.
+   `C:\ProgramData\CodeCraftAI\backups\<registry-basename>.<YYYYMMDDTHHMMSS>.reg`.
 3. WHEN `source` resolves to a file THE SYSTEM SHALL invoke
    `powershell -NoProfile -Command "Copy-Item -LiteralPath '<source>'
    -Destination '<backup_path>' -Force"` where `<backup_path>` is

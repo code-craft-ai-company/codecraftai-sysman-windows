@@ -33,8 +33,8 @@ dataclass.
 
 | Concept                   | Ubuntu (cgroups v2 + systemd)                | macOS (launchd + taskpolicy)                      | Windows (this package)                          |
 |---------------------------|----------------------------------------------|---------------------------------------------------|-------------------------------------------------|
-| Group container           | systemd `<name>.slice`                       | launchd label `automojo-rc-<name>`                | logical record `<group_dir>\<name>.json`        |
-| On-disk representation    | `/etc/systemd/system/<name>.slice`           | `/Library/LaunchDaemons/automojo-rc-<name>.plist` | `<group_dir>\<name>.json`                       |
+| Group container           | systemd `<name>.slice`                       | launchd label `codecraftai-rc-<name>`                | logical record `<group_dir>\<name>.json`        |
+| On-disk representation    | `/etc/systemd/system/<name>.slice`           | `/Library/LaunchDaemons/codecraftai-rc-<name>.plist` | `<group_dir>\<name>.json`                       |
 | Kernel substrate          | cgroups v2 at `/sys/fs/cgroup/<name>.slice/` | none                                              | Job Objects (NOT exposed via PowerShell)        |
 | CPU ceiling tool          | `systemctl set-property CPUQuota=N%`         | unsupported per-group                             | `(Get-Process).PriorityClass = '<class>'` (best-effort, coarse) |
 | Memory ceiling tool       | `systemctl set-property MemoryMax=N`         | launchd `RLIMIT_AS`                               | **NOT SUPPORTED via PowerShell**                |
@@ -171,7 +171,7 @@ WindowsResourceControlActionStatus = ActionStatus
 @dataclass
 class WindowsResourceControlManagerConfig(FeatureConfig):
     powershell_executable: str = "powershell.exe"
-    group_dir: str = r"C:\ProgramData\Automojo\rcgroups"
+    group_dir: str = r"C:\ProgramData\CodeCraftAI\rcgroups"
 
 @dataclass
 class WindowsResourceControlActionResult(FeatureActionResult):
@@ -466,7 +466,7 @@ def _parse_get_process_output(text: str) -> tuple[Optional[int], Optional[float]
 ## Test plan
 
 - 14+ pytest functions in
-  `source/testroots/testbase/automojo/tests/sysman/windows/test_resourcecontrolmanagement.py`.
+  `source/testroots/testbase/ccai/tests/sysman/windows/test_resourcecontrolmanagement.py`.
 - Coverage:
 
 | Test                                                  | Covers                                                  |

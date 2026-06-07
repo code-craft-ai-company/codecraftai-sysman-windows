@@ -1,11 +1,11 @@
 # Implementation Plan — Filesystem Quotas (Windows)
 
 All tasks unchecked — this is a new feature with no existing
-implementation in `automojo-sysman-windows`.
+implementation in `codecraftai-sysman-windows`.
 
 ## Module and Models
 
-- [ ] 1. Create `source/packages/automojo/sysman/windows/filesystemquotas.py`
+- [ ] 1. Create `source/packages/ccai/sysman/windows/filesystemquotas.py`
   - _Requirements: All_
 
 - [ ] 2. Define `WindowsQuotaActionStatus` (alias `ActionStatus`)

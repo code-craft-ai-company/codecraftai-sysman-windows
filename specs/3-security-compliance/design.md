@@ -3,12 +3,12 @@
 ## Overview
 
 The security compliance feature is implemented as a single module,
-`automojo.sysman.windows.securitycompliance`, that exposes a
+`ccai.sysman.windows.securitycompliance`, that exposes a
 `WindowsSecurityComplianceManager` class.  This spec implements the
 security-compliance contract defined at
-`automojo-sysman-common/specs/contracts/security-compliance/contract.md`
+`codecraftai-sysman-common/specs/contracts/security-compliance/contract.md`
 for Windows using the Microsoft Security Compliance Toolkit baselines
-(as directory trees under `C:\ProgramData\Automojo\Compliance\Baselines\`)
+(as directory trees under `C:\ProgramData\CodeCraftAI\Compliance\Baselines\`)
 plus native tooling: `secedit` for Local Security Policy, PowerShell
 `Set-MpPreference` for Defender, `Enable-BitLocker` for BitLocker, and
 `Set-ItemProperty` for registry-based baseline items.
@@ -43,7 +43,7 @@ configuration.
                          ▼
 ┌─────────────────────────────────────────────────────────────┐
 │           WindowsSecurityComplianceManager                  │
-│  automojo.sysman.windows.securitycompliance                 │
+│  ccai.sysman.windows.securitycompliance                 │
 │                                                             │
 │  list_profiles()        get_profile()                       │
 │  run_compliance_profile()  remediate()                      │
@@ -80,7 +80,7 @@ configuration.
 
 ### `WindowsSecurityComplianceManager`
 
-**Location:** `source/packages/automojo/sysman/windows/securitycompliance.py`
+**Location:** `source/packages/ccai/sysman/windows/securitycompliance.py`
 
 | Method | Signature | Description |
 |---|---|---|
@@ -98,9 +98,9 @@ configuration.
 |---|---|---|---|
 | `dry_run` | `bool` | `False` | When `True`, no mutations dispatch |
 | `elevated` | `bool` | `False` | When `True`, remediations pass `elevated=True` |
-| `baselines_dir` | `str` | `"C:\\ProgramData\\Automojo\\Compliance\\Baselines"` | Toolkit install root |
-| `baseline_path` | `str` | `"C:\\ProgramData\\Automojo\\compliance\\current_baseline.json"` | Baseline JSON |
-| `results_dir` | `str` | `"C:\\ProgramData\\Automojo\\compliance\\results"` | INF + JSON output directory |
+| `baselines_dir` | `str` | `"C:\\ProgramData\\CodeCraftAI\\Compliance\\Baselines"` | Toolkit install root |
+| `baseline_path` | `str` | `"C:\\ProgramData\\CodeCraftAI\\compliance\\current_baseline.json"` | Baseline JSON |
+| `results_dir` | `str` | `"C:\\ProgramData\\CodeCraftAI\\compliance\\results"` | INF + JSON output directory |
 
 ---
 
@@ -192,7 +192,7 @@ class WindowsSecurityComplianceError(Exception):
 
 ## Interfaces
 
-### `ICommandRunner` (from `automojo-interfaces`)
+### `ICommandRunner` (from `codecraftai-interfaces`)
 
 ```python
 class ICommandRunner(Protocol):
@@ -204,7 +204,7 @@ class ICommandRunner(Protocol):
     ) -> RunResult: ...
 ```
 
-### `IFileOperator` (from `automojo-interfaces`)
+### `IFileOperator` (from `codecraftai-interfaces`)
 
 ```python
 class IFileOperator(Protocol):
@@ -523,13 +523,13 @@ Per-rule check failures are captured inside the report
 ## Module Layout
 
 ```
-source/packages/automojo/sysman/windows/
+source/packages/ccai/sysman/windows/
 ├── __init__.py
 └── securitycompliance.py      ← WindowsSecurityComplianceManager, config,
                                   models, exceptions
 
 source/testroots/testbase/
-└── automojo/tests/sysman/windows/
+└── ccai/tests/sysman/windows/
     └── test_securitycompliance.py
 ```
 
@@ -540,9 +540,9 @@ source/testroots/testbase/
 ### Local Execution (Default)
 
 ```python
-from automojo.sysman.windows.runners import LocalCommandRunner, LocalRunnerConfig
-from automojo.sysman.windows.fileops import LocalFileOperator, LocalFileOperatorConfig
-from automojo.sysman.windows.securitycompliance import (
+from ccai.sysman.windows.runners import LocalCommandRunner, LocalRunnerConfig
+from ccai.sysman.windows.fileops import LocalFileOperator, LocalFileOperatorConfig
+from ccai.sysman.windows.securitycompliance import (
     WindowsSecurityComplianceManager,
     WindowsSecurityComplianceManagerConfig,
     WindowsBaselineSpec,
@@ -569,9 +569,9 @@ for r in results:
 ### WinRM Execution with Aspects
 
 ```python
-from automojo.sysman.windows.runners import WinRMCommandRunner, WinRMRunnerConfig
-from automojo.sysman.windows.fileops import WinRMFileOperator, WinRMFileOperatorConfig
-from automojo.sysman.windows.aspects import (
+from ccai.sysman.windows.runners import WinRMCommandRunner, WinRMRunnerConfig
+from ccai.sysman.windows.fileops import WinRMFileOperator, WinRMFileOperatorConfig
+from ccai.sysman.windows.aspects import (
     PersistenceAspect,
     RetryAspect,
     TimeoutAspect,
@@ -579,8 +579,8 @@ from automojo.sysman.windows.aspects import (
     RetryAspectConfig,
     TimeoutAspectConfig,
 )
-from automojo.sysman.windows.storage import SQLiteStorage
-from automojo.sysman.windows.securitycompliance import (
+from ccai.sysman.windows.storage import SQLiteStorage
+from ccai.sysman.windows.securitycompliance import (
     WindowsSecurityComplianceManager,
     WindowsSecurityComplianceManagerConfig,
     WindowsBaselineSpec,
@@ -589,7 +589,7 @@ from automojo.sysman.windows.securitycompliance import (
 runner = WinRMCommandRunner(WinRMRunnerConfig(host="win-host", username="Administrator"))
 file_op = WinRMFileOperator(WinRMFileOperatorConfig(host="win-host", username="Administrator"))
 
-storage = SQLiteStorage(path="C:\\ProgramData\\Automojo\\commands.db")
+storage = SQLiteStorage(path="C:\\ProgramData\\CodeCraftAI\\commands.db")
 runner.add_aspect(aspect=PersistenceAspect(PersistenceAspectConfig(storage_backend=storage)))
 runner.add_aspect(aspect=RetryAspect(RetryAspectConfig(max_retries=2, retryable_exit_codes=[1])))
 runner.add_aspect(aspect=TimeoutAspect(TimeoutAspectConfig(default_timeout=1800.0)))
@@ -685,11 +685,11 @@ Property-based tests are tagged as
   `secedit_inf`, `registry`, `defender`, and `bitlocker` rules.
   Adding new dispatch paths is a future enhancement.
 - **Baseline persistence location.**  Baseline JSON lives at
-  `%ProgramData%\Automojo\compliance\current_baseline.json`, managed
+  `%ProgramData%\CodeCraftAI\compliance\current_baseline.json`, managed
   via `IFileOperator`.
 - **Results directory.**  Each profile run writes the exported INF
   and the synthesized remediation INF under
-  `%ProgramData%\Automojo\compliance\results\` for auditability.
+  `%ProgramData%\CodeCraftAI\compliance\results\` for auditability.
 
 ## Out of Scope
 

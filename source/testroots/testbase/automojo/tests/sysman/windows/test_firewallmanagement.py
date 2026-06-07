@@ -11,11 +11,11 @@ import json
 from dataclasses import dataclass, field
 from typing import Callable, Optional
 
-from automojo import testbase
+from ccai import testbase
 
-from automojo.interfaces.icommandrunner import RunResult
+from ccai.interfaces.icommandrunner import RunResult
 
-from automojo.sysman.windows.firewallmanagement import (
+from ccai.sysman.windows.firewallmanagement import (
     WindowsFirewallActionResult,
     WindowsFirewallActionStatus,
     WindowsFirewallManager,
@@ -136,21 +136,21 @@ def test_validate_protocol_rejects_unknown():
 
 def test_service_display_name_format():
     """
-        Service display names follow the ``automojo-svc-<name>``
+        Service display names follow the ``codecraftai-svc-<name>``
         prefix.
     """
     rtnval = _service_display_name(service="ssh")
-    testbase.assert_equal(rtnval, "automojo-svc-ssh")
+    testbase.assert_equal(rtnval, "codecraftai-svc-ssh")
     return
 
 
 def test_port_display_name_format():
     """
         Port display names follow the
-        ``automojo-port-<port>-<protocol>`` prefix.
+        ``codecraftai-port-<port>-<protocol>`` prefix.
     """
     rtnval = _port_display_name(port=8080, protocol="tcp")
-    testbase.assert_equal(rtnval, "automojo-port-8080-tcp")
+    testbase.assert_equal(rtnval, "codecraftai-port-8080-tcp")
     return
 
 
@@ -216,13 +216,13 @@ def test_profile_field_to_zones_any_bitmask():
 
 def test_classify_rule_service():
     """
-        ``automojo-svc-ssh`` is classified as a service.
+        ``codecraftai-svc-ssh`` is classified as a service.
     """
     services: list = []
     ports: list = []
     rich_rules: list = []
     _classify_rule(
-        display_name="automojo-svc-ssh",
+        display_name="codecraftai-svc-ssh",
         services=services, ports=ports, rich_rules=rich_rules,
     )
     testbase.assert_equal(services, ["ssh"])
@@ -233,13 +233,13 @@ def test_classify_rule_service():
 
 def test_classify_rule_port():
     """
-        ``automojo-port-8080-tcp`` is classified as a port.
+        ``codecraftai-port-8080-tcp`` is classified as a port.
     """
     services: list = []
     ports: list = []
     rich_rules: list = []
     _classify_rule(
-        display_name="automojo-port-8080-tcp",
+        display_name="codecraftai-port-8080-tcp",
         services=services, ports=ports, rich_rules=rich_rules,
     )
     testbase.assert_equal(ports, ["8080-tcp"])
@@ -286,7 +286,7 @@ def test_add_service_runs_new_netfirewallrule():
     write_call = runner.calls[-1]
     script = write_call["args"][-1]
     testbase.assert_equal(
-        "New-NetFirewallRule -DisplayName 'automojo-svc-ssh'" in script,
+        "New-NetFirewallRule -DisplayName 'codecraftai-svc-ssh'" in script,
         True,
     )
     testbase.assert_equal("-LocalPort 22" in script, True)
@@ -299,7 +299,7 @@ def test_add_service_skipped_when_rule_exists():
         When the probe reports a matching display name, ``add_service``
         returns SKIPPED.
     """
-    payload = json.dumps([{"DisplayName": "automojo-svc-ssh"}])
+    payload = json.dumps([{"DisplayName": "codecraftai-svc-ssh"}])
     runner = _MockCommandRunner(
         default_result=RunResult(exit_code=0, stdout=payload, stderr=""),
     )
@@ -402,7 +402,7 @@ def test_remove_service_dispatches_when_present():
         ``remove_service`` dispatches ``Remove-NetFirewallRule`` when
         the probe reports a matching rule.
     """
-    payload = json.dumps([{"DisplayName": "automojo-svc-ssh"}])
+    payload = json.dumps([{"DisplayName": "codecraftai-svc-ssh"}])
 
     def patched_run(args, **kwargs):
         runner.calls.append({"args": list(args), "elevated": kwargs.get("elevated", False)})
@@ -423,7 +423,7 @@ def test_remove_service_dispatches_when_present():
     )
     write_call = runner.calls[-1]
     testbase.assert_equal(
-        "Remove-NetFirewallRule -DisplayName 'automojo-svc-ssh'"
+        "Remove-NetFirewallRule -DisplayName 'codecraftai-svc-ssh'"
         in write_call["args"][-1],
         True,
     )
@@ -456,7 +456,7 @@ def test_add_port_runs_new_netfirewallrule_with_localport():
     )
     script = runner.calls[-1]["args"][-1]
     testbase.assert_equal(
-        "automojo-port-8080-tcp" in script, True,
+        "codecraftai-port-8080-tcp" in script, True,
     )
     testbase.assert_equal("-LocalPort 8080" in script, True)
     testbase.assert_equal("-Profile Private" in script, True)
@@ -633,8 +633,8 @@ def test_query_zone_classifies_by_displayname_prefix():
         rules based on display-name prefix.
     """
     payload = json.dumps([
-        {"DisplayName": "automojo-svc-ssh", "Profile": "Public"},
-        {"DisplayName": "automojo-port-8080-tcp", "Profile": "Public"},
+        {"DisplayName": "codecraftai-svc-ssh", "Profile": "Public"},
+        {"DisplayName": "codecraftai-port-8080-tcp", "Profile": "Public"},
         {"DisplayName": "block-bad", "Profile": "Public"},
         {"DisplayName": "ignored-private", "Profile": "Private"},
     ])

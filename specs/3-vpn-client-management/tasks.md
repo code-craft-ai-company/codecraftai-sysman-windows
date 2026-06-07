@@ -2,7 +2,7 @@
 
 ## Module and Types
 
-- [x] 1. Create the `automojo.sysman.windows.vpnclientmanagement` module.
+- [x] 1. Create the `ccai.sysman.windows.vpnclientmanagement` module.
 
 - [x] 2. Re-export `WindowsVPNActionStatus`, `WindowsVPNActionResult`,
   `WindowsVPNClientStatus`, `WindowsVPNClientQueryError` from the shared
@@ -108,7 +108,7 @@
   `UbuntuVPNClientManager`) each implement the identical seven-verb surface —
   `install_tailscale`, `install_twingate_connector`, `configure`, `bring_up`,
   `bring_down`, `status`, `uninstall` — and all subclass the shared
-  `VPNClientManagementBase` from `automojo-sysman-common`.
+  `VPNClientManagementBase` from `codecraftai-sysman-common`.
 
 - [ ] 46. Confirm the `elevation_blocked` token is identical in shape to
   the value used by `3-firewall-management` and the planned
@@ -121,7 +121,7 @@
   feature's stable `"elevation_blocked"` / `"elevation_blocked: <base_detail>"`
   detail token is therefore currently the sole definition of the convention —
   there is nothing to confirm shape-parity against. Recommend either (a) promoting
-  the token to a shared constant in `automojo-sysman-common` so future features
+  the token to a shared constant in `codecraftai-sysman-common` so future features
   adopt it, or (b) re-scoping this task once `3-service-management` lands.
 
 - [x] 47. Windows Firewall integration follow-up — confirm that installing

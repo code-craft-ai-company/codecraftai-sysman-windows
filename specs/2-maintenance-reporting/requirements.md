@@ -2,10 +2,10 @@
 
 ## Introduction
 
-The maintenance-reporting feature provides the `automojo-sysman-windows` package with
+The maintenance-reporting feature provides the `codecraftai-sysman-windows` package with
 a structured, serialisable record of a maintenance session.  This spec implements the
 maintenance-reporting contract defined at
-`automojo-sysman-common/specs/contracts/maintenance-reporting/contract.md` for
+`codecraftai-sysman-common/specs/contracts/maintenance-reporting/contract.md` for
 Windows using pure Python accumulation of action records and the `IFileOperator`
 abstraction (via `WindowsLocalFileOperator` / `WindowsSSHFileOperator`) for the
 single I/O egress point — `emit_report(path, format)`.
@@ -18,7 +18,7 @@ reporter module itself never opens a file handle outside of `IFileOperator`; eve
 on-disk artefact goes through that abstraction so dry-run semantics and aspect
 composition apply uniformly.  A `_clock` callable is accepted for deterministic
 tests.  The default output directory on Windows is
-`%ProgramData%\Automojo\Maintenance\<session_id>\`, which is ACL-writable by local
+`%ProgramData%\CodeCraftAI\Maintenance\<session_id>\`, which is ACL-writable by local
 Administrators without requiring UAC on directories the install step has already
 provisioned.
 
@@ -201,7 +201,7 @@ well-known location.
 
 1. WHEN the coordinator calls `default_session_path(session_id)` THE SYSTEM SHALL
    return the string
-   `<ProgramData>\Automojo\Maintenance\<session_id>\`, where `<ProgramData>` is
+   `<ProgramData>\CodeCraftAI\Maintenance\<session_id>\`, where `<ProgramData>` is
    resolved from `os.environ["ProgramData"]` (falling back to
    `C:\ProgramData` when the variable is unset).
 2. WHEN the caller supplies `session_id=""` or `session_id=None` THE SYSTEM SHALL

@@ -23,12 +23,12 @@ identify remaining work.
 
 ## Module and Models
 
-- [x] 1. Create the `automojo.sysman.windows.maintenancereporting` module
+- [x] 1. Create the `ccai.sysman.windows.maintenancereporting` module
 
 - [x] 2. Define `WindowsActionStatus` and `WindowsReportFormat` enums
 
 - [x] 3. Define `WindowsMaintenanceReportConfig` dataclass (dry_run, output_base,
-  default_json_indent) with the `%ProgramData%\Automojo\Maintenance` default base.
+  default_json_indent) with the `%ProgramData%\CodeCraftAI\Maintenance` default base.
   Class is named `WindowsMaintenanceReporterConfig` to match the Ubuntu/macOS
   naming, and exposes a `powershell_path` field used to dispatch
   `New-Item` / `Set-Content` through the runner.
@@ -168,5 +168,5 @@ Additional tests beyond the original list:
   the same result shapes, including the `record_query` alias.
 
 - [ ] 47. **ACL documentation**: confirm that the installer step provisions
-  `%ProgramData%\Automojo\Maintenance` with the right ACL so that the service account
+  `%ProgramData%\CodeCraftAI\Maintenance` with the right ACL so that the service account
   running the reporter can write reports without UAC elevation at runtime.

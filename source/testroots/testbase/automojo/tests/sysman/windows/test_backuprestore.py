@@ -10,11 +10,11 @@
 from dataclasses import dataclass, field
 from typing import Callable, Optional
 
-from automojo import testbase
+from ccai import testbase
 
-from automojo.interfaces.icommandrunner import RunResult
+from ccai.interfaces.icommandrunner import RunResult
 
-from automojo.sysman.windows.backuprestore import (
+from ccai.sysman.windows.backuprestore import (
     WindowsBackupActionStatus,
     WindowsBackupJobSpec,
     WindowsBackupKind,
@@ -25,7 +25,7 @@ from automojo.sysman.windows.backuprestore import (
 )
 
 
-_DEFAULT_JOB_DIR = r"C:\ProgramData\Automojo\backup\jobs"
+_DEFAULT_JOB_DIR = r"C:\ProgramData\CodeCraftAI\backup\jobs"
 
 
 def _spec_path(*, job_id: str) -> str:

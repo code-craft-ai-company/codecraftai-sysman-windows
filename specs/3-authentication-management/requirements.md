@@ -3,14 +3,14 @@
 ## Introduction
 
 The authentication management feature provides the
-`automojo-sysman-windows` package with the ability to manage the
+`codecraftai-sysman-windows` package with the ability to manage the
 Windows authentication stack: the Local Security Authority (LSA)
 authentication packages registered under
 `HKLM:\SYSTEM\CurrentControlSet\Control\Lsa`, and the local security
 policy surface accessed via `secedit /export` and
 `secedit /configure`. It implements the cross-OS
 authentication-management contract defined at
-`automojo-sysman-common/specs/contracts/authentication-management/contract.md`
+`codecraftai-sysman-common/specs/contracts/authentication-management/contract.md`
 for Windows.
 
 Windows authentication is fundamentally different from the Linux PAM
@@ -37,7 +37,7 @@ This pilot exposes:
 
 A maintenance coordinator running in an external package drives all
 operations by calling this feature's public verbs. All commands are
-executed through the `automojo-interfaces` command-runner abstraction.
+executed through the `codecraftai-interfaces` command-runner abstraction.
 
 This feature complements — and does not duplicate — the SSH-daemon
 hardening surface owned by `3-ssh-server-configuration`, the

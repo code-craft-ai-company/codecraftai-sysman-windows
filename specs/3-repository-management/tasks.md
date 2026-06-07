@@ -5,7 +5,7 @@ items (`[ ]`) identify remaining work.
 
 ## Module and Models
 
-- [x] 1. Create the `automojo.sysman.windows.repositorymanagement`
+- [x] 1. Create the `ccai.sysman.windows.repositorymanagement`
   module
 
 - [x] 2. Define `WindowsRepositoryActionStatus` enum (SUCCESS /
@@ -192,7 +192,7 @@ Total: 16 tests, all passing.
 - [ ] 44. **Cross-OS contract conformance review**: verify the
   `WindowsRepositoryActionResult` / `WindowsRepositoryInfo` /
   `WindowsRepositorySpec` field shapes against the contract at
-  `automojo-sysman-common/specs/contracts/repository-management/contract.md`,
+  `codecraftai-sysman-common/specs/contracts/repository-management/contract.md`,
   and decide whether the contract-permitted divergences (no-op
   `enable` / `disable` returning FAILED, missing `set_priority` /
   `import_gpg_key` / `get_repository`) belong in the manager or in

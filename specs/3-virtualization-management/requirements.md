@@ -3,11 +3,11 @@
 ## Introduction
 
 The virtualization-management feature provides the
-`automojo-sysman-windows` package with the ability to manage local
+`codecraftai-sysman-windows` package with the ability to manage local
 Hyper-V virtual machines on Windows hosts via the Hyper-V PowerShell
 module.  This spec implements the cross-OS virtualization-management
 contract defined at
-`automojo-sysman-common/specs/contracts/virtualization-management/contract.md`
+`codecraftai-sysman-common/specs/contracts/virtualization-management/contract.md`
 for Windows.
 
 A maintenance coordinator running in an external package drives every
@@ -16,7 +16,7 @@ feature does not decide *which* VMs should exist, *what shape* their
 disks should take, or *when* snapshots should be created — it provides
 the capability to manipulate Hyper-V VM state reliably, idempotently,
 and with full auditability.  All system commands are executed
-exclusively through the `automojo-interfaces` command-runner
+exclusively through the `codecraftai-interfaces` command-runner
 abstraction (PowerShell scriptblock invocations).
 
 The Hyper-V Windows feature **must be enabled** on the host

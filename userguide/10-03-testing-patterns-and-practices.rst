@@ -79,7 +79,7 @@ To use a resource in a descendant test scope, just reference it by name in the t
         return
 
 
-The test tree should only contain resource origination declarations and tests.  It should not contain factories unless the usage of the factory is very isolated.  It is preferable to place factories in a folder such as a factory that creates the AutomationPodSimple object might be located at 'source/testroots/automojo/testshared/factories/automationpods/automationpodsimple.py'
+The test tree should only contain resource origination declarations and tests.  It should not contain factories unless the usage of the factory is very isolated.  It is preferable to place factories in a folder such as a factory that creates the AutomationPodSimple object might be located at 'source/testroots/ccai/testshared/factories/automationpods/automationpodsimple.py'
 
 # Evaluating Test Results
 There is a machine processable JSOS stream file in the output folder.
@@ -92,7 +92,7 @@ test starts it writes a preview to the stream.  The test preview has a 'result' 
 .. code-block:: javascript
 
     {
-        "name": "automojo.tests.singlehost.interop.protocols.dns.test_dnsaddress#test_write_passes_address",
+        "name": "ccai.tests.singlehost.interop.protocols.dns.test_dnsaddress#test_write_passes_address",
         "monikers": [],
         "pivots": {},
         "instance": "abb868e4-ce97-4bae-b0af-715da0d61d92",
@@ -108,7 +108,7 @@ When a test finishes it writes a result to the stream.  A test result will alway
 
 .. code-block:: javascript
     {
-        "name": "automojo.tests.singlehost.interop.protocols.dns.test_dnsaddress#test_write_passes_address",
+        "name": "ccai.tests.singlehost.interop.protocols.dns.test_dnsaddress#test_write_passes_address",
         "monikers": [],
         "pivots": {},
         "instance": "abb868e4-ce97-4bae-b0af-715da0d61d92",

@@ -5,7 +5,7 @@ All tasks below are unchecked at start; tick them in order.
 ## Module and Models
 
 - [ ] 1. Create
-  `source/packages/automojo/sysman/windows/virtualizationmanagement.py`
+  `source/packages/ccai/sysman/windows/virtualizationmanagement.py`
   with the module docstring covering Hyper-V role requirements,
   idempotency guards, stop semantics, and elevation policy.
   - _Requirements: All_
@@ -100,7 +100,7 @@ All tasks below are unchecked at start; tick them in order.
 ## Tests
 
 - [ ] 29. Create
-  `source/testroots/testbase/automojo/tests/sysman/windows/test_virtualizationmanagement.py`.
+  `source/testroots/testbase/ccai/tests/sysman/windows/test_virtualizationmanagement.py`.
 
 - [ ] 30. Tests for `list_vms` / `list_snapshots` parsers and
   unknown-VM `get_vm_info`.

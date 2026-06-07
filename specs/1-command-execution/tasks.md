@@ -14,7 +14,7 @@ identify remaining work.
 
 ## Module and Models
 
-- [ ] 1. Create the `automojo.sysman.windows.commandexecution` module and the sibling
+- [ ] 1. Create the `ccai.sysman.windows.commandexecution` module and the sibling
   `_elevation.py` helper module
 
 - [ ] 2. Define `WindowsCommandExecutionStatus` enum (SUCCESS / FAILED / SKIPPED /
@@ -111,7 +111,7 @@ identify remaining work.
 - [ ] 37. **Cross-OS contract conformance review**: verify that
   `WindowsCommandResult` / `WindowsSequenceResult` / `WindowsCommandSpec` field shapes
   match the cross-OS contract at
-  `automojo-sysman-common/specs/contracts/command-execution/contract.md` exactly,
+  `codecraftai-sysman-common/specs/contracts/command-execution/contract.md` exactly,
   and that the elevation pre-check extension is documented in the contract's Windows
   row.
 
@@ -122,7 +122,7 @@ identify remaining work.
 
 ## Runner-Pattern Implementation (this batch)
 
-Source files under `source/packages/automojo/sysman/windows/runners/`:
+Source files under `source/packages/ccai/sysman/windows/runners/`:
 
 - [x] R1. `models.py` — `WindowsRunResult`, `WindowsRunRecord`,
   `WindowsExecutionContext`, `WindowsSshErrorType`,
@@ -154,7 +154,7 @@ Source files under `source/packages/automojo/sysman/windows/runners/`:
 - [x] R8. `runners/__init__.py` and `aspects/__init__.py` package re-exports.
 
 Tests under
-`source/testroots/testbase/automojo/tests/sysman/windows/`:
+`source/testroots/testbase/ccai/tests/sysman/windows/`:
 
 - [x] R9. `test_localcommandrunner.py` (20 tests) — port of Ubuntu/macOS plus
   Windows-specific `test_elevation_check_at_construction`,

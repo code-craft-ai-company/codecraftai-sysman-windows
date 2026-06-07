@@ -3,13 +3,13 @@
 ## Introduction
 
 The encryption management feature provides the
-`automojo-sysman-windows` package with the ability to enable /
+`codecraftai-sysman-windows` package with the ability to enable /
 disable BitLocker on a Windows volume, query encryption status, list
 encrypted volumes, rotate the BitLocker password protector, back up
 the BitLocker recovery password to a filesystem path, and unlock a
 locked BitLocker volume by passing a password.  This spec implements
 the encryption-management contract defined at
-`automojo-sysman-common/specs/contracts/encryption-management/contract.md`
+`codecraftai-sysman-common/specs/contracts/encryption-management/contract.md`
 for Windows by wrapping the PowerShell `BitLocker` module's
 `Enable-BitLocker`, `Disable-BitLocker`, `Get-BitLockerVolume`,
 `Add-BitLockerKeyProtector`, `Remove-BitLockerKeyProtector`, and
@@ -22,7 +22,7 @@ passwords should be used, or *whether* a recovery-key backup should
 be archived to off-host storage — it provides the capability to
 *manipulate BitLocker state* reliably, idempotently, and with full
 auditability.  All cmdlet invocations are executed exclusively
-through the `automojo-interfaces` command-runner abstraction;
+through the `codecraftai-interfaces` command-runner abstraction;
 plaintext password bytes are wrapped via
 `ConvertTo-SecureString -AsPlainText -Force` inside the same
 PowerShell scriptblock and the recorded argv passes through a

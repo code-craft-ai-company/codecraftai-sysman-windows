@@ -3,7 +3,7 @@
 ## Introduction
 
 The nfs-server-management feature provides the
-``automojo-sysman-windows`` package with the ability to manage a
+``codecraftai-sysman-windows`` package with the ability to manage a
 local NFS server on Windows hosts.  Windows ships an "NFS Server"
 role (a.k.a. "Server for NFS") on Windows Server SKUs; the
 PowerShell ``NFS`` module exposes ``New-NfsShare`` /
@@ -11,7 +11,7 @@ PowerShell ``NFS`` module exposes ``New-NfsShare`` /
 manage NFS shares, and the daemon itself runs as the ``NfsService``
 Windows service.  This spec implements the cross-OS
 nfs-server-management contract defined at
-``automojo-sysman-common/specs/contracts/nfs-server-management/contract.md``
+``codecraftai-sysman-common/specs/contracts/nfs-server-management/contract.md``
 for Windows, scoped to the PowerShell ``NFS`` module.
 
 A maintenance coordinator running in an external package drives all
@@ -21,7 +21,7 @@ it provides the capability to *apply* policy reliably, idempotently,
 and with full auditability.  All system commands (``New-NfsShare``,
 ``Remove-NfsShare``, ``Set-NfsShare``, ``Get-NfsShare``,
 ``Restart-Service NfsService``) are executed exclusively through the
-``automojo-interfaces`` command-runner abstraction inside a
+``codecraftai-interfaces`` command-runner abstraction inside a
 PowerShell scriptblock.  No ``subprocess``, no direct ``open``, and
 no direct ``pathlib`` calls are made inside this module.
 

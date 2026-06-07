@@ -5,11 +5,11 @@ items (`[ ]`) identify remaining work.
 
 ## Module and Models
 
-- [x] 1. Create the `automojo.sysman.windows.logmanagement` module
+- [x] 1. Create the `ccai.sysman.windows.logmanagement` module
 
 - [x] 2. Define `WindowsLogActionStatus` enum (SUCCESS / FAILED /
   SKIPPED / DRY_RUN) — re-exported from
-  `automojo.sysman.windows.featurebase.ActionStatus`
+  `ccai.sysman.windows.featurebase.ActionStatus`
 
 - [x] 3. Define `WindowsLogManagerConfig` dataclass (`dry_run`,
   `elevated`, plus pilot-scope `powershell_executable`, `archive_dir`,
@@ -64,7 +64,7 @@ items (`[ ]`) identify remaining work.
 
 - [x] 13. Implement `rotate_log(name, archive_path, timestamp)` with
   the `wevtutil epl` + `wevtutil cl` sequence and a
-  `%ProgramData%\\Automojo\\eventlogs\\<name>-<timestamp>.evtx`
+  `%ProgramData%\\CodeCraftAI\\eventlogs\\<name>-<timestamp>.evtx`
   default archive path
 
 - [x] 14. Implement `truncate_log(name)` with `Clear-EventLog` for
@@ -145,7 +145,7 @@ items (`[ ]`) identify remaining work.
   `query_disk_usage` against the cross-OS contract once the file-
   source surface is reintroduced.
 
-- [ ] 46. **`automojo-sysman-windows` reuse check**: confirm that
+- [ ] 46. **`codecraftai-sysman-windows` reuse check**: confirm that
   `3-remote-log-forwarding` does not call `Get-WinEvent` directly;
   it should delegate to `WindowsLogManager.get_log` for read paths.
 

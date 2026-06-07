@@ -34,7 +34,7 @@ partition flow, anything else → virtual-disk flow).
 ## Overview
 
 The storage-management feature is implemented as a single module,
-`automojo.sysman.windows.storagemanagement`, that exposes a
+`ccai.sysman.windows.storagemanagement`, that exposes a
 `WindowsStorageManager` class.  The coordinator instantiates
 `WindowsStorageManager` and calls its methods to perform discrete
 block-level storage actions: disk enumeration, volume create / delete
@@ -80,7 +80,7 @@ configuration.
                          ▼
 ┌─────────────────────────────────────────────────────────────┐
 │            WindowsStorageManager                            │
-│  automojo.sysman.windows.storagemanagement                  │
+│  ccai.sysman.windows.storagemanagement                  │
 │                                                             │
 │  list_disks()           list_volumes()                      │
 │  get_disk_info()        get_volume_info()                   │
@@ -104,7 +104,7 @@ configuration.
 ### `WindowsStorageManager`
 
 **Location:**
-`source/packages/automojo/sysman/windows/storagemanagement.py`
+`source/packages/ccai/sysman/windows/storagemanagement.py`
 
 | Method | Signature | Description |
 |---|---|---|
@@ -570,13 +570,13 @@ runner's exit code and stderr.
 ## Module Layout
 
 ```
-source/packages/automojo/sysman/windows/
+source/packages/ccai/sysman/windows/
 ├── __init__.py
 ├── featurebase.py
 ├── filesystemmanagement.py
 └── storagemanagement.py        ← WindowsStorageManager + types
 
-source/testroots/testbase/automojo/tests/sysman/windows/
+source/testroots/testbase/ccai/tests/sysman/windows/
 └── test_storagemanagement.py
 ```
 
@@ -587,10 +587,10 @@ source/testroots/testbase/automojo/tests/sysman/windows/
 ### Local Execution (Default)
 
 ```python
-from automojo.sysman.windows.runners import (
+from ccai.sysman.windows.runners import (
     LocalCommandRunner, LocalRunnerConfig,
 )
-from automojo.sysman.windows.storagemanagement import (
+from ccai.sysman.windows.storagemanagement import (
     WindowsPoolSpec,
     WindowsStorageManager,
     WindowsStorageManagerConfig,
@@ -644,7 +644,7 @@ print(result.command[-1])
 ### SSH Execution with Aspects
 
 ```python
-from automojo.sysman.windows.runners import (
+from ccai.sysman.windows.runners import (
     SSHCommandRunner, SSHRunnerConfig,
 )
 

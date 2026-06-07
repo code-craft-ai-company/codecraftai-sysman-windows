@@ -5,7 +5,7 @@ items (`[ ]`) identify remaining work tracked for follow-up batches.
 
 ## Module and Models
 
-- [x] 1. Create the `automojo.sysman.windows.identitymanagement`
+- [x] 1. Create the `ccai.sysman.windows.identitymanagement`
   module.
 
 - [x] 2. Define `WindowsIdentityActionStatus` (SUCCESS / FAILED /

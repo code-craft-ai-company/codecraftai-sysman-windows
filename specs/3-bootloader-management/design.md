@@ -3,7 +3,7 @@
 ## Overview
 
 The bootloader-management feature is implemented as a single
-module, `automojo.sysman.windows.bootloadermanagement`, that
+module, `ccai.sysman.windows.bootloadermanagement`, that
 exposes a `WindowsBootloaderManager` class.  The maintenance
 coordinator instantiates `WindowsBootloaderManager` and calls its
 methods to perform discrete OS-level Boot Configuration Data
@@ -165,7 +165,7 @@ for `set_default_entry` / `remove_entry`.
                        v
 +-------------------------------------------------------------+
 |                WindowsBootloaderManager                     |
-|  automojo.sysman.windows.bootloadermanagement               |
+|  ccai.sysman.windows.bootloadermanagement               |
 |                                                             |
 |  list_entries()           get_default_entry()               |
 |  set_default_entry(id)    add_entry(spec)                   |
@@ -194,7 +194,7 @@ for `set_default_entry` / `remove_entry`.
 
 ### `WindowsBootloaderManager`
 
-**Location:** `source/packages/automojo/sysman/windows/bootloadermanagement.py`
+**Location:** `source/packages/ccai/sysman/windows/bootloadermanagement.py`
 
 The primary public class.  Constructed with an `ICommandRunner` and
 a `WindowsBootloaderManagerConfig`.
@@ -398,7 +398,7 @@ and `is_default` must be `True`.
 
 ## Interfaces
 
-### `ICommandRunner` (from `automojo-interfaces`)
+### `ICommandRunner` (from `codecraftai-interfaces`)
 
 `WindowsBootloaderManager` depends on this interface, injected at
 construction time.
@@ -413,7 +413,7 @@ class ICommandRunner(Protocol):
     ) -> RunResult: ...
 ```
 
-### `RunResult` (from `automojo-interfaces`)
+### `RunResult` (from `codecraftai-interfaces`)
 
 ```python
 @dataclass
@@ -505,11 +505,11 @@ module:
 ## Module Layout
 
 ```
-source/packages/automojo/sysman/windows/
+source/packages/ccai/sysman/windows/
 +-- __init__.py
 +-- bootloadermanagement.py          (this feature)
 
-source/testroots/testbase/automojo/tests/sysman/windows/
+source/testroots/testbase/ccai/tests/sysman/windows/
 +-- test_bootloadermanagement.py
 ```
 
@@ -548,10 +548,10 @@ stderr passthrough.
 ### Local Execution (Set Default Boot Entry)
 
 ```python
-from automojo.sysman.windows.runners import (
+from ccai.sysman.windows.runners import (
     LocalCommandRunner, LocalRunnerConfig,
 )
-from automojo.sysman.windows.bootloadermanagement import (
+from ccai.sysman.windows.bootloadermanagement import (
     WindowsBootloaderManager,
     WindowsBootloaderManagerConfig,
 )
@@ -571,7 +571,7 @@ print("set default: {} (reboot: {})".format(
 ### Add a Custom OS Loader
 
 ```python
-from automojo.sysman.windows.bootloadermanagement import (
+from ccai.sysman.windows.bootloadermanagement import (
     WindowsBootEntrySpec,
     WindowsBootloaderManager,
     WindowsBootloaderManagerConfig,

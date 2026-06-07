@@ -3,17 +3,17 @@
 ## Introduction
 
 The ssh-server-configuration feature provides the
-`automojo-sysman-windows` package with the ability to manage the
+`codecraftai-sysman-windows` package with the ability to manage the
 OpenSSH server configuration on Windows hosts: top-level `sshd_config`
 keywords, `Match` blocks, configuration validation, daemon restart,
 and per-user `authorized_keys` entries.  This spec implements the
 ssh-server-configuration contract defined at
-`automojo-sysman-common/specs/contracts/ssh-server-configuration/contract.md`
+`codecraftai-sysman-common/specs/contracts/ssh-server-configuration/contract.md`
 for Windows.
 
 A maintenance coordinator running in an external package drives all
 operations.  All system commands (`sshd.exe`, PowerShell cmdlets) are
-executed exclusively through the `automojo-interfaces` command-runner
+executed exclusively through the `codecraftai-interfaces` command-runner
 abstraction.  No `subprocess`, no direct `open`, and no direct
 `pathlib` calls are made inside this module.
 

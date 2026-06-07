@@ -4,7 +4,7 @@
 
 The mail-transport-management feature is implemented as a single
 module,
-`automojo.sysman.windows.mailtransportmanagement`, exposing a
+`ccai.sysman.windows.mailtransportmanagement`, exposing a
 `WindowsMailTransportManager` class.  Unlike the Ubuntu / macOS
 implementations — which both wrap a fully functional Postfix command
 suite — this manager is a **best-effort wrapper around a feature gap
@@ -34,11 +34,11 @@ maintenance automation that needs to run cross-OS without crashing
 on Windows hosts.
 
 **See Also:**
-- `automojo-sysman-linux-ubuntu` `3-mail-transport-management` —
+- `codecraftai-sysman-linux-ubuntu` `3-mail-transport-management` —
   full Postfix coverage on Ubuntu.
-- `automojo-sysman-linux-redhat` `3-mail-transport-management` —
+- `codecraftai-sysman-linux-redhat` `3-mail-transport-management` —
   canonical Postfix coverage.
-- `automojo-sysman-macos` `3-mail-transport-management` — Postfix
+- `codecraftai-sysman-macos` `3-mail-transport-management` — Postfix
   coverage on macOS (with daemon-disabled-by-default caveat).
 - `auditmanagement.py` — pattern reference for graceful FAILED on
   unsupported operations.

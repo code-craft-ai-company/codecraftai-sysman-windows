@@ -3,7 +3,7 @@
 ## Introduction
 
 The filesystem-quotas feature provides the
-`automojo-sysman-windows` package with the ability to manage
+`codecraftai-sysman-windows` package with the ability to manage
 disk quotas on Windows systems for NTFS volumes through
 `fsutil quota` — the volume-level user-quota subsystem built
 into NTFS.  It covers per-user block quotas with idempotent
@@ -16,7 +16,7 @@ current posture of that volume, and to confirm whether quota
 tracking and enforcement are currently active.  Every system
 command (`fsutil quota track`, `fsutil quota enforce`, `fsutil
 quota disable`, `fsutil quota modify`, `fsutil quota query`) is
-dispatched through the `automojo-interfaces` `ICommandRunner`
+dispatched through the `codecraftai-interfaces` `ICommandRunner`
 abstraction so the manager works identically under local and
 WinRM / SSH execution.  All mutating operations honour dry-run.
 

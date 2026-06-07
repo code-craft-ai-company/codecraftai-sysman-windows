@@ -6,7 +6,7 @@ items (`[ ]`) identify remaining work.
 ## Module and Models
 
 - [x] 1. Create the
-  `automojo.sysman.windows.encryptionmanagement` module.
+  `ccai.sysman.windows.encryptionmanagement` module.
 
 - [x] 2. Define `WindowsEncryptionActionStatus` (aliased to the
   shared `featurebase.ActionStatus`).
@@ -341,13 +341,13 @@ items (`[ ]`) identify remaining work.
 - [ ] 70. **Cross-OS contract conformance review**: verify
   `WindowsEncryptionActionResult` field shapes match the cross-OS
   contract at
-  `automojo-sysman-common/specs/contracts/encryption-management/contract.md`,
+  `codecraftai-sysman-common/specs/contracts/encryption-management/contract.md`,
   add the missing `EncryptionBackend` field with a default of
   `BITLOCKER`, and reconcile the `key_slots` vs `protector_types`
   drift.
 
-- [ ] 71. **automojo-* reuse check**: confirm that no other
-  feature in `automojo-sysman-windows` invokes BitLocker cmdlets
+- [ ] 71. **codecraftai-* reuse check**: confirm that no other
+  feature in `codecraftai-sysman-windows` invokes BitLocker cmdlets
   directly; all such calls should go through
   `WindowsEncryptionManager`.
 

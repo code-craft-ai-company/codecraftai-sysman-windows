@@ -1,7 +1,7 @@
 # Implementation Plan
 
 - [x] 1. Wire the module skeleton
-  - Create `automojo/sysman/windows/mailtransportmanagement.py`
+  - Create `ccai/sysman/windows/mailtransportmanagement.py`
     with the module docstring documenting the Windows MTA gap and
     the production-guidance recommendation (run real MTA on Linux
     or macOS).

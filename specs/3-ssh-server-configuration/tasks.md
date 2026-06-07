@@ -5,7 +5,7 @@ items (`[ ]`) identify remaining work.
 
 ## Module and Models
 
-- [x] 1. Create the `automojo.sysman.windows.sshserverconfiguration`
+- [x] 1. Create the `ccai.sysman.windows.sshserverconfiguration`
   module
 
 - [x] 2. Define `WindowsSshActionStatus` alias of the shared

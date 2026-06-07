@@ -3,12 +3,12 @@
 ## Introduction
 
 The container management feature provides the
-`automojo-sysman-windows` package with the ability to pull / remove
+`codecraftai-sysman-windows` package with the ability to pull / remove
 images, create / start / stop / remove containers, list and inspect
 containers, retrieve container logs, and execute commands inside
 running containers on Windows systems.  This spec implements the
 container-management contract defined at
-`automojo-sysman-common/specs/contracts/container-management/contract.md`
+`codecraftai-sysman-common/specs/contracts/container-management/contract.md`
 for Windows using either the `docker.exe` CLI (default — Docker
 Desktop) or the `podman.exe` / `wsl.exe podman` CLI (Podman on
 Windows is uncommon and routes through WSL2), selected at
@@ -21,7 +21,7 @@ images should be pulled, or *what* environment / volume / port
 configuration a container should have — it provides the capability to
 *manipulate container engine state* reliably, idempotently, and with
 full auditability.  All container engine commands are executed
-exclusively through the `automojo-interfaces` command-runner
+exclusively through the `codecraftai-interfaces` command-runner
 abstraction.
 
 Windows hosts the engine in two ways: Docker Desktop runs containers

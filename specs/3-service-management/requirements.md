@@ -2,11 +2,11 @@
 
 ## Introduction
 
-The service-management feature provides the `automojo-sysman-windows` package with
+The service-management feature provides the `codecraftai-sysman-windows` package with
 the ability to manage Windows Service Control Manager (SCM) services using
 PowerShell's `Start-Service`, `Stop-Service`, `Restart-Service`, `Get-Service`, and
 `Set-Service` cmdlets.  This spec implements the service-management contract defined
-at `automojo-sysman-common/specs/contracts/service-management/contract.md` for
+at `codecraftai-sysman-common/specs/contracts/service-management/contract.md` for
 Windows using those cmdlets through an `ICommandRunner`.  It covers
 start/stop/restart, reload (aliased to restart — Windows has no reload primitive),
 enable/disable, mask/unmask (aliased to disable/enable — Windows has no mask), status

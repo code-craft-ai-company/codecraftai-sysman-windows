@@ -3,10 +3,10 @@
 ## Overview
 
 The repository management feature is implemented as a single module,
-`automojo.sysman.windows.repositorymanagement`, that exposes a
+`ccai.sysman.windows.repositorymanagement`, that exposes a
 `WindowsRepositoryManager` class.  This spec implements the
 repository-management contract defined at
-`automojo-sysman-common/specs/contracts/repository-management/contract.md`
+`codecraftai-sysman-common/specs/contracts/repository-management/contract.md`
 for Windows using `winget.exe`'s source subcommand.
 
 The coordinator instantiates `WindowsRepositoryManager` and calls its
@@ -43,7 +43,7 @@ aspect configuration.
                          ▼
 ┌─────────────────────────────────────────────────────────────┐
 │           WindowsRepositoryManager                          │
-│  automojo.sysman.windows.repositorymanagement               │
+│  ccai.sysman.windows.repositorymanagement               │
 │                                                             │
 │  add_repository()       remove_repository()                 │
 │  enable_repository()    disable_repository()                │
@@ -80,7 +80,7 @@ aspect configuration.
 
 ### `WindowsRepositoryManager`
 
-**Location:** `source/packages/automojo/sysman/windows/repositorymanagement.py`
+**Location:** `source/packages/ccai/sysman/windows/repositorymanagement.py`
 
 | Method | Signature | Description |
 |---|---|---|
@@ -164,7 +164,7 @@ class WindowsRepositoryKeyFileNotFoundError(Exception):
 
 ## Interfaces
 
-### `ICommandRunner` (from `automojo-interfaces`)
+### `ICommandRunner` (from `codecraftai-interfaces`)
 
 ```python
 class ICommandRunner(Protocol):
@@ -486,13 +486,13 @@ All other write failures are surfaced as
 ## Module Layout
 
 ```
-source/packages/automojo/sysman/windows/
+source/packages/ccai/sysman/windows/
 ├── __init__.py
 └── repositorymanagement.py    ← WindowsRepositoryManager, config,
                                   models, exceptions
 
 source/testroots/testbase/
-└── automojo/tests/sysman/windows/
+└── ccai/tests/sysman/windows/
     └── test_repositorymanagement.py
 ```
 
@@ -503,8 +503,8 @@ source/testroots/testbase/
 ### Local Execution (Default)
 
 ```python
-from automojo.sysman.windows.runners import LocalCommandRunner, LocalRunnerConfig
-from automojo.sysman.windows.repositorymanagement import (
+from ccai.sysman.windows.runners import LocalCommandRunner, LocalRunnerConfig
+from ccai.sysman.windows.repositorymanagement import (
     WindowsRepositoryManager,
     WindowsRepositoryManagerConfig,
     WindowsRepositorySpec,
@@ -540,8 +540,8 @@ repo_mgr.refresh_repositories()
 ### WinRM Execution with Aspects
 
 ```python
-from automojo.sysman.windows.runners import WinRMCommandRunner, WinRMRunnerConfig
-from automojo.sysman.windows.aspects import (
+from ccai.sysman.windows.runners import WinRMCommandRunner, WinRMRunnerConfig
+from ccai.sysman.windows.aspects import (
     PersistenceAspect,
     RetryAspect,
     TimeoutAspect,
@@ -549,15 +549,15 @@ from automojo.sysman.windows.aspects import (
     RetryAspectConfig,
     TimeoutAspectConfig,
 )
-from automojo.sysman.windows.storage import SQLiteStorage
-from automojo.sysman.windows.repositorymanagement import (
+from ccai.sysman.windows.storage import SQLiteStorage
+from ccai.sysman.windows.repositorymanagement import (
     WindowsRepositoryManager,
     WindowsRepositoryManagerConfig,
 )
 
 runner = WinRMCommandRunner(WinRMRunnerConfig(host="win-host", username="Administrator"))
 
-storage = SQLiteStorage(path="C:\\ProgramData\\Automojo\\commands.db")
+storage = SQLiteStorage(path="C:\\ProgramData\\CodeCraftAI\\commands.db")
 runner.add_aspect(aspect=PersistenceAspect(PersistenceAspectConfig(storage_backend=storage)))
 runner.add_aspect(aspect=RetryAspect(RetryAspectConfig(max_retries=3, retryable_exit_codes=[1])))
 runner.add_aspect(aspect=TimeoutAspect(TimeoutAspectConfig(default_timeout=300.0)))

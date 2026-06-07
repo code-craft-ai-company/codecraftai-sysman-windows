@@ -3,9 +3,9 @@
 ## Overview
 
 The service-management feature is implemented as a single module,
-`automojo.sysman.windows.servicemanagement`, that exposes a `WindowsServiceManager`
+`ccai.sysman.windows.servicemanagement`, that exposes a `WindowsServiceManager`
 class.  This spec implements the service-management contract defined at
-`automojo-sysman-common/specs/contracts/service-management/contract.md` for
+`codecraftai-sysman-common/specs/contracts/service-management/contract.md` for
 Windows using PowerShell's `Start-Service`, `Stop-Service`, `Restart-Service`,
 `Get-Service`, and `Set-Service` cmdlets through an `ICommandRunner`.
 
@@ -46,7 +46,7 @@ details on local/SSH execution, reliability tracking, and aspect configuration.
                          ▼
 ┌─────────────────────────────────────────────────────────────┐
 │            WindowsServiceManager                            │
-│  automojo.sysman.windows.servicemanagement                  │
+│  ccai.sysman.windows.servicemanagement                  │
 │                                                             │
 │  start_service()  stop_service()  restart_service()         │
 │  reload_service() enable_service()  disable_service()       │
@@ -75,7 +75,7 @@ details on local/SSH execution, reliability tracking, and aspect configuration.
 
 ### `WindowsServiceManager`
 
-**Location:** `source/packages/automojo/sysman/windows/servicemanagement.py`
+**Location:** `source/packages/ccai/sysman/windows/servicemanagement.py`
 
 | Method | Signature | Description |
 |---|---|---|
@@ -156,7 +156,7 @@ class WindowsServiceQueryError(Exception):
 
 ## Interfaces
 
-### `ICommandRunner` (from `automojo-interfaces`)
+### `ICommandRunner` (from `codecraftai-interfaces`)
 
 ```python
 class ICommandRunner(Protocol):
@@ -520,12 +520,12 @@ result has `status=DRY_RUN`.
 ## Module Layout
 
 ```
-source/packages/automojo/sysman/windows/
+source/packages/ccai/sysman/windows/
 ├── __init__.py
 └── servicemanagement.py       ← WindowsServiceManager, config, models, exceptions
 
 source/testroots/testbase/
-└── automojo/tests/sysman/windows/
+└── ccai/tests/sysman/windows/
     └── test_servicemanagement.py
 ```
 
@@ -536,10 +536,10 @@ source/testroots/testbase/
 ### Local Execution (Default)
 
 ```python
-from automojo.sysman.windows.runners import (
+from ccai.sysman.windows.runners import (
     WindowsLocalCommandRunner, WindowsLocalRunnerConfig,
 )
-from automojo.sysman.windows.servicemanagement import (
+from ccai.sysman.windows.servicemanagement import (
     WindowsServiceManager, WindowsServiceManagerConfig, WindowsServiceScope,
 )
 
@@ -557,10 +557,10 @@ print(f"active={status.active_state} enabled={status.enabled_state}")
 ### Aspect Composition (SSH)
 
 ```python
-from automojo.sysman.windows.runners import (
+from ccai.sysman.windows.runners import (
     WindowsSSHCommandRunner, WindowsSSHRunnerConfig,
 )
-from automojo.sysman.windows.aspects import (
+from ccai.sysman.windows.aspects import (
     RetryAspect, RetryAspectConfig,
 )
 

@@ -3,10 +3,10 @@
 ## Overview
 
 The network-configuration feature is implemented as a single module,
-`automojo.sysman.windows.networkconfiguration`, that exposes a
+`ccai.sysman.windows.networkconfiguration`, that exposes a
 `WindowsNetworkConfigurationManager` class.  This spec implements the
 network-configuration contract defined at
-`automojo-sysman-common/specs/contracts/network-configuration/contract.md`
+`codecraftai-sysman-common/specs/contracts/network-configuration/contract.md`
 for Windows using the `NetTCPIP`, `NetAdapter`, `DnsClient`, and
 hostname cmdlets available on Windows 10 / 11 / Server 2019+.  The
 coordinator instantiates the manager with a command runner and a config,
@@ -48,7 +48,7 @@ configuration.
                          ▼
 ┌─────────────────────────────────────────────────────────────┐
 │    WindowsNetworkConfigurationManager                       │
-│  automojo.sysman.windows.networkconfiguration               │
+│  ccai.sysman.windows.networkconfiguration               │
 │                                                             │
 │  get_interfaces()     get_interface()                       │
 │  configure_interface()                                      │
@@ -71,7 +71,7 @@ configuration.
 
 ### `WindowsNetworkConfigurationManager`
 
-**Location:** `source/packages/automojo/sysman/windows/networkconfiguration.py`
+**Location:** `source/packages/ccai/sysman/windows/networkconfiguration.py`
 
 | Method | Signature | Description |
 |---|---|---|
@@ -492,13 +492,13 @@ documented failure paths.
 ## Module Layout
 
 ```
-source/packages/automojo/sysman/windows/
+source/packages/ccai/sysman/windows/
 ├── __init__.py
 └── networkconfiguration.py    ← WindowsNetworkConfigurationManager,
                                   config, models, exceptions
 
 source/testroots/testbase/
-└── automojo/tests/sysman/windows/
+└── ccai/tests/sysman/windows/
     └── test_networkconfiguration.py
 ```
 
@@ -509,10 +509,10 @@ source/testroots/testbase/
 ### Local Execution (Default)
 
 ```python
-from automojo.sysman.windows.runners import (
+from ccai.sysman.windows.runners import (
     WindowsLocalCommandRunner, WindowsLocalRunnerConfig,
 )
-from automojo.sysman.windows.networkconfiguration import (
+from ccai.sysman.windows.networkconfiguration import (
     WindowsNetworkConfigurationManager,
     WindowsNetworkConfigurationManagerConfig,
 )
@@ -535,14 +535,14 @@ for iface in net_mgr.get_interfaces():
 ### WinRM Execution With Aspects
 
 ```python
-from automojo.sysman.windows.runners import (
+from ccai.sysman.windows.runners import (
     WindowsWinRMCommandRunner, WindowsWinRMRunnerConfig,
 )
-from automojo.sysman.windows.aspects import (
+from ccai.sysman.windows.aspects import (
     PersistenceAspect, RetryAspect, TimeoutAspect,
     PersistenceAspectConfig, RetryAspectConfig, TimeoutAspectConfig,
 )
-from automojo.sysman.windows.storage import SQLiteStorage
+from ccai.sysman.windows.storage import SQLiteStorage
 
 runner = WindowsWinRMCommandRunner(
     WindowsWinRMRunnerConfig(host="win-fleet-01", username="DOMAIN\\ops"),

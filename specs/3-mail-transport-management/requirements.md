@@ -3,14 +3,14 @@
 ## Introduction
 
 The mail-transport-management feature provides the
-`automojo-sysman-windows` package with the ability to interact with
+`codecraftai-sysman-windows` package with the ability to interact with
 a mail transport agent (MTA) on Windows hosts.  **Windows has no
 built-in MTA equivalent.**  After the deprecation of the IIS SMTP
 feature on consumer Windows SKUs, Microsoft's recommendation for
 outbound mail is a third-party relay (hMailServer, MailEnable) or an
 external SMTP gateway.  This spec implements the
 mail-transport-management contract defined at
-`automojo-sysman-common/specs/contracts/mail-transport-management/contract.md`
+`codecraftai-sysman-common/specs/contracts/mail-transport-management/contract.md`
 for Windows as a **best-effort** pilot that documents the gap
 prominently and surfaces stable detail strings so callers can
 discriminate "no MTA" from "real failure".
@@ -41,7 +41,7 @@ Linux / macOS MTA rather than running a local server.
 A maintenance coordinator running in an external package drives all
 operations by calling into this feature's public interfaces.  All
 external commands (`powershell.exe`) are executed exclusively
-through the `automojo-interfaces` command-runner abstraction.  No
+through the `codecraftai-interfaces` command-runner abstraction.  No
 `subprocess`, no direct `open`, and no direct `pathlib` calls are
 made inside this module.
 

@@ -5,7 +5,7 @@ items (`[ ]`) identify remaining work.
 
 ## Module and Models
 
-- [x] 1. Create the `automojo.sysman.windows.storagemanagement` module.
+- [x] 1. Create the `ccai.sysman.windows.storagemanagement` module.
 
 - [x] 2. Define `WindowsStorageActionStatus` (aliased to the shared
   `featurebase.ActionStatus`).
@@ -149,10 +149,10 @@ items (`[ ]`) identify remaining work.
 - [ ] 50. **Cross-OS contract conformance review**: verify
   `WindowsStorageActionResult` field shapes match the cross-OS
   contract at
-  `automojo-sysman-common/specs/contracts/storage-management/contract.md`.
+  `codecraftai-sysman-common/specs/contracts/storage-management/contract.md`.
 
-- [ ] 51. **automojo-* reuse check**: confirm that no other feature
-  in `automojo-sysman-windows` invokes the Storage cmdlets directly;
+- [ ] 51. **codecraftai-* reuse check**: confirm that no other feature
+  in `codecraftai-sysman-windows` invokes the Storage cmdlets directly;
   all such calls should go through `WindowsStorageManager`.
 
 ## Spec deviations from this implementation

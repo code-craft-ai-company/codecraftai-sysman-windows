@@ -2,11 +2,11 @@
 
 ## Introduction
 
-The package-management feature provides the `automojo-sysman-windows`
+The package-management feature provides the `codecraftai-sysman-windows`
 package with the ability to manage `winget`-managed software packages on
 Windows systems.  This spec implements the package-management contract
 defined at
-`automojo-sysman-common/specs/contracts/package-management/contract.md`
+`codecraftai-sysman-common/specs/contracts/package-management/contract.md`
 for Windows using the Windows Package Manager (`winget.exe`).  It covers
 install / remove / upgrade / upgrade-all, installed-package queries, a
 packaged listing, an upgradable listing, local `.msix` / `.appx` /

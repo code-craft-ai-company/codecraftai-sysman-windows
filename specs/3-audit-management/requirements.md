@@ -3,10 +3,10 @@
 ## Introduction
 
 The audit management feature provides the
-`automojo-sysman-windows` package with the ability to enable,
+`codecraftai-sysman-windows` package with the ability to enable,
 disable, query, and rule-manage the Windows auditing subsystem.
 This spec implements the audit-management contract defined at
-`automojo-sysman-common/specs/contracts/audit-management/contract.md`
+`codecraftai-sysman-common/specs/contracts/audit-management/contract.md`
 for Windows using `auditpol.exe` for advanced-audit policy
 management, `wevtutil.exe` for event-log channel toggling, and
 `Get-WinEvent` (PowerShell) for event-stream filtering.
@@ -17,7 +17,7 @@ feature does not decide *which* subcategories belong on the host
 — it provides the capability to install, remove, and observe them
 reliably, idempotently, and with full auditability.  Every system
 command is executed exclusively through the
-`automojo-interfaces` command-runner abstraction.  No
+`codecraftai-interfaces` command-runner abstraction.  No
 `subprocess`, no direct `open`, and no direct `pathlib` calls
 are made inside the module.
 

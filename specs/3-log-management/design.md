@@ -3,9 +3,9 @@
 ## Overview
 
 The log management feature is implemented as a single module,
-`automojo.sysman.windows.logmanagement`, that exposes a `WindowsLogManager` class.
+`ccai.sysman.windows.logmanagement`, that exposes a `WindowsLogManager` class.
 This spec implements the log-management contract defined at
-`automojo-sysman-common/specs/contracts/log-management/contract.md` for Windows
+`codecraftai-sysman-common/specs/contracts/log-management/contract.md` for Windows
 using PowerShell's `Get-WinEvent` cmdlet for Event Log reads, `wevtutil` for
 rotation, size, and clear commands, and the `IFileOperator` abstraction for plain
 text log files under `%ProgramData%`.
@@ -40,7 +40,7 @@ details on local/remote execution, reliability tracking, and aspect configuratio
                          ▼
 ┌─────────────────────────────────────────────────────────────┐
 │              WindowsLogManager                              │
-│  automojo.sysman.windows.logmanagement                      │
+│  ccai.sysman.windows.logmanagement                      │
 │                                                             │
 │  get_log()              tail_log()                          │
 │  list_logs()            rotate_log()                        │
@@ -76,7 +76,7 @@ details on local/remote execution, reliability tracking, and aspect configuratio
 
 ### `WindowsLogManager`
 
-**Location:** `source/packages/automojo/sysman/windows/logmanagement.py`
+**Location:** `source/packages/ccai/sysman/windows/logmanagement.py`
 
 | Method | Signature | Description |
 |---|---|---|
@@ -164,7 +164,7 @@ class WindowsLogQueryError(Exception):
 
 ### `ICommandRunner` and `IFileOperator`
 
-Both are imported from `automojo-interfaces` and used as defined in the contract.
+Both are imported from `codecraftai-interfaces` and used as defined in the contract.
 The manager holds one instance of each and delegates all I/O to them.
 
 ---
@@ -277,7 +277,7 @@ Parser tokenises by lines, matches `^(\s*)(\w+):\s*(.*)$`, and populates:
 
 For channels: the policy is applied via `wevtutil sl`.  For files, the policy is
 serialised to JSON and written to
-`C:\ProgramData\Automojo\logrotation\<basename>.json`:
+`C:\ProgramData\CodeCraftAI\logrotation\<basename>.json`:
 
 ```json
 {
@@ -486,12 +486,12 @@ operator should never be invoked with `elevated=True`.
 ## Module Layout
 
 ```
-source/packages/automojo/sysman/windows/
+source/packages/ccai/sysman/windows/
 ├── __init__.py
 └── logmanagement.py          ← WindowsLogManager, config, models, exceptions
 
 source/testroots/testbase/
-└── automojo/tests/sysman/windows/
+└── ccai/tests/sysman/windows/
     └── test_logmanagement.py
 ```
 
@@ -502,9 +502,9 @@ source/testroots/testbase/
 ### Local Execution
 
 ```python
-from automojo.sysman.windows.runners import LocalCommandRunner, LocalRunnerConfig
-from automojo.sysman.windows.fileoperators import LocalFileOperator
-from automojo.sysman.windows.logmanagement import (
+from ccai.sysman.windows.runners import LocalCommandRunner, LocalRunnerConfig
+from ccai.sysman.windows.fileoperators import LocalFileOperator
+from ccai.sysman.windows.logmanagement import (
     WindowsLogManager,
     WindowsLogManagerConfig,
     WindowsRotationPolicy,
@@ -541,19 +541,19 @@ print(f"Rotate: {rotate_result.status}")
 ### Remote Execution with Aspects
 
 ```python
-from automojo.sysman.windows.runners import SSHCommandRunner, SSHRunnerConfig
-from automojo.sysman.windows.aspects import (
+from ccai.sysman.windows.runners import SSHCommandRunner, SSHRunnerConfig
+from ccai.sysman.windows.aspects import (
     PersistenceAspect, PersistenceAspectConfig,
     RetryAspect, RetryAspectConfig,
     TimeoutAspect, TimeoutAspectConfig,
 )
-from automojo.sysman.windows.storage import SQLiteStorage
-from automojo.sysman.windows.fileoperators import SSHFileOperator
-from automojo.sysman.windows.logmanagement import WindowsLogManager, WindowsLogManagerConfig
+from ccai.sysman.windows.storage import SQLiteStorage
+from ccai.sysman.windows.fileoperators import SSHFileOperator
+from ccai.sysman.windows.logmanagement import WindowsLogManager, WindowsLogManagerConfig
 
 runner = SSHCommandRunner(SSHRunnerConfig(host="remote-win", username="admin"))
 
-storage = SQLiteStorage(path=r"C:\ProgramData\Automojo\commands.db")
+storage = SQLiteStorage(path=r"C:\ProgramData\CodeCraftAI\commands.db")
 runner.add_aspect(aspect=PersistenceAspect(PersistenceAspectConfig(storage_backend=storage)))
 runner.add_aspect(aspect=RetryAspect(RetryAspectConfig(max_retries=3, retryable_exit_codes=[1])))
 runner.add_aspect(aspect=TimeoutAspect(TimeoutAspectConfig(default_timeout=60.0)))
@@ -616,7 +616,7 @@ assert trunc_result.status == WindowsLogActionStatus.DRY_RUN
 |---|---|
 | Log source (channel) | Event Log channel name like `Application` or `Microsoft-Windows-…/Operational` |
 | Log source (file) | Absolute path, e.g., `C:\ProgramData\MyApp\logs\app.log` |
-| Rotation drop-in store | `C:\ProgramData\Automojo\logrotation\<basename>.json` for file sources; `wevtutil sl` for channels |
+| Rotation drop-in store | `C:\ProgramData\CodeCraftAI\logrotation\<basename>.json` for file sources; `wevtutil sl` for channels |
 
 ---
 
@@ -631,4 +631,4 @@ assert trunc_result.status == WindowsLogActionStatus.DRY_RUN
   all write verbs short-circuit symmetrically in dry-run mode.
 - **JSON-serialised policy store for file sources.**  Channels use native
   `wevtutil sl`; files persist policy as JSON in
-  `C:\ProgramData\Automojo\logrotation\<basename>.json`.
+  `C:\ProgramData\CodeCraftAI\logrotation\<basename>.json`.

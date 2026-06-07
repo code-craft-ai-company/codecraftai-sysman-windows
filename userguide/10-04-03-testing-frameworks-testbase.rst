@@ -10,7 +10,7 @@ Testing Frameworks - TestBase and TestPlus
 Purpose and Audience
 --------------------
 
-- Describe how this repository applies the ``testbase`` and ``testplus`` frameworks so contributors and AutomationX can create, organize, and run scenarios consistently.
+- Describe how this repository applies the ``testbase`` and ``testplus`` frameworks so contributors and CodeCraftX can create, organize, and run scenarios consistently.
 - Clarify when to choose ``testbase`` (single-host or self-contained integration tests) versus ``testplus`` (multi-host or clustered resources).
 - Complement :doc:`10-03-testing-patterns-and-practices` by focusing on framework-specific conventions, directory layout, and result artifacts.
 
@@ -19,16 +19,16 @@ Test Roots and Resource Layout
 
 - Test suites live under ``<repository>/source/testroots/testbase`` or, for organizations with namespace customized code, ``<repository>/source/testroots/<org namespace root>``.
 - Every ``testbase`` test root requires a ``__testroot__.py`` file that declares the root type as ``testbase`` so discovery utilities can register it correctly.
-- Organize tests by resource configuration (for example ``source/testroots/automojo/tests/singlehost`` for single-machine coverage and ``source/testroots/automojo/tests/simplecluster`` for clustered tests).
+- Organize tests by resource configuration (for example ``source/testroots/ccai/tests/singlehost`` for single-machine coverage and ``source/testroots/ccai/tests/simplecluster`` for clustered tests).
 - Keep directories parallel to the source hierarchy whenever possible so it remains obvious which packages each subtree validates.
-- Shared factories, fixtures, or helpers belong under ``source/testroots/<root>/testshared`` (for example ``source/testroots/automojo/testshared/factories/automationpods/automationpodsimple.py``) to avoid cluttering test nodes.
+- Shared factories, fixtures, or helpers belong under ``source/testroots/<root>/testshared`` (for example ``source/testroots/ccai/testshared/factories/automationpods/automationpodsimple.py``) to avoid cluttering test nodes.
 
 Environment Preparation
 -----------------------
 
 - Execute ``repository-setup/rehome-repository`` after cloning so the expected ``.env`` file exists for both frameworks.
 - Run ``development/setup-environment`` to create or refresh the virtual environment, then activate it before invoking ``testbase`` or ``testplus`` entry points.
-- Inside Codex containers, start with ``development/codex-setup``; it chains the repository bootstrap steps AutomationX relies on.
+- Inside Codex containers, start with ``development/codex-setup``; it chains the repository bootstrap steps CodeCraftX relies on.
 - Create a dedicated output directory per run so logs, JSOS streams, and other artifacts remain isolated and easy to archive.
 
 Writing Tests with TestBase
@@ -65,8 +65,8 @@ Working with TestPlus
 ---------------------
 
 - Use ``testplus`` for suites that orchestrate multiple networked machines, clusters, or hardware resources that exceed a single host.
-- Mirror the same directory and naming conventions described above so AutomationX can pivot between ``testbase`` (single host) and ``testplus`` (multi host) suites without relearning structure.
-- Document any cluster-specific constraints inside the relevant ``testplus`` subdirectories, especially if human approval or provisioning is required before AutomationX can execute the suite.
+- Mirror the same directory and naming conventions described above so CodeCraftX can pivot between ``testbase`` (single host) and ``testplus`` (multi host) suites without relearning structure.
+- Document any cluster-specific constraints inside the relevant ``testplus`` subdirectories, especially if human approval or provisioning is required before CodeCraftX can execute the suite.
 
 Running Tests
 -------------
@@ -75,10 +75,10 @@ Running Tests
 - Run a focused ``testbase`` suite using::
 
     source .venv/bin/activate
-    testbase testing run --root source/testroots/testbase --includes=testbase.automojo.tests.sysman.windows --output=<desired output folder>
+    testbase testing run --root source/testroots/testbase --includes=testbase.ccai.tests.sysman.windows --output=<desired output folder>
 
-- The ``--includes`` expression is rooted at the **basename of the** ``--root`` **path** (``testbase`` in the example above), then dotted-walks the directory tree beneath. For a test root at ``source/testroots/testbase/automojo/tests/sysman/<os>/``, the include is ``testbase.automojo.tests.sysman.<os>``.
-- Substitute the OS-specific tail (``linux.ubuntu``, ``macos``, ``windows``, ``uefi``) when running other sysman packages, or substitute ``automojo.tests.simplecluster`` when clustered infrastructure exists.
+- The ``--includes`` expression is rooted at the **basename of the** ``--root`` **path** (``testbase`` in the example above), then dotted-walks the directory tree beneath. For a test root at ``source/testroots/testbase/ccai/tests/sysman/<os>/``, the include is ``testbase.ccai.tests.sysman.<os>``.
+- Substitute the OS-specific tail (``linux.ubuntu``, ``macos``, ``windows``, ``uefi``) when running other sysman packages, or substitute ``ccai.tests.simplecluster`` when clustered infrastructure exists.
 - Always point ``--output`` to a writable directory created for the current run so artifacts do not overlap between executions.
 
 Evaluating Test Results
@@ -89,7 +89,7 @@ Evaluating Test Results
 - Example preview entry::
 
     {
-        "name": "automojo.tests.singlehost.interop.protocols.dns.test_dnsaddress#test_write_passes_address",
+        "name": "ccai.tests.singlehost.interop.protocols.dns.test_dnsaddress#test_write_passes_address",
         "rtype": "TEST",
         "result": "UNSET",
         "start": "2025-07-15T22:07:03.275239",
@@ -99,7 +99,7 @@ Evaluating Test Results
 - Example completion entry::
 
     {
-        "name": "automojo.tests.singlehost.interop.protocols.dns.test_dnsaddress#test_write_passes_address",
+        "name": "ccai.tests.singlehost.interop.protocols.dns.test_dnsaddress#test_write_passes_address",
         "rtype": "TEST",
         "result": "PASSED",
         "start": "2025-07-15T22:07:03.275239",

@@ -3,10 +3,10 @@
 ## Overview
 
 The environment configuration feature is implemented as a single module,
-`automojo.sysman.windows.environmentconfiguration`, that exposes a
+`ccai.sysman.windows.environmentconfiguration`, that exposes a
 `WindowsEnvironmentConfigurator` class.  This spec implements the
 environment-configuration contract defined at
-`automojo-sysman-common/specs/contracts/environment-configuration/contract.md`
+`codecraftai-sysman-common/specs/contracts/environment-configuration/contract.md`
 for Windows using PowerShell invocations of the .NET
 `[Environment]::SetEnvironmentVariable` / `GetEnvironmentVariable` APIs for
 the current user and machine scope, and registry cmdlets
@@ -39,7 +39,7 @@ configuration.
                          ▼
 ┌─────────────────────────────────────────────────────────────┐
 │        WindowsEnvironmentConfigurator                       │
-│  automojo.sysman.windows.environmentconfiguration           │
+│  ccai.sysman.windows.environmentconfiguration           │
 │                                                             │
 │  set_system_env()    unset_system_env()                     │
 │  get_system_env()    list_system_env()                      │
@@ -73,7 +73,7 @@ configuration.
 
 ### `WindowsEnvironmentConfigurator`
 
-**Location:** `source/packages/automojo/sysman/windows/environmentconfiguration.py`
+**Location:** `source/packages/ccai/sysman/windows/environmentconfiguration.py`
 
 | Method | Signature | Description |
 |---|---|---|
@@ -135,7 +135,7 @@ class WindowsEnvConfigError(Exception):
 
 ### `ICommandRunner`
 
-Imported from `automojo-interfaces`.  The configurator takes one instance and
+Imported from `codecraftai-interfaces`.  The configurator takes one instance and
 delegates all runtime/persistent operations to it through PowerShell
 invocations.
 
@@ -432,13 +432,13 @@ executed so that `SKIPPED` vs `DRY_RUN` can be distinguished.
 ## Module Layout
 
 ```
-source/packages/automojo/sysman/windows/
+source/packages/ccai/sysman/windows/
 ├── __init__.py
 └── environmentconfiguration.py   ← WindowsEnvironmentConfigurator, config,
                                      models, exceptions
 
 source/testroots/testbase/
-└── automojo/tests/sysman/windows/
+└── ccai/tests/sysman/windows/
     └── test_environmentconfiguration.py
 ```
 
@@ -449,9 +449,9 @@ source/testroots/testbase/
 ### Local Execution
 
 ```python
-from automojo.sysman.windows.runners import LocalCommandRunner, LocalRunnerConfig
-from automojo.sysman.windows.fileoperators import LocalFileOperator
-from automojo.sysman.windows.environmentconfiguration import (
+from ccai.sysman.windows.runners import LocalCommandRunner, LocalRunnerConfig
+from ccai.sysman.windows.fileoperators import LocalFileOperator
+from ccai.sysman.windows.environmentconfiguration import (
     WindowsEnvironmentConfigurator,
     WindowsEnvironmentConfiguratorConfig,
 )
@@ -478,20 +478,20 @@ print(f"User vars: {user_vars}")
 ### Remote Execution with Aspects
 
 ```python
-from automojo.sysman.windows.runners import SSHCommandRunner, SSHRunnerConfig
-from automojo.sysman.windows.aspects import (
+from ccai.sysman.windows.runners import SSHCommandRunner, SSHRunnerConfig
+from ccai.sysman.windows.aspects import (
     PersistenceAspect, PersistenceAspectConfig,
     RetryAspect, RetryAspectConfig,
     TimeoutAspect, TimeoutAspectConfig,
 )
-from automojo.sysman.windows.storage import SQLiteStorage
-from automojo.sysman.windows.fileoperators import SSHFileOperator
-from automojo.sysman.windows.environmentconfiguration import (
+from ccai.sysman.windows.storage import SQLiteStorage
+from ccai.sysman.windows.fileoperators import SSHFileOperator
+from ccai.sysman.windows.environmentconfiguration import (
     WindowsEnvironmentConfigurator, WindowsEnvironmentConfiguratorConfig,
 )
 
 runner = SSHCommandRunner(SSHRunnerConfig(host="remote-win", username="admin"))
-storage = SQLiteStorage(path=r"C:\ProgramData\Automojo\commands.db")
+storage = SQLiteStorage(path=r"C:\ProgramData\CodeCraftAI\commands.db")
 runner.add_aspect(aspect=PersistenceAspect(PersistenceAspectConfig(storage_backend=storage)))
 runner.add_aspect(aspect=RetryAspect(RetryAspectConfig(max_retries=3, retryable_exit_codes=[1])))
 runner.add_aspect(aspect=TimeoutAspect(TimeoutAspectConfig(default_timeout=60.0)))

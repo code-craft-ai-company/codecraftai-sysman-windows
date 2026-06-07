@@ -1,13 +1,13 @@
 # Design
 
 This spec implements the encryption-management contract defined at
-`automojo-sysman-common/specs/contracts/encryption-management/contract.md`
+`codecraftai-sysman-common/specs/contracts/encryption-management/contract.md`
 for Windows using BitLocker via the PowerShell BitLocker module.
 
 ## Overview
 
 The encryption management feature is implemented as a single module,
-`automojo.sysman.windows.encryptionmanagement`, that exposes a
+`ccai.sysman.windows.encryptionmanagement`, that exposes a
 `WindowsEncryptionManager` class.  The coordinator instantiates
 `WindowsEncryptionManager` and calls its methods to perform discrete
 BitLocker actions: enable / disable encryption on a volume, query
@@ -49,11 +49,11 @@ timeout) without any changes to the `WindowsEncryptionManager` code.
 [Command Runner Architecture](../command-runner-architecture/design.md)
 for details on local/SSH execution, reliability tracking, and aspect
 configuration.  The cross-OS contract is at
-`automojo-sysman-common/specs/contracts/encryption-management/contract.md`.
+`codecraftai-sysman-common/specs/contracts/encryption-management/contract.md`.
 The Ubuntu sibling is at
-`automojo-sysman-linux-ubuntu/specs/3-encryption-management/`; the
+`codecraftai-sysman-linux-ubuntu/specs/3-encryption-management/`; the
 macOS sibling is at
-`automojo-sysman-macos/specs/3-encryption-management/`.
+`codecraftai-sysman-macos/specs/3-encryption-management/`.
 
 ---
 
@@ -72,7 +72,7 @@ macOS sibling is at
                          ▼
 ┌─────────────────────────────────────────────────────────────┐
 │            WindowsEncryptionManager                         │
-│  automojo.sysman.windows.encryptionmanagement               │
+│  ccai.sysman.windows.encryptionmanagement               │
 │                                                             │
 │  enable_encryption()       disable_encryption()             │
 │  get_encryption_status()                                    │
@@ -110,7 +110,7 @@ macOS sibling is at
 ### `WindowsEncryptionManager`
 
 **Location:**
-`source/packages/automojo/sysman/windows/encryptionmanagement.py`
+`source/packages/ccai/sysman/windows/encryptionmanagement.py`
 
 | Method | Signature | Description |
 |---|---|---|
@@ -138,7 +138,7 @@ macOS sibling is at
 
 ### `WindowsEncryptionActionStatus`
 
-Aliased to the shared `automojo.sysman.windows.featurebase.ActionStatus`:
+Aliased to the shared `ccai.sysman.windows.featurebase.ActionStatus`:
 
 | Value | Meaning |
 |---|---|
@@ -216,7 +216,7 @@ the Error Handling section below for the gap.
 
 ## Interfaces
 
-### `ICommandRunner` (from `automojo-interfaces`)
+### `ICommandRunner` (from `codecraftai-interfaces`)
 
 ```python
 class ICommandRunner(Protocol):
@@ -505,7 +505,7 @@ password in its scriptblock — `enable_encryption`, `rotate_key`,
 dispatched to the runner.
 
 `_sanitise_script_passwords` mirrors verbatim the redaction
-contract used by `automojo.sysman.windows.usergroupmanagement`'s
+contract used by `ccai.sysman.windows.usergroupmanagement`'s
 `_SECURE_STRING_PATTERN`.
 
 ---
@@ -721,13 +721,13 @@ correctness guarantees.*
 ## Module Layout
 
 ```
-source/packages/automojo/sysman/windows/
+source/packages/ccai/sysman/windows/
 ├── __init__.py
 ├── featurebase.py                ← shared ActionStatus / FeatureConfig / BaseFeatureManager
 └── encryptionmanagement.py       ← WindowsEncryptionManager + dataclasses + parsers + redaction
 
 source/testroots/testbase/
-└── automojo/tests/sysman/windows/
+└── ccai/tests/sysman/windows/
     └── test_encryptionmanagement.py
 ```
 
@@ -738,8 +738,8 @@ source/testroots/testbase/
 ### Local Execution (Default)
 
 ```python
-from automojo.sysman.windows.runners import LocalCommandRunner, LocalRunnerConfig
-from automojo.sysman.windows.encryptionmanagement import (
+from ccai.sysman.windows.runners import LocalCommandRunner, LocalRunnerConfig
+from ccai.sysman.windows.encryptionmanagement import (
     WindowsEncryptionManager,
     WindowsEncryptionManagerConfig,
     WindowsEncryptionSpec,
@@ -778,8 +778,8 @@ print(f"Rotate: {rotate_result.status}")
 ### SSH Execution with Aspects
 
 ```python
-from automojo.sysman.windows.runners import SSHCommandRunner, SSHRunnerConfig
-from automojo.sysman.windows.aspects import (
+from ccai.sysman.windows.runners import SSHCommandRunner, SSHRunnerConfig
+from ccai.sysman.windows.aspects import (
     PersistenceAspect,
     RetryAspect,
     TimeoutAspect,
@@ -787,8 +787,8 @@ from automojo.sysman.windows.aspects import (
     RetryAspectConfig,
     TimeoutAspectConfig,
 )
-from automojo.sysman.windows.storage import SQLiteStorage
-from automojo.sysman.windows.encryptionmanagement import (
+from ccai.sysman.windows.storage import SQLiteStorage
+from ccai.sysman.windows.encryptionmanagement import (
     WindowsEncryptionManager,
     WindowsEncryptionManagerConfig,
     WindowsEncryptionSpec,
@@ -840,7 +840,7 @@ assert "<redacted>" in recorded_script
 ## Testing Strategy
 
 The test module
-`source/testroots/testbase/automojo/tests/sysman/windows/test_encryptionmanagement.py`
+`source/testroots/testbase/ccai/tests/sysman/windows/test_encryptionmanagement.py`
 exercises the surface using a `_MockCommandRunner` that records every
 `run` call (argv tuple + elevation flag + stdin payload) and answers
 from a pre-seeded `results` dict keyed by argv tuple.  No live

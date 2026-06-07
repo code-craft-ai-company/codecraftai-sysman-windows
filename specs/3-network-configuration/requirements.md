@@ -2,11 +2,11 @@
 
 ## Introduction
 
-The network-configuration feature provides the `automojo-sysman-windows`
+The network-configuration feature provides the `codecraftai-sysman-windows`
 package with the ability to query and configure network adapters, routes,
 DNS servers, and the system hostname on Windows systems.  This spec
 implements the network-configuration contract defined at
-`automojo-sysman-common/specs/contracts/network-configuration/contract.md`
+`codecraftai-sysman-common/specs/contracts/network-configuration/contract.md`
 for Windows using the `NetTCPIP` and `DnsClient` PowerShell modules
 (`New-NetIPAddress`, `Set-DnsClientServerAddress`, `Get-NetAdapter`,
 etc.) plus `Rename-Computer` for the hostname.
@@ -16,7 +16,7 @@ operations by calling into this feature's public interfaces.  The feature
 does not decide *which* adapters should be configured — it provides the
 capability to *do it* reliably, idempotently, and with full auditability.
 All system commands are executed exclusively through the
-`automojo-interfaces` command-runner abstraction (invoking
+`codecraftai-interfaces` command-runner abstraction (invoking
 `powershell.exe -NoProfile -NonInteractive -Command <script>`).
 
 Writes require an Administrator token; reads do not.  The manager honors

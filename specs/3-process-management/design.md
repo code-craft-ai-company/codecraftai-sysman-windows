@@ -3,12 +3,12 @@
 ## Overview
 
 This spec implements the process-management contract defined at
-`automojo-sysman-common/specs/contracts/process-management/contract.md`
+`codecraftai-sysman-common/specs/contracts/process-management/contract.md`
 for Windows using the PowerShell ``Get-Process``, ``Stop-Process``,
 ``Start-Process``, ``Wait-Process``, and ``taskkill`` cmdlets.
 
 The process-management feature is implemented as a single module,
-`automojo.sysman.windows.processmanagement`, that exposes a
+`ccai.sysman.windows.processmanagement`, that exposes a
 `WindowsProcessManager` class.  The coordinator instantiates
 `WindowsProcessManager` and calls its read and write verbs to manage
 arbitrary processes on Windows.  Every verb returns a typed
@@ -42,7 +42,7 @@ configuration.
                          ▼
 ┌─────────────────────────────────────────────────────────────┐
 │            WindowsProcessManager                            │
-│  automojo.sysman.windows.processmanagement                  │
+│  ccai.sysman.windows.processmanagement                  │
 │                                                             │
 │  list_processes()        get_process()                      │
 │  find_processes_by_name() wait_for_process()                │
@@ -81,7 +81,7 @@ configuration.
 
 ### `WindowsProcessManager`
 
-**Location:** `source/packages/automojo/sysman/windows/processmanagement.py`
+**Location:** `source/packages/ccai/sysman/windows/processmanagement.py`
 
 | Method | Returns | Description |
 |---|---|---|
@@ -584,10 +584,10 @@ beyond the injected runner and config.
 ## Module Layout
 
 ```
-source/packages/automojo/sysman/windows/
+source/packages/ccai/sysman/windows/
 └── processmanagement.py            ← manager + dataclasses + parsers + exception
 
-source/testroots/testbase/automojo/tests/sysman/windows/
+source/testroots/testbase/ccai/tests/sysman/windows/
 └── test_processmanagement.py       ← unit tests using a MockCommandRunner
 ```
 
@@ -598,10 +598,10 @@ source/testroots/testbase/automojo/tests/sysman/windows/
 ### Local execution
 
 ```python
-from automojo.sysman.windows.runners import (
+from ccai.sysman.windows.runners import (
     LocalCommandRunner, LocalRunnerConfig,
 )
-from automojo.sysman.windows.processmanagement import (
+from ccai.sysman.windows.processmanagement import (
     WindowsProcessManager,
     WindowsProcessManagerConfig,
     WindowsProcessSpec,
@@ -638,10 +638,10 @@ assert "Stop-Process -Id 4242 -Force" in result.command[-1]
 ### SSH execution with aspects
 
 ```python
-from automojo.sysman.windows.runners import (
+from ccai.sysman.windows.runners import (
     SSHCommandRunner, SSHRunnerConfig,
 )
-from automojo.sysman.windows.aspects import (
+from ccai.sysman.windows.aspects import (
     PersistenceAspect, RetryAspect, TimeoutAspect,
     PersistenceAspectConfig, RetryAspectConfig, TimeoutAspectConfig,
 )
@@ -682,7 +682,7 @@ proc.kill_process_tree(pid=4242, signal="KILL")
 
 ### Test File
 
-`source/testroots/testbase/automojo/tests/sysman/windows/test_processmanagement.py`
+`source/testroots/testbase/ccai/tests/sysman/windows/test_processmanagement.py`
 
 ### Tests Implemented
 

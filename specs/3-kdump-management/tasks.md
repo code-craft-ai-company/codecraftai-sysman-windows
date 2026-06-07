@@ -6,7 +6,7 @@ items (`[ ]`) identify remaining work.
 ## Module and Models
 
 - [x] 1. Create the `kdumpmanagement` module under
-  `source/packages/automojo/sysman/windows/`.
+  `source/packages/ccai/sysman/windows/`.
 
 - [x] 2. Alias `WindowsKdumpActionStatus = ActionStatus`.
 

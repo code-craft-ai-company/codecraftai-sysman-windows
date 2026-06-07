@@ -3,7 +3,7 @@
 ## Introduction
 
 The dns-server-management feature provides the
-`automojo-sysman-windows` package with the ability to declare,
+`codecraftai-sysman-windows` package with the ability to declare,
 audit, and reload Windows DNS Server zones using the
 PowerShell `DnsServer` module.  It is the cross-OS counterpart
 to the BIND-based RHEL / Ubuntu / macOS variants.
@@ -29,7 +29,7 @@ module will fail with
 `requires_dns_server_role` field documenting this requirement.
 
 All cmdlets are dispatched through the
-`automojo-interfaces` `ICommandRunner` abstraction by wrapping
+`codecraftai-interfaces` `ICommandRunner` abstraction by wrapping
 each PowerShell scriptblock in
 `["powershell.exe", "-NoProfile", "-NonInteractive",
 "-Command", "<script>"]`.  All mutating operations honour
@@ -41,7 +41,7 @@ host's resolver settings via `Set-DnsClientServerAddress`.
 
 The reference implementation for shape, idempotency, dry-run,
 and result mapping lives in
-`automojo-sysman-linux-redhat/specs/3-dns-server-management/`.
+`codecraftai-sysman-linux-redhat/specs/3-dns-server-management/`.
 
 ---
 

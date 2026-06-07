@@ -13,11 +13,11 @@ from dataclasses import dataclass, field
 from datetime import datetime, timedelta, timezone
 from typing import Callable, Optional
 
-from automojo import testbase
+from ccai import testbase
 
-from automojo.interfaces.icommandrunner import RunResult
+from ccai.interfaces.icommandrunner import RunResult
 
-from automojo.sysman.windows.certificateissuance import (
+from ccai.sysman.windows.certificateissuance import (
     WindowsCertIssuanceActionStatus,
     WindowsCertIssuanceManagerConfig,
     WindowsCertIssuanceQueryError,

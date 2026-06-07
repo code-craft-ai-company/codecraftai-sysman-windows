@@ -11,7 +11,7 @@ Windows. It is a thin facade over the PowerShell cmdlets
 .NET reflective enumerator
 `[System.Globalization.CultureInfo]::GetCultures(AllCultures)`.
 
-The module sits in `automojo.sysman.windows.localizationmanagement`
+The module sits in `ccai.sysman.windows.localizationmanagement`
 and exports the following OS-prefixed surface:
 
 | Type | Role |

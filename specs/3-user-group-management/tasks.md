@@ -5,7 +5,7 @@ items (`[ ]`) identify remaining work.
 
 ## Module and Models
 
-- [x] 1. Create the `automojo.sysman.windows.usergroupmanagement`
+- [x] 1. Create the `ccai.sysman.windows.usergroupmanagement`
   module
 
 - [x] 2. Define `WindowsUserGroupActionStatus` enum (SUCCESS / FAILED
@@ -166,9 +166,9 @@ items (`[ ]`) identify remaining work.
 - [ ] 61. **Cross-OS contract conformance review**: verify this
   implementation's `WindowsUserGroupActionResult` field shapes match
   the cross-OS contract at
-  `automojo-sysman-common/specs/contracts/user-group-management/contract.md`.
+  `codecraftai-sysman-common/specs/contracts/user-group-management/contract.md`.
 
-- [ ] 62. **automojo-* reuse check**: confirm that no other feature in
-  `automojo-sysman-windows` invokes `New-LocalUser` /
+- [ ] 62. **codecraftai-* reuse check**: confirm that no other feature in
+  `codecraftai-sysman-windows` invokes `New-LocalUser` /
   `Add-LocalGroupMember` directly; all such calls should go through
   `WindowsUserGroupManager`.

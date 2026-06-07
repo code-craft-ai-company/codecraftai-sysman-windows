@@ -2,11 +2,11 @@
 
 ## Introduction
 
-The vpn-client-management feature provides the `automojo-sysman-windows`
+The vpn-client-management feature provides the `codecraftai-sysman-windows`
 package with the ability to install, configure, and lifecycle the **Tailscale**
 client and the **Twingate Connector** on Windows hosts. This spec implements
 the vpn-client-management contract defined at
-`automojo-sysman-common/specs/contracts/vpn-client-management/contract.md`
+`codecraftai-sysman-common/specs/contracts/vpn-client-management/contract.md`
 for Windows using the official MSI distributions installed via `msiexec
 /quiet`, with the resulting Windows Services controlled by `Set-Service` and
 `sc.exe`.

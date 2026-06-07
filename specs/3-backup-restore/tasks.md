@@ -7,14 +7,14 @@ design documents.
 
 ## Module Skeleton
 
-- [ ] T1. Create `source/packages/automojo/sysman/windows/backuprestore.py`
+- [ ] T1. Create `source/packages/ccai/sysman/windows/backuprestore.py`
       with the module docstring describing the verb-to-tool mapping, the
       SKU constraint notes, and the schedule-delegation note.
 - [ ] T2. Add the module-level constants for the PowerShell argv shape
       (`_POWERSHELL`, `_PS_NOPROFILE`, `_PS_NONINTERACTIVE`,
       `_PS_COMMAND`), the backend tool names (`_WBADMIN`, `_ROBOCOPY`,
       `_RESTIC`), and the default job directory path
-      (`_DEFAULT_JOB_DIR = r"C:\ProgramData\Automojo\backup\jobs"`).
+      (`_DEFAULT_JOB_DIR = r"C:\ProgramData\CodeCraftAI\backup\jobs"`).
 - [ ] T3. Add the `WindowsBackupActionStatus = ActionStatus` re-export.
 
 ---
@@ -87,7 +87,7 @@ design documents.
 ## Tests
 
 - [ ] T28. Create
-      `source/testroots/testbase/automojo/tests/sysman/windows/test_backuprestore.py`
+      `source/testroots/testbase/ccai/tests/sysman/windows/test_backuprestore.py`
       with a `_MockCommandRunner` matching the prior-wave PowerShell
       pattern.
 - [ ] T29. `test_create_backup_job_persists_spec` — script body
@@ -115,7 +115,7 @@ design documents.
 ## Documentation
 
 - [ ] T46. Update the package-level `Agents.md` entry for
-      `automojo-sysman-windows` to point at the
+      `codecraftai-sysman-windows` to point at the
       `specs/3-backup-restore/` directory.
 - [ ] T47. Note in the manager's module docstring that schedule
       wiring is delegated to `scheduled-tasks`, that the

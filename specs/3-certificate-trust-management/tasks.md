@@ -6,7 +6,7 @@ Unchecked items (`[ ]`) identify out-of-scope or follow-up work.
 ## Module and Models
 
 - [x] 1. Create the `certificatetrustmanagement` module under
-  `source/packages/automojo/sysman/windows/`.
+  `source/packages/ccai/sysman/windows/`.
 
 - [x] 2. Define `WindowsCertTrustActionStatus` alias to the shared
   `ActionStatus` enum.
@@ -127,7 +127,7 @@ Unchecked items (`[ ]`) identify out-of-scope or follow-up work.
   no enable/disable toggle.
 
 - [ ] 37. `verify_certificate` — overlaps with
-  `automojo-credentials`; defer per RHEL spec's task 21 follow-up.
+  `codecraftai-credentials`; defer per RHEL spec's task 21 follow-up.
 
 - [ ] 38. `TrustPurpose` enum — `EnhancedKeyUsageList` is
   surfaced as a list on `WindowsCertTrustInfo.purposes` but the

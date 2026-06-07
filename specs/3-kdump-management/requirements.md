@@ -2,10 +2,10 @@
 
 ## Introduction
 
-The kdump-management feature provides the `automojo-sysman-windows`
+The kdump-management feature provides the `codecraftai-sysman-windows`
 package with the ability to manage Windows kernel crash dumps through
 the cross-OS contract defined at
-`automojo-sysman-common/specs/contracts/kdump-management/contract.md`.
+`codecraftai-sysman-common/specs/contracts/kdump-management/contract.md`.
 
 Windows' native kernel-crash-dump model is fundamentally different
 from Linux's kdump:
@@ -36,7 +36,7 @@ This spec is the Windows realisation of the cross-OS contract:
 
 A maintenance coordinator running in an external package drives all
 operations through the public interface. Every command is dispatched
-through the `automojo-interfaces` command-runner abstraction.
+through the `codecraftai-interfaces` command-runner abstraction.
 
 ---
 

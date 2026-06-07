@@ -3,7 +3,7 @@
 ## Overview
 
 The kdump-management feature on Windows is implemented as a single
-module, `automojo.sysman.windows.kdumpmanagement`, that exposes a
+module, `ccai.sysman.windows.kdumpmanagement`, that exposes a
 `WindowsKdumpManager` class. The coordinator instantiates the class
 with a command runner and calls its methods to manage the
 `HKLM:\SYSTEM\CurrentControlSet\Control\CrashControl` registry key
@@ -87,7 +87,7 @@ reporting honestly reflects the Windows model.
                        v
 +-------------------------------------------------------------+
 |            WindowsKdumpManager                              |
-|  automojo.sysman.windows.kdumpmanagement                    |
+|  ccai.sysman.windows.kdumpmanagement                    |
 |                                                             |
 |  enable_kdump()              disable_kdump()                |
 |  configure_kdump_target()    clear_old_dumps()              |
@@ -109,7 +109,7 @@ reporting honestly reflects the Windows model.
 ### `WindowsKdumpManager`
 
 **Location:**
-`source/packages/automojo/sysman/windows/kdumpmanagement.py`
+`source/packages/ccai/sysman/windows/kdumpmanagement.py`
 
 The primary public class. Constructed with an `ICommandRunner` and a
 `WindowsKdumpManagerConfig`.
@@ -419,12 +419,12 @@ normalises both shapes into a list to keep call sites simple.
 ## Module Layout
 
 ```
-source/packages/automojo/sysman/windows/
+source/packages/ccai/sysman/windows/
 +-- __init__.py
 +-- kdumpmanagement.py            <- WindowsKdumpManager + models
 
 source/testroots/testbase/
-+-- automojo/tests/sysman/windows/
++-- ccai/tests/sysman/windows/
     +-- test_kdumpmanagement.py   <- unit tests using a MockCommandRunner
 ```
 
@@ -476,10 +476,10 @@ Total: 17 tests.
 ### Local Execution
 
 ```python
-from automojo.sysman.windows.runners import (
+from ccai.sysman.windows.runners import (
     LocalCommandRunner, LocalRunnerConfig,
 )
-from automojo.sysman.windows.kdumpmanagement import (
+from ccai.sysman.windows.kdumpmanagement import (
     WindowsKdumpManager, WindowsKdumpManagerConfig,
     WindowsKdumpTargetKind, WindowsKdumpTargetSpec,
 )

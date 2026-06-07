@@ -2,10 +2,10 @@
 
 ## Introduction
 
-The log management feature provides the `automojo-sysman-windows` package with the
+The log management feature provides the `codecraftai-sysman-windows` package with the
 ability to inspect, tail, rotate, truncate, and configure rotation of logs on Windows
 systems.  This spec implements the log-management contract defined at
-`automojo-sysman-common/specs/contracts/log-management/contract.md` for Windows
+`codecraftai-sysman-common/specs/contracts/log-management/contract.md` for Windows
 using PowerShell's `Get-WinEvent` cmdlet for Event Log channels, `wevtutil` for clear
 and size-limit commands, and the `IFileOperator` abstraction for plain-text log files
 under `%ProgramData%`.
@@ -14,7 +14,7 @@ A maintenance coordinator running in an external package drives all operations b
 calling into this feature's public interfaces.  The feature does not decide *which*
 logs to retrieve or rotate — it provides the capability to *do it* reliably,
 idempotently, and with full auditability.  All system commands are executed exclusively
-through the `automojo-interfaces` command-runner abstraction, and all text-log file I/O
+through the `codecraftai-interfaces` command-runner abstraction, and all text-log file I/O
 is delegated to the `IFileOperator` abstraction.  No `subprocess`, no direct `open`,
 and no direct `pathlib` calls are made inside this module, enabling dry-run
 simulation, auditing, and test mocking without requiring a live Windows host.
@@ -164,7 +164,7 @@ for a named source, so that Windows manages retention automatically.
    encodes `overflow_action="OVERWRITE"`.
 2. WHEN `source` resolves to a filesystem path THE SYSTEM SHALL render the policy
    into a JSON drop-in and write it to
-   `C:\ProgramData\Automojo\logrotation\<basename>.json` via
+   `C:\ProgramData\CodeCraftAI\logrotation\<basename>.json` via
    `IFileOperator.write_text`.
 3. WHEN the current policy (read via `wevtutil gl <source>` or the drop-in file)
    matches the requested policy THE SYSTEM SHALL return `status=SKIPPED`.

@@ -3,10 +3,10 @@
 ## Overview
 
 The package-management feature is implemented as a single module,
-`automojo.sysman.windows.packagemanagement`, that exposes a
+`ccai.sysman.windows.packagemanagement`, that exposes a
 `WindowsPackageManager` class.  This spec implements the
 package-management contract defined at
-`automojo-sysman-common/specs/contracts/package-management/contract.md`
+`codecraftai-sysman-common/specs/contracts/package-management/contract.md`
 for Windows using the Windows Package Manager (`winget.exe`).  The
 coordinator instantiates the manager with a command runner and a config,
 then calls install / remove / upgrade verbs plus a read-only query
@@ -45,7 +45,7 @@ configuration.
                          ▼
 ┌─────────────────────────────────────────────────────────────┐
 │              WindowsPackageManager                          │
-│  automojo.sysman.windows.packagemanagement                  │
+│  ccai.sysman.windows.packagemanagement                  │
 │                                                             │
 │  install_package()  remove_package()  upgrade_package()     │
 │  upgrade_all()      is_installed()                          │
@@ -66,7 +66,7 @@ configuration.
 
 ### `WindowsPackageManager`
 
-**Location:** `source/packages/automojo/sysman/windows/packagemanagement.py`
+**Location:** `source/packages/ccai/sysman/windows/packagemanagement.py`
 
 | Method | Signature | Description |
 |---|---|---|
@@ -146,7 +146,7 @@ class WindowsPackageFileNotFoundError(Exception):
 
 ## Interfaces
 
-### `ICommandRunner` (from `automojo-interfaces`)
+### `ICommandRunner` (from `codecraftai-interfaces`)
 
 ```python
 class ICommandRunner(Protocol):
@@ -481,12 +481,12 @@ All write failures surface as
 ## Module Layout
 
 ```
-source/packages/automojo/sysman/windows/
+source/packages/ccai/sysman/windows/
 ├── __init__.py
 └── packagemanagement.py       ← WindowsPackageManager, config, models, exceptions
 
 source/testroots/testbase/
-└── automojo/tests/sysman/windows/
+└── ccai/tests/sysman/windows/
     └── test_packagemanagement.py
 ```
 
@@ -497,10 +497,10 @@ source/testroots/testbase/
 ### Local Execution (Default)
 
 ```python
-from automojo.sysman.windows.runners import (
+from ccai.sysman.windows.runners import (
     WindowsLocalCommandRunner, WindowsLocalRunnerConfig,
 )
-from automojo.sysman.windows.packagemanagement import (
+from ccai.sysman.windows.packagemanagement import (
     WindowsPackageManager, WindowsPackageManagerConfig,
 )
 
@@ -518,10 +518,10 @@ print(f"install git: {result.status.value} version={result.version}")
 ### WinRM Execution With Aspects
 
 ```python
-from automojo.sysman.windows.runners import (
+from ccai.sysman.windows.runners import (
     WindowsWinRMCommandRunner, WindowsWinRMRunnerConfig,
 )
-from automojo.sysman.windows.aspects import (
+from ccai.sysman.windows.aspects import (
     RetryAspect, RetryAspectConfig, TimeoutAspect, TimeoutAspectConfig,
 )
 

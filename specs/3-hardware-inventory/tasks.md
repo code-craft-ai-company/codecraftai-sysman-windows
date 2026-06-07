@@ -9,7 +9,7 @@ guards, no mutating operations.
 ## Module and Models
 
 - [x] 1. Create the `hardwareinventory` module under
-  `automojo.sysman.windows`.
+  `ccai.sysman.windows`.
 
 - [x] 2. Define `WindowsHardwareInventoryActionStatus` with
   `SUCCESS`, `FAILED`, `SKIPPED` (no `DRY_RUN` per contract).
@@ -158,7 +158,7 @@ guards, no mutating operations.
   consolidated into a single scriptblock that emits a tagged
   payload to amortise the cost.
 
-- [ ] 47. **automojo-* reuse check**: `automojo-interop` may
+- [ ] 47. **codecraftai-* reuse check**: `codecraftai-interop` may
   expose generic PowerShell / CIM helpers that would shrink the
   parser surface here.
 

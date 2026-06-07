@@ -57,7 +57,7 @@ it shares the underlying hypervisor.
 
 The virtualization-management feature is implemented as a single
 module,
-`automojo.sysman.windows.virtualizationmanagement`, that exposes a
+`ccai.sysman.windows.virtualizationmanagement`, that exposes a
 `WindowsVirtualizationManager` class.  The coordinator instantiates
 `WindowsVirtualizationManager` and calls its methods to perform
 discrete VM-lifecycle, disk, and snapshot actions.
@@ -97,7 +97,7 @@ The feature works identically whether commands execute locally (via
                          ▼
 ┌─────────────────────────────────────────────────────────────┐
 │        WindowsVirtualizationManager                         │
-│  automojo.sysman.windows.virtualizationmanagement           │
+│  ccai.sysman.windows.virtualizationmanagement           │
 │                                                             │
 │  list_vms()              get_vm_info()                      │
 │  create_vm()             delete_vm()                        │
@@ -126,7 +126,7 @@ The feature works identically whether commands execute locally (via
 ### `WindowsVirtualizationManager`
 
 **Location:**
-`source/packages/automojo/sysman/windows/virtualizationmanagement.py`
+`source/packages/ccai/sysman/windows/virtualizationmanagement.py`
 
 | Method | Signature | Description |
 |---|---|---|

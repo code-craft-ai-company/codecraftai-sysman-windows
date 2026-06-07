@@ -3,9 +3,9 @@
 ## Overview
 
 The vpn-client-management feature is implemented as a single module,
-`automojo.sysman.windows.vpnclientmanagement`, that exposes a
+`ccai.sysman.windows.vpnclientmanagement`, that exposes a
 `WindowsVPNClientManager` class subclassing `VPNClientManagementBase` from
-`automojo-sysman-common`. The manager installs and lifecycles **Tailscale**
+`codecraftai-sysman-common`. The manager installs and lifecycles **Tailscale**
 and the **Twingate Connector** on Windows using the official MSI
 distributions, installed via `msiexec /quiet`, with the resulting Windows
 Services controlled by `Set-Service` / `Start-Service` / `Stop-Service` and
@@ -17,12 +17,12 @@ file writes use `Set-Content`. No direct subprocess use, no direct
 filesystem writes.
 
 **See Also:**
-- [vpn-client-management contract](../../../automojo-sysman-common/specs/contracts/vpn-client-management/contract.md)
-- [vpn-client-management-base](../../../automojo-sysman-common/specs/vpn-client-management-base/design.md)
+- [vpn-client-management contract](../../../codecraftai-sysman-common/specs/contracts/vpn-client-management/contract.md)
+- [vpn-client-management-base](../../../codecraftai-sysman-common/specs/vpn-client-management-base/design.md)
 - [1-command-execution](../1-command-execution/design.md)
 - [2-maintenance-reporting](../2-maintenance-reporting/design.md)
-- [Ubuntu sibling impl](../../../automojo-sysman-linux-ubuntu/specs/3-vpn-client-management/design.md)
-- [macOS sibling impl](../../../automojo-sysman-macos/specs/3-vpn-client-management/design.md)
+- [Ubuntu sibling impl](../../../codecraftai-sysman-linux-ubuntu/specs/3-vpn-client-management/design.md)
+- [macOS sibling impl](../../../codecraftai-sysman-macos/specs/3-vpn-client-management/design.md)
 
 ---
 
@@ -39,7 +39,7 @@ filesystem writes.
                          ▼
 ┌─────────────────────────────────────────────────────────────┐
 │            WindowsVPNClientManager                          │
-│  automojo.sysman.windows.vpnclientmanagement                │
+│  ccai.sysman.windows.vpnclientmanagement                │
 │  inherits VPNClientManagementBase                           │
 │                                                             │
 │  install_tailscale()  install_twingate_connector()          │
@@ -68,7 +68,7 @@ filesystem writes.
 
 ### `WindowsVPNClientManager`
 
-**Location:** `source/packages/automojo/sysman/windows/vpnclientmanagement.py`
+**Location:** `source/packages/ccai/sysman/windows/vpnclientmanagement.py`
 
 | Method | Signature | Description |
 |---|---|---|
@@ -91,7 +91,7 @@ Extends `VPNClientManagerConfig`:
 | `tailscale_service_name` | `str` | `"Tailscale"` | Windows Service name |
 | `twingate_service_name` | `str` | `"twingate.connector"` | Windows Service name |
 | `twingate_config_path` | `str` | `"C:\\ProgramData\\Twingate\\connector.conf"` | Twingate config |
-| `msi_cache_dir` | `str` | `"C:\\Windows\\Temp\\automojo-vpn-msi"` | Where downloaded MSIs are staged |
+| `msi_cache_dir` | `str` | `"C:\\Windows\\Temp\\codecraftai-vpn-msi"` | Where downloaded MSIs are staged |
 | `tailscale_product_name` | `str` | `"Tailscale"` | Used to look up the MSI ProductCode |
 | `twingate_product_name` | `str` | `"Twingate Connector"` | Used to look up the MSI ProductCode |
 
@@ -189,12 +189,12 @@ token to distinguish "wrong privileges" from a genuine product failure.
 ## Module Layout
 
 ```
-source/packages/automojo/sysman/windows/
+source/packages/ccai/sysman/windows/
 ├── __init__.py
 └── vpnclientmanagement.py     ← WindowsVPNClientManager, config, aliases
 
 source/testroots/testbase/
-└── automojo/tests/sysman/windows/
+└── ccai/tests/sysman/windows/
     └── test_vpnclientmanagement.py
 ```
 
@@ -202,8 +202,8 @@ source/testroots/testbase/
 
 ## See Also
 
-- [vpn-client-management contract](../../../automojo-sysman-common/specs/contracts/vpn-client-management/contract.md)
-- [vpn-client-management-base](../../../automojo-sysman-common/specs/vpn-client-management-base/design.md)
+- [vpn-client-management contract](../../../codecraftai-sysman-common/specs/contracts/vpn-client-management/contract.md)
+- [vpn-client-management-base](../../../codecraftai-sysman-common/specs/vpn-client-management-base/design.md)
 - [1-command-execution](../1-command-execution/design.md) — PowerShell-over-WinRM runner
 
 ---

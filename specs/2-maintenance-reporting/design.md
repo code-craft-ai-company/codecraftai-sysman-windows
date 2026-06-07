@@ -3,10 +3,10 @@
 ## Overview
 
 The maintenance-reporting feature is implemented as a single module,
-`automojo.sysman.windows.maintenancereporting`, that exposes a
+`ccai.sysman.windows.maintenancereporting`, that exposes a
 `WindowsMaintenanceReport` class.  This spec implements the maintenance-reporting
 contract defined at
-`automojo-sysman-common/specs/contracts/maintenance-reporting/contract.md` for
+`codecraftai-sysman-common/specs/contracts/maintenance-reporting/contract.md` for
 Windows using pure Python accumulation of action records and a single I/O egress
 point — `emit_report(path, format)` — that delegates to `IFileOperator`.
 
@@ -18,7 +18,7 @@ formats: JSON (standard library `json`), plain text (string formatting), YAML (v
 reporter surfaces a typed failure on `emit_report(path, YAML)` rather than raising.
 
 Windows's default session output base is
-`<ProgramData>\Automojo\Maintenance\<session_id>\` where `<ProgramData>` resolves
+`<ProgramData>\CodeCraftAI\Maintenance\<session_id>\` where `<ProgramData>` resolves
 from the `ProgramData` environment variable (typically `C:\ProgramData`).  That
 directory is ACL-writable by local Administrators by default; writes from a standard
 user require the file operator to operate within an already-elevated process (see
@@ -47,7 +47,7 @@ details on local/SSH execution, reliability tracking, and aspect configuration.
                          ▼
 ┌─────────────────────────────────────────────────────────────┐
 │          WindowsMaintenanceReport                           │
-│  automojo.sysman.windows.maintenancereporting               │
+│  ccai.sysman.windows.maintenancereporting               │
 │                                                             │
 │  begin_session()    add_action()                            │
 │  record_query()     record_error()                          │
@@ -88,7 +88,7 @@ details on local/SSH execution, reliability tracking, and aspect configuration.
 
 ### `WindowsMaintenanceReport`
 
-**Location:** `source/packages/automojo/sysman/windows/maintenancereporting.py`
+**Location:** `source/packages/ccai/sysman/windows/maintenancereporting.py`
 
 | Method | Signature | Description |
 |---|---|---|
@@ -110,7 +110,7 @@ details on local/SSH execution, reliability tracking, and aspect configuration.
 | Field | Type | Default | Description |
 |---|---|---|---|
 | `dry_run` | `bool` | `False` | When `True`, `emit_report` never writes |
-| `output_base` | `str` | `r"%ProgramData%\Automojo\Maintenance"` | Base directory for default session paths; expanded via `os.path.expandvars` at resolve time |
+| `output_base` | `str` | `r"%ProgramData%\CodeCraftAI\Maintenance"` | Base directory for default session paths; expanded via `os.path.expandvars` at resolve time |
 | `default_json_indent` | `int \| None` | `2` | Indent used by `to_json` and JSON emission |
 
 ---
@@ -176,7 +176,7 @@ class WindowsMaintenanceSession:
 
 ## Interfaces
 
-### `IFileOperator` (from `automojo-interfaces`)
+### `IFileOperator` (from `codecraftai-interfaces`)
 
 ```python
 class IFileOperator(Protocol):
@@ -196,12 +196,12 @@ class IFileOperator(Protocol):
 
 | Situation | Path |
 |---|---|
-| Default base (env-expanded) | `C:\ProgramData\Automojo\Maintenance\` |
-| Per-session directory | `C:\ProgramData\Automojo\Maintenance\<session_id>\` |
-| JSON report | `C:\ProgramData\Automojo\Maintenance\<session_id>\report.json` |
-| Text report | `C:\ProgramData\Automojo\Maintenance\<session_id>\report.txt` |
-| YAML report | `C:\ProgramData\Automojo\Maintenance\<session_id>\report.yaml` |
-| Markdown report | `C:\ProgramData\Automojo\Maintenance\<session_id>\report.md` |
+| Default base (env-expanded) | `C:\ProgramData\CodeCraftAI\Maintenance\` |
+| Per-session directory | `C:\ProgramData\CodeCraftAI\Maintenance\<session_id>\` |
+| JSON report | `C:\ProgramData\CodeCraftAI\Maintenance\<session_id>\report.json` |
+| Text report | `C:\ProgramData\CodeCraftAI\Maintenance\<session_id>\report.txt` |
+| YAML report | `C:\ProgramData\CodeCraftAI\Maintenance\<session_id>\report.yaml` |
+| Markdown report | `C:\ProgramData\CodeCraftAI\Maintenance\<session_id>\report.md` |
 
 The default base is overrideable via `WindowsMaintenanceReportConfig.output_base`.
 `%ProgramData%` in the default is expanded through `os.path.expandvars` when
@@ -624,12 +624,12 @@ with the caller's exact path string.
 ## Module Layout
 
 ```
-source/packages/automojo/sysman/windows/
+source/packages/ccai/sysman/windows/
 ├── __init__.py
 └── maintenancereporting.py      ← WindowsMaintenanceReport, models, config, enums
 
 source/testroots/testbase/
-└── automojo/tests/sysman/windows/
+└── ccai/tests/sysman/windows/
     └── test_maintenancereporting.py
 ```
 
@@ -640,11 +640,11 @@ source/testroots/testbase/
 ### Local Execution (Default)
 
 ```python
-from automojo.sysman.windows.fileoperators import (
+from ccai.sysman.windows.fileoperators import (
     WindowsLocalFileOperator,
     WindowsLocalFileOperatorConfig,
 )
-from automojo.sysman.windows.maintenancereporting import (
+from ccai.sysman.windows.maintenancereporting import (
     WindowsMaintenanceReport,
     WindowsMaintenanceReportConfig,
     WindowsActionRecord,
@@ -680,11 +680,11 @@ if result.success:
 ### SSH Execution with Aspects
 
 ```python
-from automojo.sysman.windows.fileoperators import (
+from ccai.sysman.windows.fileoperators import (
     WindowsSSHFileOperator,
     WindowsSSHFileOperatorConfig,
 )
-from automojo.sysman.windows.aspects import (
+from ccai.sysman.windows.aspects import (
     PersistenceAspect,
     RetryAspect,
     TimeoutAspect,
@@ -692,7 +692,7 @@ from automojo.sysman.windows.aspects import (
     RetryAspectConfig,
     TimeoutAspectConfig,
 )
-from automojo.sysman.windows.storage import SQLiteStorage
+from ccai.sysman.windows.storage import SQLiteStorage
 
 fileop = WindowsSSHFileOperator(
     WindowsSSHFileOperatorConfig(host="win-build-01", username="Administrator"),
@@ -709,7 +709,7 @@ report.begin_session(run_id="ssh-001", host="win-build-01", description=None)
 report.record_error(feature="service-management", operation="start",
                     error="The specified service does not exist as an installed service.")
 report.end_session()
-report.emit_report(path=r"C:\ProgramData\Automojo\Maintenance\ssh-001\report.yaml",
+report.emit_report(path=r"C:\ProgramData\CodeCraftAI\Maintenance\ssh-001\report.yaml",
                    format=WindowsReportFormat.YAML)
 ```
 

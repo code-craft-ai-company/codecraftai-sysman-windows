@@ -2,10 +2,10 @@
 
 ## Introduction
 
-The kernel parameters feature provides the `automojo-sysman-windows` package
+The kernel parameters feature provides the `codecraftai-sysman-windows` package
 with the ability to read and write kernel tunables on Windows systems.  This
 spec implements the kernel-parameters contract defined at
-`automojo-sysman-common/specs/contracts/kernel-parameters/contract.md` for
+`codecraftai-sysman-common/specs/contracts/kernel-parameters/contract.md` for
 Windows.
 
 Windows has no `sysctl(8)` equivalent.  Kernel-level tunables on Windows are
@@ -30,7 +30,7 @@ contract's verb set but applies strict scope limits:
 
 A maintenance coordinator running in an external package drives all operations
 by calling into this feature's public interfaces.  All system commands are
-executed exclusively through the `automojo-interfaces` command-runner
+executed exclusively through the `codecraftai-interfaces` command-runner
 abstraction and the manager wraps PowerShell cmdlets (`Get-ItemProperty`,
 `Set-ItemProperty`, `Remove-ItemProperty`) for registry access.
 

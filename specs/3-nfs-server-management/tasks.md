@@ -5,7 +5,7 @@ All tasks are unchecked — new feature.
 ## Module and Models
 
 - [ ] 1. Create
-  ``source/packages/automojo/sysman/windows/nfsservermanagement.py``.
+  ``source/packages/ccai/sysman/windows/nfsservermanagement.py``.
 - [ ] 2. Define module-level constants (default PowerShell argv,
   default service name, default options).
 - [ ] 3. Define ``WindowsNfsActionStatus`` alias of ``ActionStatus``.
@@ -82,7 +82,7 @@ All tasks are unchecked — new feature.
 ## Tests
 
 - [ ] 28. Create
-  ``source/testroots/testbase/automojo/tests/sysman/windows/test_nfsservermanagement.py``.
+  ``source/testroots/testbase/ccai/tests/sysman/windows/test_nfsservermanagement.py``.
 - [ ] 29. Add ``test_add_export_invokes_powershell``.
 - [ ] 30. Add ``test_add_export_skipped_when_present``.
 - [ ] 31. Add ``test_add_export_dry_run``.

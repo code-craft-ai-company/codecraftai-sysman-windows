@@ -3,17 +3,17 @@
 ## Introduction
 
 This spec implements the process-management contract defined at
-`automojo-sysman-common/specs/contracts/process-management/contract.md`
+`codecraftai-sysman-common/specs/contracts/process-management/contract.md`
 for Windows using the PowerShell ``Get-Process``, ``Stop-Process``,
 ``Start-Process``, ``Wait-Process``, and ``taskkill`` cmdlets.
 
 The process-management feature provides the
-`automojo-sysman-windows` package with the ability to enumerate,
+`codecraftai-sysman-windows` package with the ability to enumerate,
 inspect, terminate, spawn, prioritise, wait for, and search for
 arbitrary processes on Windows.  A maintenance coordinator running in
 an external package drives all operations by calling into this
 feature's public interfaces.  All system commands are executed
-exclusively through the `automojo-interfaces` command-runner
+exclusively through the `codecraftai-interfaces` command-runner
 abstraction, enabling dry-run simulation, auditing, and test mocking
 without requiring a live Windows system.
 

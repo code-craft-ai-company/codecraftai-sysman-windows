@@ -106,7 +106,7 @@ mutated by the write verbs.
 ## Module Layout
 
 ```
-source/packages/automojo/sysman/windows/aclmanagement.py
+source/packages/ccai/sysman/windows/aclmanagement.py
 ```
 
 Contents (top-to-bottom):
@@ -581,9 +581,9 @@ runner because:
 ### Local execution (no elevation)
 
 ```python
-from automojo.sysman.runners.localcommandrunner import LocalCommandRunner
+from ccai.sysman.runners.localcommandrunner import LocalCommandRunner
 
-from automojo.sysman.windows.aclmanagement import (
+from ccai.sysman.windows.aclmanagement import (
     WindowsAceSpec,
     WindowsAcePermission,
     WindowsAclManager,
@@ -668,7 +668,7 @@ tuple.  No live PowerShell / `icacls` is invoked.
 
 This Windows manager exposes the NTFS-native subset directly.  When
 a cross-OS caller needs to translate between the per-OS shapes,
-that translation lives in the `automojo-interfaces` adapter layer
+that translation lives in the `codecraftai-interfaces` adapter layer
 (out of scope for this spec).
 
 ---
@@ -712,7 +712,7 @@ spec exposes:
   delivered by a follow-up `3-acl-management-recursive` spec.
 
 Cross-OS callers that need the contract's names will see them in
-the `automojo-interfaces` adapter layer when that layer
+the `codecraftai-interfaces` adapter layer when that layer
 materialises; the per-OS managers favour names that align with the
 rest of their package.
 

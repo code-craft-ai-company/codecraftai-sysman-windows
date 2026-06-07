@@ -11,7 +11,7 @@ Purpose and Audience
 --------------------
 
 - Explain how to create, organize, and run tests in this repository with the standard library ``unittest`` package.
-- Provide a single reference that works for human developers and automation agents (for example, AutomationX) working inside Codex or local workspaces.
+- Provide a single reference that works for human developers and automation agents (for example, CodeCraftX) working inside Codex or local workspaces.
 - Highlight where this document fits relative to :doc:`10-03-testing-patterns-and-practices` and other userguide references.
 
 Test Root and Discovery
@@ -28,7 +28,7 @@ Environment Preparation
 - Run ``repository-setup/rehome-repository`` once per checkout to create the required ``.env`` file with repository-relative paths.
 - Run ``development/setup-environment`` in the workspace to create/refresh the virtual environment with project dependencies.
 - Activate the resulting virtual environment before executing any ``python`` or ``poetry`` commands so the standard library ``unittest`` entry points pick up the correct dependencies.
-- In Codex containers, execute ``development/codex-setup`` first; it chains the setup steps expected by AutomationX agents.
+- In Codex containers, execute ``development/codex-setup`` first; it chains the setup steps expected by CodeCraftX agents.
 
 Writing Tests with unittest
 ---------------------------
@@ -60,7 +60,7 @@ Debugging Failures
 - Re-run failing tests with ``-v`` and, if needed, temper failures with ``-f`` to stop after the first error for faster iterations.
 - Insert temporary breakpoints via ``import pdb; pdb.set_trace()`` or ``self.assertEqual`` checkpoints for non-interactive environments.
 - When mocking, ensure patches target the import location used by the unit under test; mismatched patch paths are a common source of failures.
-- Document recurring troubleshooting tips here as they emerge during project work to aid future contributors and AutomationX.
+- Document recurring troubleshooting tips here as they emerge during project work to aid future contributors and CodeCraftX.
 
 Extending the Test Suite
 ------------------------

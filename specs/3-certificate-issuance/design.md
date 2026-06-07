@@ -3,10 +3,10 @@
 ## Overview
 
 The certificate-issuance feature is implemented as a single module,
-`automojo.sysman.windows.certificateissuance`, that exposes a
+`ccai.sysman.windows.certificateissuance`, that exposes a
 `WindowsCertificateIssuanceManager` class.  This spec implements the
 certificate-issuance contract defined at
-`automojo-sysman-common/specs/contracts/certificate-issuance/contract.md`
+`codecraftai-sysman-common/specs/contracts/certificate-issuance/contract.md`
 for Windows using the PowerShell `PKI` module plus optional
 `certreq.exe` for AD CS submission.
 
@@ -40,7 +40,7 @@ The feature works identically whether commands execute locally
                          ▼
 ┌─────────────────────────────────────────────────────────────┐
 │       WindowsCertificateIssuanceManager                     │
-│  automojo.sysman.windows.certificateissuance                │
+│  ccai.sysman.windows.certificateissuance                │
 │                                                             │
 │  request_certificate()    renew_certificate()               │
 │  revoke_certificate()     get_certificate()                 │
@@ -62,7 +62,7 @@ The feature works identically whether commands execute locally
 ### `WindowsCertificateIssuanceManager`
 
 **Location:**
-`source/packages/automojo/sysman/windows/certificateissuance.py`
+`source/packages/ccai/sysman/windows/certificateissuance.py`
 
 | Method | Signature | Description |
 |---|---|---|
@@ -265,7 +265,7 @@ PowerShell `ConvertTo-Json` output.
 
 ## Interfaces
 
-### `ICommandRunner` (from `automojo-interfaces`)
+### `ICommandRunner` (from `codecraftai-interfaces`)
 
 ```python
 class ICommandRunner(Protocol):
@@ -307,7 +307,7 @@ Before exporting, the manager hashes the destination via
 ## Module Layout
 
 ```
-source/packages/automojo/sysman/windows/
+source/packages/ccai/sysman/windows/
 ├── __init__.py
 └── certificateissuance.py
     ├── WindowsCertIssuanceActionStatus       (alias to ActionStatus)
@@ -327,7 +327,7 @@ source/packages/automojo/sysman/windows/
         - _sanitise_script_passwords
 
 source/testroots/testbase/
-└── automojo/tests/sysman/windows/
+└── ccai/tests/sysman/windows/
     └── test_certificateissuance.py
 ```
 
@@ -372,7 +372,7 @@ verb.  The Windows pilot exposes a separate `passphrase: str | None`
 parameter on `export_certificate` and `import_certificate` for the
 PFX-password use case, since that is the dominant credential use on
 the Windows surface.  Threading a fully typed
-`automojo-credentials.Credential` through the public surface is
+`codecraftai-credentials.Credential` through the public surface is
 deferred to the cross-package follow-up.
 
 The contract's `ADCS` issuer enum is supported via the optional

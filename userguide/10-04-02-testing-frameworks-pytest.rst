@@ -8,7 +8,7 @@ Testing Frameworks - PyTest
 Purpose and Scope
 -----------------
 
-- Describe how contributors and AutomationX agents apply ``pytest`` inside this repository while staying aligned with :doc:`10-03-testing-patterns-and-practices`.
+- Describe how contributors and CodeCraftX agents apply ``pytest`` inside this repository while staying aligned with :doc:`10-03-testing-patterns-and-practices`.
 - Provide a quick-start outline covering environment setup, directory layout, authoring guidance, and execution commands.
 - Call out places where ``pytest`` differs from the ``unittest`` conventions documented in :doc:`10-04-01-testing-frameworks-unittest`.
 
@@ -61,4 +61,4 @@ Extending the PyTest Suite
 - Whenever new source packages appear, create the matching directory tree in ``source/testroots/pytest`` immediately.
 - Register any new custom markers in ``pyproject.toml`` (``markers = [...]``) so pytest does not warn about unknown marks.
 - If you add helper scripts (Make targets, ``tox`` environments, CI jobs) that wrap ``pytest``, reference them here for quick discovery.
-- Keep AutomationX-focused notes (for example, sandbox-safe commands) up to date so agents can run the same workflows as human contributors.
+- Keep CodeCraftX-focused notes (for example, sandbox-safe commands) up to date so agents can run the same workflows as human contributors.

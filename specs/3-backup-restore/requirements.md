@@ -2,7 +2,7 @@
 
 ## Introduction
 
-The backup-restore feature provides the `automojo-sysman-windows` package
+The backup-restore feature provides the `codecraftai-sysman-windows` package
 with the ability to define, persist, run, list, restore, and verify backup
 jobs on Windows hosts. Windows offers two first-party backup tools whose
 availability depends on the SKU: `wbadmin` (the Windows Server Backup CLI,
@@ -15,7 +15,7 @@ when installed.
 A maintenance coordinator uses this feature to capture known-good snapshots
 of specified paths before destructive or risky changes, to restore from
 those snapshots on demand, and to verify the integrity of an archive. All
-system commands are executed through the `automojo-interfaces` command-
+system commands are executed through the `codecraftai-interfaces` command-
 runner abstraction, dispatched through a small PowerShell wrapper because
 Windows tooling is canonically driven from PowerShell. All mutating
 operations respect dry-run mode.
@@ -42,7 +42,7 @@ correct backend tool without re-supplying its parameters.
 
 1. WHEN the coordinator supplies a `WindowsBackupJobSpec` THE SYSTEM SHALL
    serialise the spec to JSON and write it to
-   `%ProgramData%\Automojo\backup\jobs\<job_id>.json` via PowerShell
+   `%ProgramData%\CodeCraftAI\backup\jobs\<job_id>.json` via PowerShell
    `Set-Content`.
 2. THE SYSTEM SHALL pass `elevated=True` to the runner so PowerShell
    executes with Administrator privileges (required to write under
