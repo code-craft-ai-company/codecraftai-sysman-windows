@@ -3,10 +3,10 @@
 ## Overview
 
 The audit-management feature is implemented as a single module,
-`automojo.sysman.windows.auditmanagement`, that exposes a
+`ccai.sysman.windows.auditmanagement`, that exposes a
 `WindowsAuditManager` class.  This spec implements the
 audit-management contract defined at
-`automojo-sysman-common/specs/contracts/audit-management/contract.md`
+`codecraftai-sysman-common/specs/contracts/audit-management/contract.md`
 for Windows using `auditpol.exe` for advanced-audit policy,
 `wevtutil.exe` for event-log channel toggling, and `Get-WinEvent`
 (PowerShell) for event-stream filtering.
@@ -82,7 +82,7 @@ idempotency probe never over-claims coverage.
                          ▼
 ┌─────────────────────────────────────────────────────────────┐
 │            WindowsAuditManager                              │
-│  automojo.sysman.windows.auditmanagement                    │
+│  ccai.sysman.windows.auditmanagement                    │
 │                                                             │
 │  add_rule()             remove_rule()                       │
 │  list_rules()           enable_auditing()                   │
@@ -117,7 +117,7 @@ idempotency probe never over-claims coverage.
 ### `WindowsAuditManager`
 
 **Location:**
-`source/packages/automojo/sysman/windows/auditmanagement.py`
+`source/packages/ccai/sysman/windows/auditmanagement.py`
 
 | Method | Signature | Description |
 |---|---|---|

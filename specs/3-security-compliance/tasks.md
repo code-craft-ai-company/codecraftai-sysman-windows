@@ -16,7 +16,7 @@ items (`[ ]`) identify remaining work.
 
 ## Module and Models
 
-- [x] 1. Create the `automojo.sysman.windows.securitycompliance` module
+- [x] 1. Create the `ccai.sysman.windows.securitycompliance` module
 
 - [x] 2. Define `WindowsSecurityComplianceActionStatus` enum (re-
   exported from `featurebase.ActionStatus`)

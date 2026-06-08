@@ -10,11 +10,11 @@
 from dataclasses import dataclass, field
 from typing import Callable, Optional
 
-from automojo import testbase
+from ccai import testbase
 
-from automojo.interfaces.icommandrunner import RunResult
+from ccai.interfaces.icommandrunner import RunResult
 
-from automojo.sysman.windows.authenticationmanagement import (
+from ccai.sysman.windows.authenticationmanagement import (
     WINDOWS_AUTH_LOGON,
     WINDOWS_AUTH_NETWORK,
     WindowsAuthActionStatus,
@@ -125,7 +125,7 @@ def _expected_export_argv() -> list:
     """
     rtnval = [
         "secedit.exe", "/export",
-        "/cfg", r"C:\Windows\Temp\automojo-secedit.cfg",
+        "/cfg", r"C:\Windows\Temp\codecraftai-secedit.cfg",
         "/quiet",
     ]
     return rtnval
@@ -138,7 +138,7 @@ def _expected_get_content_argv() -> list:
     rtnval = [
         "powershell.exe", "-NoProfile", "-NonInteractive", "-Command",
         "Get-Content -Path '{}' -Raw".format(
-            r"C:\Windows\Temp\automojo-secedit.cfg",
+            r"C:\Windows\Temp\codecraftai-secedit.cfg",
         ),
     ]
     return rtnval
@@ -513,8 +513,8 @@ def test_failed_command_surfaces_stderr():
     # configure step is reached, then have configure fail.
     configure_argv = (
         "secedit.exe", "/configure",
-        "/db", r"C:\Windows\Temp\automojo-secedit.sdb",
-        "/cfg", r"C:\Windows\Temp\automojo-secedit.cfg",
+        "/db", r"C:\Windows\Temp\codecraftai-secedit.sdb",
+        "/cfg", r"C:\Windows\Temp\codecraftai-secedit.cfg",
         "/quiet",
     )
     runner.results[configure_argv] = _fail(

@@ -3,7 +3,7 @@
 ## Overview
 
 The filesystem-quotas feature is implemented as a single
-module, `automojo.sysman.windows.filesystemquotas`, exposing a
+module, `ccai.sysman.windows.filesystemquotas`, exposing a
 `WindowsFilesystemQuotasManager` class that wraps `fsutil
 quota` — the volume-level NTFS user-quota subsystem built into
 Windows — through the `ICommandRunner` abstraction.  Every
@@ -36,12 +36,12 @@ Windows feature.
 | `get_quota_status` | Read | `WindowsQuotaStatus` |
 
 **See Also:**
-- `automojo-sysman-common/specs/contracts/filesystem-quotas/contract.md`
+- `codecraftai-sysman-common/specs/contracts/filesystem-quotas/contract.md`
   — cross-OS contract this implementation satisfies.
-- `automojo-sysman-linux-redhat/specs/3-filesystem-quotas/`
+- `codecraftai-sysman-linux-redhat/specs/3-filesystem-quotas/`
   — canonical reference; covers the full quota surface.
-- `automojo-sysman-linux-ubuntu/specs/3-filesystem-quotas/` and
-  `automojo-sysman-macos/specs/3-filesystem-quotas/` — sibling
+- `codecraftai-sysman-linux-ubuntu/specs/3-filesystem-quotas/` and
+  `codecraftai-sysman-macos/specs/3-filesystem-quotas/` — sibling
   pilots; both share the BSD `quota` family shape, which
   Windows does NOT use.
 

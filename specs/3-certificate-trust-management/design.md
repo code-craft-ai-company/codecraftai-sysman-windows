@@ -3,7 +3,7 @@
 ## Overview
 
 The certificate-trust-management feature is implemented as a single
-module, `automojo.sysman.windows.certificatetrustmanagement`, that
+module, `ccai.sysman.windows.certificatetrustmanagement`, that
 exposes a `WindowsCertificateTrustManager` class.  This spec
 implements the certificate-trust-management contract for Windows by
 wrapping the PowerShell ``PKI`` module
@@ -42,7 +42,7 @@ aspect configuration.
                          ▼
 ┌─────────────────────────────────────────────────────────────┐
 │         WindowsCertificateTrustManager                      │
-│  automojo.sysman.windows.certificatetrustmanagement         │
+│  ccai.sysman.windows.certificatetrustmanagement         │
 │                                                             │
 │  add_trusted_cert()       remove_trusted_cert()             │
 │  list_trusted_certs()     get_cert_details()                │
@@ -82,7 +82,7 @@ aspect configuration.
 ### `WindowsCertificateTrustManager`
 
 **Location:**
-`source/packages/automojo/sysman/windows/certificatetrustmanagement.py`
+`source/packages/ccai/sysman/windows/certificatetrustmanagement.py`
 
 | Method | Signature | Description |
 |---|---|---|
@@ -370,7 +370,7 @@ parser accepts both forms.  Unknown fields are ignored;
 ## Module Layout
 
 ```
-source/packages/automojo/sysman/windows/
+source/packages/ccai/sysman/windows/
 ├── __init__.py
 └── certificatetrustmanagement.py
     ├── WindowsCertTrustManagerConfig
@@ -387,7 +387,7 @@ source/packages/automojo/sysman/windows/
         - _parse_powershell_certificates
 
 source/testroots/testbase/
-└── automojo/tests/sysman/windows/
+└── ccai/tests/sysman/windows/
     └── test_certificatetrustmanagement.py
 ```
 
@@ -435,8 +435,8 @@ source/testroots/testbase/
 ### Local Execution (Install Internal CA)
 
 ```python
-from automojo.sysman.windows.runners import LocalCommandRunner, LocalRunnerConfig
-from automojo.sysman.windows.certificatetrustmanagement import (
+from ccai.sysman.windows.runners import LocalCommandRunner, LocalRunnerConfig
+from ccai.sysman.windows.certificatetrustmanagement import (
     WindowsCertificateTrustManager,
     WindowsCertTrustManagerConfig,
 )
@@ -487,7 +487,7 @@ verbs.  Windows certificate stores have no
 enable / disable toggle (a store is either present or absent under
 the `Cert:` provider drive); `set_store_enabled` is therefore not
 implemented.  `verify_certificate` overlaps with
-`automojo-credentials` and is deferred per the RHEL spec's task 21
+`codecraftai-credentials` and is deferred per the RHEL spec's task 21
 follow-up.  Both verbs are intentionally NOT implemented in this
 wave.
 

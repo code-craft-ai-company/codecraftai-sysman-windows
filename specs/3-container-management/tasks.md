@@ -5,7 +5,7 @@ items (`[ ]`) identify remaining work.
 
 ## Module and Models
 
-- [x] 1. Create the `automojo.sysman.windows.containermanagement`
+- [x] 1. Create the `ccai.sysman.windows.containermanagement`
   module.
 
 - [x] 2. Define `WindowsContainerActionStatus` (aliased to the
@@ -143,10 +143,10 @@ items (`[ ]`) identify remaining work.
 ## Follow-ups
 
 - [ ] 55. **Cross-OS contract conformance review** against
-  `automojo-sysman-common/specs/contracts/container-management/contract.md`.
+  `codecraftai-sysman-common/specs/contracts/container-management/contract.md`.
 
-- [ ] 56. **automojo-* reuse check**: confirm no other feature in
-  `automojo-sysman-windows` invokes `docker.exe` / `podman.exe` /
+- [ ] 56. **codecraftai-* reuse check**: confirm no other feature in
+  `codecraftai-sysman-windows` invokes `docker.exe` / `podman.exe` /
   `wsl.exe` directly for container operations.
 
 ## Spec deviations from this implementation

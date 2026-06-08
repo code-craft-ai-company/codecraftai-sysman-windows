@@ -2,11 +2,11 @@
 
 ## Introduction
 
-The scheduled-tasks feature provides the `automojo-sysman-windows`
+The scheduled-tasks feature provides the `codecraftai-sysman-windows`
 package with the ability to manage periodic and calendar-triggered task
 execution on Windows systems.  This spec implements the scheduled-tasks
 contract defined at
-`automojo-sysman-common/specs/contracts/scheduled-tasks/contract.md`
+`codecraftai-sysman-common/specs/contracts/scheduled-tasks/contract.md`
 for Windows using the **Task Scheduler** via the `ScheduledTasks`
 PowerShell module (`Register-ScheduledTask`,
 `Unregister-ScheduledTask`, `Enable-ScheduledTask`,
@@ -17,7 +17,7 @@ operations by calling into this feature's public interfaces.  The
 feature does not decide *which* tasks to schedule — it provides the
 capability to *do it* reliably, idempotently, and with full
 auditability.  All system commands are executed exclusively through
-the `automojo-interfaces` command-runner abstraction (invoking
+the `codecraftai-interfaces` command-runner abstraction (invoking
 `powershell.exe -NoProfile -NonInteractive -Command <script>`).  No
 `IFileOperator` is required; Task Scheduler owns its own persistence
 under `C:\Windows\System32\Tasks`.

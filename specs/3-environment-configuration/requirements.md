@@ -2,11 +2,11 @@
 
 ## Introduction
 
-The environment configuration feature provides the `automojo-sysman-windows`
+The environment configuration feature provides the `codecraftai-sysman-windows`
 package with the ability to set, unset, and query system-wide and per-user
 environment variables on Windows.  This spec implements the
 environment-configuration contract defined at
-`automojo-sysman-common/specs/contracts/environment-configuration/contract.md`
+`codecraftai-sysman-common/specs/contracts/environment-configuration/contract.md`
 for Windows using the registry (`HKLM:\SYSTEM\CurrentControlSet\Control\Session
 Manager\Environment` for system scope, `HKCU:\Environment` for the current
 user, and `HKU:\<SID>\Environment` for a named other user).

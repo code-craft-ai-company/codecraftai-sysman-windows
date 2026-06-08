@@ -6,7 +6,7 @@ items (`[ ]`) identify remaining work.
 ## Module and Models
 
 - [x] 1. Create the
-  `automojo.sysman.windows.configurationmanagement` module
+  `ccai.sysman.windows.configurationmanagement` module
 
 - [x] 2. Define `WindowsConfigActionStatus` enum (aliased from the
   shared `featurebase.ActionStatus`)
@@ -175,10 +175,10 @@ items (`[ ]`) identify remaining work.
 
 - [ ] 62. **Cross-OS contract conformance review**: verify that the
   shipping dataclasses match the abstract names in
-  `automojo-sysman-common/specs/contracts/configuration-management/contract.md`
+  `codecraftai-sysman-common/specs/contracts/configuration-management/contract.md`
   and that the validator registry is consistent with the Windows row.
 
-- [ ] 63. **automojo-sysman-windows reuse check**: confirm that
+- [ ] 63. **codecraftai-sysman-windows reuse check**: confirm that
   every other feature which touches the registry or `%ProgramData%`
   delegates to `WindowsConfigurationManager` rather than invoking
   PowerShell cmdlets directly.

@@ -6,9 +6,9 @@
     coverage will land alongside the SSH runner backend.
 """
 
-from automojo import testbase
+from ccai import testbase
 
-from automojo.sysman.windows.runners.aspects import (
+from ccai.sysman.windows.runners.aspects import (
     WindowsPersistenceAspect,
     WindowsPersistenceAspectConfig,
     WindowsRetryAspect,
@@ -16,7 +16,7 @@ from automojo.sysman.windows.runners.aspects import (
     WindowsTimeoutAspect,
     WindowsTimeoutAspectConfig,
 )
-from automojo.sysman.windows.runners.models import (
+from ccai.sysman.windows.runners.models import (
     WindowsExecutionContext,
     WindowsRunResult,
 )

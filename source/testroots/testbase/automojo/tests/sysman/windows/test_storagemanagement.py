@@ -11,11 +11,11 @@ import json
 from dataclasses import dataclass, field
 from typing import Callable, Optional
 
-from automojo import testbase
+from ccai import testbase
 
-from automojo.interfaces.icommandrunner import RunResult
+from ccai.interfaces.icommandrunner import RunResult
 
-from automojo.sysman.windows.storagemanagement import (
+from ccai.sysman.windows.storagemanagement import (
     WindowsDiskInfo,
     WindowsPoolSpec,
     WindowsStorageActionStatus,

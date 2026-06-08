@@ -3,10 +3,10 @@
 ## Overview
 
 The filesystem management feature is implemented as a single module,
-`automojo.sysman.windows.filesystemmanagement`, that exposes a
+`ccai.sysman.windows.filesystemmanagement`, that exposes a
 `WindowsFilesystemManager` class.  This spec implements the filesystem-management
 contract defined at
-`automojo-sysman-common/specs/contracts/filesystem-management/contract.md` for
+`codecraftai-sysman-common/specs/contracts/filesystem-management/contract.md` for
 Windows using the PowerShell storage cmdlets (`Get-Volume`, `Get-Partition`,
 `Add-PartitionAccessPath`, `Remove-PartitionAccessPath`), the file-system cmdlets
 (`Get-Item`, `New-Item`, `Remove-Item`, `Get-Acl`, `Set-Acl`), and the
@@ -49,7 +49,7 @@ configuration.
                          ▼
 ┌─────────────────────────────────────────────────────────────┐
 │            WindowsFilesystemManager                         │
-│  automojo.sysman.windows.filesystemmanagement               │
+│  ccai.sysman.windows.filesystemmanagement               │
 │                                                             │
 │  mount()              unmount()                             │
 │  add_fstab_entry()    remove_fstab_entry()                  │
@@ -89,7 +89,7 @@ configuration.
 
 ### `WindowsFilesystemManager`
 
-**Location:** `source/packages/automojo/sysman/windows/filesystemmanagement.py`
+**Location:** `source/packages/ccai/sysman/windows/filesystemmanagement.py`
 
 | Method | Signature | Description |
 |---|---|---|
@@ -188,7 +188,7 @@ class WindowsFilesystemQueryError(Exception):
 
 ## Interfaces
 
-### `ICommandRunner` (from `automojo-interfaces`)
+### `ICommandRunner` (from `codecraftai-interfaces`)
 
 ```python
 class ICommandRunner(Protocol):
@@ -584,13 +584,13 @@ special-cased; it flows through the same `FAILED` path.
 ## Module Layout
 
 ```
-source/packages/automojo/sysman/windows/
+source/packages/ccai/sysman/windows/
 ├── __init__.py
 └── filesystemmanagement.py    ← WindowsFilesystemManager, config, models, exceptions,
                                   _MODE_TRANSLATION_TABLE
 
 source/testroots/testbase/
-└── automojo/tests/sysman/windows/
+└── ccai/tests/sysman/windows/
     └── test_filesystemmanagement.py
 ```
 
@@ -601,8 +601,8 @@ source/testroots/testbase/
 ### Local Execution (Default)
 
 ```python
-from automojo.sysman.windows.runners import LocalCommandRunner, LocalRunnerConfig
-from automojo.sysman.windows.filesystemmanagement import (
+from ccai.sysman.windows.runners import LocalCommandRunner, LocalRunnerConfig
+from ccai.sysman.windows.filesystemmanagement import (
     WindowsFilesystemManager,
     WindowsFilesystemManagerConfig,
     WindowsFstabEntry,
@@ -647,19 +647,19 @@ print(f"disk {usage.use_percent}%")
 ### SSH/WinRM Execution with Aspects
 
 ```python
-from automojo.sysman.windows.runners import SSHCommandRunner, SSHRunnerConfig
-from automojo.sysman.windows.aspects import (
+from ccai.sysman.windows.runners import SSHCommandRunner, SSHRunnerConfig
+from ccai.sysman.windows.aspects import (
     PersistenceAspect, RetryAspect, TimeoutAspect,
     PersistenceAspectConfig, RetryAspectConfig, TimeoutAspectConfig,
 )
-from automojo.sysman.windows.storage import SQLiteStorage
-from automojo.sysman.windows.filesystemmanagement import (
+from ccai.sysman.windows.storage import SQLiteStorage
+from ccai.sysman.windows.filesystemmanagement import (
     WindowsFilesystemManager, WindowsFilesystemManagerConfig,
 )
 
 runner = SSHCommandRunner(SSHRunnerConfig(host="remote-win", username="admin"))
 
-storage = SQLiteStorage(path=r"C:\ProgramData\automojo\commands.db")
+storage = SQLiteStorage(path=r"C:\ProgramData\ccai\commands.db")
 runner.add_aspect(aspect=PersistenceAspect(PersistenceAspectConfig(storage_backend=storage)))
 runner.add_aspect(aspect=RetryAspect(RetryAspectConfig(max_retries=2)))
 runner.add_aspect(aspect=TimeoutAspect(TimeoutAspectConfig(default_timeout=60.0)))

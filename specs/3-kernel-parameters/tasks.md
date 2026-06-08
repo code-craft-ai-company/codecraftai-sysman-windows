@@ -5,7 +5,7 @@ items (`[ ]`) identify remaining work.
 
 ## Module and Models
 
-- [x] 1. Create the `automojo.sysman.windows.kernelparameters` module
+- [x] 1. Create the `ccai.sysman.windows.kernelparameters` module
 
 - [x] 2. Define `WindowsKernelParameterActionStatus` enum (SUCCESS /
   FAILED / SKIPPED / DRY_RUN)  *(aliased from the shared

@@ -3,13 +3,13 @@
 ## Overview
 
 This spec implements the hardware-inventory contract defined at
-`automojo-sysman-common/specs/contracts/hardware-inventory/contract.md` for
+`codecraftai-sysman-common/specs/contracts/hardware-inventory/contract.md` for
 Windows using the PowerShell ``Get-ComputerInfo`` and ``Get-CimInstance``
 cmdlets, plus storage / network helpers (``Get-Disk`` / ``Get-Volume`` /
 ``Get-NetAdapter``).
 
 The hardware-inventory feature is implemented as a single module,
-`automojo.sysman.windows.hardwareinventory`, that exposes a
+`ccai.sysman.windows.hardwareinventory`, that exposes a
 `WindowsHardwareInventoryManager` class.  The coordinator instantiates
 `WindowsHardwareInventoryManager` and calls its read verbs to query discrete
 hardware aspects.  Every verb returns a typed `Windows*` dataclass, or raises
@@ -46,7 +46,7 @@ configuration.
                          ▼
 ┌─────────────────────────────────────────────────────────────┐
 │        WindowsHardwareInventoryManager                      │
-│  automojo.sysman.windows.hardwareinventory                  │
+│  ccai.sysman.windows.hardwareinventory                  │
 │                                                             │
 │  get_system_info()       get_cpu_info()                     │
 │  get_memory_info()       list_storage_devices()             │
@@ -84,7 +84,7 @@ configuration.
 
 ### `WindowsHardwareInventoryManager`
 
-**Location:** `source/packages/automojo/sysman/windows/hardwareinventory.py`
+**Location:** `source/packages/ccai/sysman/windows/hardwareinventory.py`
 
 The primary public class.  Constructed with an `ICommandRunner` and a
 `WindowsHardwareInventoryManagerConfig`.
@@ -226,12 +226,12 @@ class WindowsFirmwareInfo:
 
 ## Interfaces
 
-### `ICommandRunner` (from `automojo-interfaces`)
+### `ICommandRunner` (from `codecraftai-interfaces`)
 
 Same protocol as the rest of the package; see
-`automojo.interfaces.icommandrunner`.
+`ccai.interfaces.icommandrunner`.
 
-### `RunResult` (from `automojo-interfaces`)
+### `RunResult` (from `codecraftai-interfaces`)
 
 ```python
 @dataclass
@@ -573,10 +573,10 @@ sequence.  The feature ignores the `dry_run` flag entirely.
 ## Module Layout
 
 ```
-source/packages/automojo/sysman/windows/
+source/packages/ccai/sysman/windows/
 └── hardwareinventory.py                ← manager + dataclasses + parsers + exception
 
-source/testroots/testbase/automojo/tests/sysman/windows/
+source/testroots/testbase/ccai/tests/sysman/windows/
 └── test_hardwareinventory.py           ← unit tests using a MockCommandRunner
 ```
 
@@ -587,10 +587,10 @@ source/testroots/testbase/automojo/tests/sysman/windows/
 ### Local execution
 
 ```python
-from automojo.sysman.windows.runners import (
+from ccai.sysman.windows.runners import (
     LocalCommandRunner, LocalRunnerConfig,
 )
-from automojo.sysman.windows.hardwareinventory import (
+from ccai.sysman.windows.hardwareinventory import (
     WindowsHardwareInventoryManager,
     WindowsHardwareInventoryManagerConfig,
 )
@@ -612,7 +612,7 @@ firmware = inventory.get_firmware_info()
 ### PowerShell 7+ host
 
 ```python
-from automojo.sysman.windows.hardwareinventory import (
+from ccai.sysman.windows.hardwareinventory import (
     WindowsHardwareInventoryManager,
     WindowsHardwareInventoryManagerConfig,
 )
@@ -626,11 +626,11 @@ inventory = WindowsHardwareInventoryManager(runner, config)
 ### Aspect composition
 
 ```python
-from automojo.sysman.windows.aspects import (
+from ccai.sysman.windows.aspects import (
     PersistenceAspect, RetryAspect, TimeoutAspect,
     PersistenceAspectConfig, RetryAspectConfig, TimeoutAspectConfig,
 )
-from automojo.sysman.windows.storage import SQLiteStorage
+from ccai.sysman.windows.storage import SQLiteStorage
 
 runner = SSHCommandRunner(SSHRunnerConfig(host="winserver", username="admin"))
 runner.add_aspect(PersistenceAspect(PersistenceAspectConfig(
@@ -679,7 +679,7 @@ network = inventory.list_network_devices()
 
 ### Test File
 
-`source/testroots/testbase/automojo/tests/sysman/windows/test_hardwareinventory.py`
+`source/testroots/testbase/ccai/tests/sysman/windows/test_hardwareinventory.py`
 
 ### Tests Implemented
 

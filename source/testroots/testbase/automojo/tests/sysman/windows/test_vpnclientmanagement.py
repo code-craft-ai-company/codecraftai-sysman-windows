@@ -14,12 +14,12 @@ import unittest
 from dataclasses import dataclass, field
 from typing import Callable, Dict, List, Optional, Tuple
 
-from automojo import testbase
+from ccai import testbase
 
-from automojo.aspects.aspects import Aspects
-from automojo.interfaces.icommandrunner import RunResult
+from ccai.aspects.aspects import Aspects
+from ccai.interfaces.icommandrunner import RunResult
 
-from automojo.sysman.windows.vpnclientmanagement import (
+from ccai.sysman.windows.vpnclientmanagement import (
     VPNProvider,
     WindowsVPNActionResult,
     WindowsVPNActionStatus,
@@ -1209,7 +1209,7 @@ def test_read_file_content_distinguishes_absent_from_empty():
     runner_absent = _MockCommandRunner(
         programmed_results=[
             (["powershell.exe"], _StubRunResult(
-                exit_code=0, stdout="__AUTOMOJO_FILE_ABSENT__\r\n",
+                exit_code=0, stdout="__CCAI_FILE_ABSENT__\r\n",
             )),
         ],
     )
@@ -1222,7 +1222,7 @@ def test_read_file_content_distinguishes_absent_from_empty():
     runner_empty = _MockCommandRunner(
         programmed_results=[
             (["powershell.exe"], _StubRunResult(
-                exit_code=0, stdout="__AUTOMOJO_FILE_PRESENT__\r\n",
+                exit_code=0, stdout="__CCAI_FILE_PRESENT__\r\n",
             )),
         ],
     )

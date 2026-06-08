@@ -2,14 +2,14 @@
 
 ## Introduction
 
-The storage management feature provides the `automojo-sysman-windows`
+The storage management feature provides the `codecraftai-sysman-windows`
 package with the ability to enumerate disks and volumes, create /
 delete / resize volumes (both partition-style and Storage-Spaces
 virtual disks), manage Storage Pools (the cross-OS contract's
 "pool"), add and remove physical disks from a Storage Pool, and query
 detailed disk and volume metadata on Windows systems.  This spec
 implements the storage-management contract defined at
-`automojo-sysman-common/specs/contracts/storage-management/contract.md`
+`codecraftai-sysman-common/specs/contracts/storage-management/contract.md`
 for Windows using the PowerShell Storage cmdlets (`Get-Disk`,
 `Get-Volume`, `Get-Partition`, `Get-PhysicalDisk`, `Get-StoragePool`,
 `Get-VirtualDisk`, `New-Volume`, `Remove-Partition`,
@@ -23,7 +23,7 @@ feature does not decide *which* volumes should exist, *which* disks
 should back a pool, or *what* size a volume should claim — it provides
 the capability to *manipulate Windows storage state* reliably,
 idempotently, and with full auditability.  All system commands are
-executed exclusively through the `automojo-interfaces` command-runner
+executed exclusively through the `codecraftai-interfaces` command-runner
 abstraction.
 
 The implementation dispatches between two flows on `create_volume` /

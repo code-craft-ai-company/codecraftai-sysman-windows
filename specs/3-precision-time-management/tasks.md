@@ -6,7 +6,7 @@ items (`[ ]`) identify follow-ups deferred to a later iteration.
 ## Module and Models
 
 - [x] 1. Create the
-  `automojo.sysman.windows.precisiontimemanagement` module.
+  `ccai.sysman.windows.precisiontimemanagement` module.
 
 - [x] 2. Define `WindowsPrecisionTimeActionStatus` (alias of
   `ActionStatus`).

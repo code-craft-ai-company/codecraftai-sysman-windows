@@ -2,11 +2,11 @@
 
 ## Introduction
 
-The repository management feature provides the `automojo-sysman-windows`
+The repository management feature provides the `codecraftai-sysman-windows`
 package with the ability to manage `winget source` entries on Windows
 systems.  This spec implements the repository-management contract
 defined at
-`automojo-sysman-common/specs/contracts/repository-management/contract.md`
+`codecraftai-sysman-common/specs/contracts/repository-management/contract.md`
 for Windows using `winget.exe`'s source subcommand.
 
 A maintenance coordinator running in an external package drives all
@@ -14,7 +14,7 @@ operations by calling into this feature's public interfaces.  The
 feature does not decide *which* sources to configure — it provides
 the capability to *do it* reliably, idempotently, and with full
 auditability.  All system commands are executed exclusively through
-the `automojo-interfaces` command-runner abstraction.
+the `codecraftai-interfaces` command-runner abstraction.
 
 Windows's `winget source` model differs from apt/dnf and Homebrew:
 

@@ -3,7 +3,7 @@
 ## Overview
 
 The authentication management feature is implemented as a single
-module, `automojo.sysman.windows.authenticationmanagement`, exposing
+module, `ccai.sysman.windows.authenticationmanagement`, exposing
 a `WindowsAuthenticationManager` class that wraps `secedit /export`,
 `secedit /configure`, `secedit /validate`, the LSA registry surface
 under `HKLM:\SYSTEM\CurrentControlSet\Control\Lsa`, and the
@@ -28,7 +28,7 @@ PAM stack at all.  Logon authentication is driven by:
 
 A maintenance coordinator running in an external package drives all
 operations by calling this feature's public verbs.  All commands are
-executed through the `automojo-interfaces` command-runner
+executed through the `codecraftai-interfaces` command-runner
 abstraction.
 
 **See Also:**
@@ -109,7 +109,7 @@ inside an `AuthConfig`.
                              v
 +--------------------------------------------------------------+
 |            WindowsAuthenticationManager                      |
-|  automojo.sysman.windows.authenticationmanagement            |
+|  ccai.sysman.windows.authenticationmanagement            |
 |                                                              |
 |  Reads:                                                      |
 |    get_auth_config(subsystem)                                |
@@ -141,7 +141,7 @@ inside an `AuthConfig`.
 
 ### `WindowsAuthenticationManager`
 
-**Location:** `source/packages/automojo/sysman/windows/authenticationmanagement.py`
+**Location:** `source/packages/ccai/sysman/windows/authenticationmanagement.py`
 
 | Method | Verb kind | Tool | Elevation |
 |---|---|---|---|
@@ -162,8 +162,8 @@ class WindowsAuthenticationManagerConfig(FeatureConfig):
     powershell_executable: str = "powershell.exe"
     secedit_executable: str = "secedit.exe"
     lsa_path: str = r"HKLM:\SYSTEM\CurrentControlSet\Control\Lsa"
-    temp_cfg_path: str = r"C:\Windows\Temp\automojo-secedit.cfg"
-    temp_sdb_path: str = r"C:\Windows\Temp\automojo-secedit.sdb"
+    temp_cfg_path: str = r"C:\Windows\Temp\codecraftai-secedit.cfg"
+    temp_sdb_path: str = r"C:\Windows\Temp\codecraftai-secedit.sdb"
     well_known_packages: list[str] = (
         "msv1_0", "kerberos", "negoextender",
         "cloudap", "schannel", "wdigest",
@@ -353,7 +353,7 @@ emitted as `<key> = <value>\r\n`.
 
 PowerShell invocation is centralised in `_build_powershell_argv`,
 mirroring the pattern used by
-`automojo.sysman.windows.auditmanagement._build_powershell_argv`.
+`ccai.sysman.windows.auditmanagement._build_powershell_argv`.
 The argv is:
 
 ```
@@ -373,7 +373,7 @@ PowerShell registry cmdlets accept the colon-prefixed PSDrive form
 (`HKLM:\SYSTEM\CurrentControlSet\Control\Lsa`).  This module always
 uses that form because the LSA path is a fixed manager-config
 attribute and is never round-tripped through `reg.exe`.  The
-`automojo-sysman-windows.configurationmanagement` module documents
+`codecraftai-sysman-windows.configurationmanagement` module documents
 the same convention.
 
 ---
@@ -439,11 +439,11 @@ No live system or Administrator token required.
 ## Module Layout
 
 ```
-source/packages/automojo/sysman/windows/
+source/packages/ccai/sysman/windows/
 └── authenticationmanagement.py        ← WindowsAuthenticationManager + models
 
 source/testroots/testbase/
-└── automojo/tests/sysman/windows/
+└── ccai/tests/sysman/windows/
     └── test_authenticationmanagement.py
 ```
 

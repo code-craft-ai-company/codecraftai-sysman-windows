@@ -6,7 +6,7 @@ items (`[ ]`) identify remaining work.
 ## Module and Models
 
 - [x] 1. Create the
-  `automojo.sysman.windows.environmentconfiguration` module
+  `ccai.sysman.windows.environmentconfiguration` module
 
 - [x] 2. Define `WindowsEnvActionStatus` and `WindowsEnvScope` enums
 
@@ -116,10 +116,10 @@ items (`[ ]`) identify remaining work.
 
 - [ ] 44. **Cross-OS contract conformance review**: verify that the
   shipping dataclasses match the abstract names in
-  `automojo-sysman-common/specs/contracts/environment-configuration/contract.md`
+  `codecraftai-sysman-common/specs/contracts/environment-configuration/contract.md`
   and that the scope-mapping rows are consistent.
 
-- [ ] 45. **automojo-sysman-windows reuse check**: confirm that
+- [ ] 45. **codecraftai-sysman-windows reuse check**: confirm that
   features which need environment variables delegate to
   `WindowsEnvironmentConfigurationManager` rather than invoking
   PowerShell environment APIs directly.

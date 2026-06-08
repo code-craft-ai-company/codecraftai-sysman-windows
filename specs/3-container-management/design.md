@@ -44,7 +44,7 @@ Docker volume separator at first glance.
 ## Overview
 
 The container-management feature is implemented as a single module,
-`automojo.sysman.windows.containermanagement`, that exposes a
+`ccai.sysman.windows.containermanagement`, that exposes a
 `WindowsContainerManager` class.  The coordinator instantiates
 `WindowsContainerManager` and calls its methods to perform discrete
 container engine actions.
@@ -81,7 +81,7 @@ The feature works identically whether commands execute locally (via
                          ▼
 ┌─────────────────────────────────────────────────────────────┐
 │            WindowsContainerManager                          │
-│  automojo.sysman.windows.containermanagement                │
+│  ccai.sysman.windows.containermanagement                │
 │                                                             │
 │  pull_image()           remove_image()                      │
 │  list_images()                                              │
@@ -109,7 +109,7 @@ The feature works identically whether commands execute locally (via
 ### `WindowsContainerManager`
 
 **Location:**
-`source/packages/automojo/sysman/windows/containermanagement.py`
+`source/packages/ccai/sysman/windows/containermanagement.py`
 
 | Method | Signature | Description |
 |---|---|---|
@@ -552,13 +552,13 @@ NEVER be invoked with `elevated=True`.
 ## Module Layout
 
 ```
-source/packages/automojo/sysman/windows/
+source/packages/ccai/sysman/windows/
 ├── __init__.py
 ├── featurebase.py
 ├── containermanagement.py    ← WindowsContainerManager + types
 └── storagemanagement.py
 
-source/testroots/testbase/automojo/tests/sysman/windows/
+source/testroots/testbase/ccai/tests/sysman/windows/
 └── test_containermanagement.py
 ```
 
@@ -569,11 +569,11 @@ source/testroots/testbase/automojo/tests/sysman/windows/
 ### Local Execution (Default — Docker Desktop)
 
 ```python
-from automojo.sysman.windows.runners import (
+from ccai.sysman.windows.runners import (
     LocalCommandRunner,
     LocalRunnerConfig,
 )
-from automojo.sysman.windows.containermanagement import (
+from ccai.sysman.windows.containermanagement import (
     WindowsContainerEngine,
     WindowsContainerManager,
     WindowsContainerManagerConfig,

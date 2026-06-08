@@ -3,7 +3,7 @@
 ## Introduction
 
 The remote-log-forwarding feature provides the
-`automojo-sysman-windows` package with the ability to ship
+`codecraftai-sysman-windows` package with the ability to ship
 Windows Event Log records off-host through Windows Event
 Forwarding (WEF) subscriptions managed via `wecutil.exe`.  It is
 the cross-OS counterpart to the local log-shaping surface owned
@@ -21,13 +21,13 @@ explicitly.
 
 All system commands (`wecutil.exe cs|ds|es|ss|gs`,
 `Write-EventLog`, `tee` via PowerShell, `Test-Path`) are
-dispatched through the `automojo-interfaces` `ICommandRunner`
+dispatched through the `codecraftai-interfaces` `ICommandRunner`
 abstraction.  All mutating operations honour dry-run mode and
 config-driven elevation.
 
 The reference implementation for shape, idempotency, dry-run, and
 result mapping lives in
-`automojo-sysman-linux-redhat/specs/3-remote-log-forwarding/`.
+`codecraftai-sysman-linux-redhat/specs/3-remote-log-forwarding/`.
 
 ---
 
@@ -130,11 +130,11 @@ collector.
 
 1. WHEN the coordinator calls `test_forwarder(id)` THE SYSTEM
    SHALL dispatch a PowerShell scriptblock that calls
-   `Write-EventLog -LogName Application -Source automojo-test
+   `Write-EventLog -LogName Application -Source codecraftai-test
    -EventId 4242 -Message 'forwarder-test-<timestamp>'`.
-2. WHEN the `automojo-test` event source is not registered the
+2. WHEN the `codecraftai-test` event source is not registered the
    scriptblock SHALL register it via `New-EventLog -LogName
-   Application -Source automojo-test` before writing.
+   Application -Source codecraftai-test` before writing.
 3. THE SYSTEM SHALL return a `WindowsForwarderTestResult` with
    `forwarder_id` populated and `test_message_id` set to the
    timestamp portion of the dispatched message.

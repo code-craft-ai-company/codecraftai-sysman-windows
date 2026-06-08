@@ -2,13 +2,13 @@
 
 ## Introduction
 
-The command-execution feature provides the `automojo-sysman-windows` package with the
+The command-execution feature provides the `codecraftai-sysman-windows` package with the
 ability to dispatch OS-level commands, ordered sequences, and short inline PowerShell
 script fragments through an `ICommandRunner` abstraction.  This spec implements the
 command-execution contract defined at
-`automojo-sysman-common/specs/contracts/command-execution/contract.md` for Windows
+`codecraftai-sysman-common/specs/contracts/command-execution/contract.md` for Windows
 using `subprocess.run` (wrapped by `WindowsLocalCommandRunner`) and `paramiko` SSH
-(wrapped by `WindowsSSHCommandRunner` in `automojo-protocol-ssh`, using an OpenSSH
+(wrapped by `WindowsSSHCommandRunner` in `codecraftai-protocol-ssh`, using an OpenSSH
 Server target).  It covers single argv-based command execution, PowerShell-backed
 script fragments via `powershell.exe -NoProfile -Command <...>`, and ordered command
 sequences with a stop-on-failure policy.

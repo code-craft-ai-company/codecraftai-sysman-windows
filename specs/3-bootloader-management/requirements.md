@@ -3,15 +3,15 @@
 ## Introduction
 
 The bootloader-management feature provides the
-`automojo-sysman-windows` package with the ability to manage the
+`codecraftai-sysman-windows` package with the ability to manage the
 **OS-level bootloader configuration layer** on Windows.  It
 implements the cross-OS contract defined at
-`automojo-sysman-common/specs/contracts/bootloader-management/contract.md`.
+`codecraftai-sysman-common/specs/contracts/bootloader-management/contract.md`.
 
 ### What this feature is NOT
 
 This feature is **distinct from `boot-management`** (the UEFI
-firmware boot-entry feature in `automojo-sysman-uefi`).  On Windows
+firmware boot-entry feature in `codecraftai-sysman-uefi`).  On Windows
 the firmware-level entries are surfaced through
 ``bcdedit /enum firmware`` and the ``{fwbootmgr}`` BCD global; that
 surface is owned by `boot-management`.  This feature addresses the
@@ -50,7 +50,7 @@ case form before dispatching to `bcdedit`.
 A maintenance coordinator running in an external package drives all
 operations by calling into this feature's public interface.  All
 system commands (`bcdedit`) are executed through the
-`automojo-interfaces` command-runner abstraction.  All mutating
+`codecraftai-interfaces` command-runner abstraction.  All mutating
 operations respect dry-run mode.
 
 ---
@@ -286,7 +286,7 @@ mode that exercises the planning logic without touching the host.
 **User Story:** As a maintenance coordinator, I want the
 bootloader-management feature to never accidentally touch the UEFI
 firmware NVRAM so that the firmware boot entries remain owned by
-`automojo-sysman-uefi`.
+`codecraftai-sysman-uefi`.
 
 #### Acceptance Criteria
 

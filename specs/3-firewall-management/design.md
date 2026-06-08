@@ -3,9 +3,9 @@
 ## Overview
 
 The firewall management feature is implemented as a single module,
-`automojo.sysman.windows.firewallmanagement`, that exposes a `WindowsFirewallManager`
+`ccai.sysman.windows.firewallmanagement`, that exposes a `WindowsFirewallManager`
 class.  This spec implements the firewall-management contract defined at
-`automojo-sysman-common/specs/contracts/firewall-management/contract.md` for
+`codecraftai-sysman-common/specs/contracts/firewall-management/contract.md` for
 Windows using the PowerShell `NetSecurity` module (`New-NetFirewallRule`,
 `Remove-NetFirewallRule`, `Get-NetFirewallRule`, `Get-NetFirewallProfile`,
 `Get-NetConnectionProfile`).  The coordinator instantiates `WindowsFirewallManager`
@@ -47,7 +47,7 @@ details on local/remote execution, reliability tracking, and aspect configuratio
                          ▼
 ┌─────────────────────────────────────────────────────────────┐
 │            WindowsFirewallManager                           │
-│  automojo.sysman.windows.firewallmanagement                 │
+│  ccai.sysman.windows.firewallmanagement                 │
 │                                                             │
 │  add_service()      remove_service()                        │
 │  add_port()         remove_port()                           │
@@ -89,14 +89,14 @@ details on local/remote execution, reliability tracking, and aspect configuratio
 
 ### `WindowsFirewallManager`
 
-**Location:** `source/packages/automojo/sysman/windows/firewallmanagement.py`
+**Location:** `source/packages/ccai/sysman/windows/firewallmanagement.py`
 
 | Method | Signature | Description |
 |---|---|---|
-| `add_service` | `(service, zone) → WindowsFirewallActionResult` | Resolve `(port, proto)` via bundled services table, `New-NetFirewallRule -DisplayName 'automojo-svc-<service>' -Profile <zone> …` |
-| `remove_service` | `(service, zone) → WindowsFirewallActionResult` | `Remove-NetFirewallRule -DisplayName 'automojo-svc-<service>'` |
-| `add_port` | `(port, protocol, zone) → WindowsFirewallActionResult` | `New-NetFirewallRule -DisplayName 'automojo-port-<port>-<protocol>' -Profile <zone> …` |
-| `remove_port` | `(port, protocol, zone) → WindowsFirewallActionResult` | `Remove-NetFirewallRule -DisplayName 'automojo-port-<port>-<protocol>'` |
+| `add_service` | `(service, zone) → WindowsFirewallActionResult` | Resolve `(port, proto)` via bundled services table, `New-NetFirewallRule -DisplayName 'codecraftai-svc-<service>' -Profile <zone> …` |
+| `remove_service` | `(service, zone) → WindowsFirewallActionResult` | `Remove-NetFirewallRule -DisplayName 'codecraftai-svc-<service>'` |
+| `add_port` | `(port, protocol, zone) → WindowsFirewallActionResult` | `New-NetFirewallRule -DisplayName 'codecraftai-port-<port>-<protocol>' -Profile <zone> …` |
+| `remove_port` | `(port, protocol, zone) → WindowsFirewallActionResult` | `Remove-NetFirewallRule -DisplayName 'codecraftai-port-<port>-<protocol>'` |
 | `add_rich_rule` | `(rule, zone) → WindowsFirewallActionResult` | `New-NetFirewallRule <rule> -Profile <zone>` where rule is splatted parameters |
 | `remove_rich_rule` | `(rule, zone) → WindowsFirewallActionResult` | Parse DisplayName from rule, `Remove-NetFirewallRule -DisplayName '<name>'` |
 | `set_default_zone` | `(zone) → WindowsFirewallActionResult` | Documented no-op — `SKIPPED` for valid profile names, `FAILED` otherwise |
@@ -172,7 +172,7 @@ this choice because it defers the interpretation of `running` to the per-OS spec
 
 ## Interfaces
 
-### `ICommandRunner` (from `automojo-interfaces`)
+### `ICommandRunner` (from `codecraftai-interfaces`)
 
 ```python
 class ICommandRunner(Protocol):
@@ -215,10 +215,10 @@ single-line and quoted-in using PowerShell escape conventions.
 
 | Operation | PowerShell script |
 |---|---|
-| Add service | `New-NetFirewallRule -DisplayName 'automojo-svc-<service>' -Direction Inbound -Action Allow -Protocol <proto> -LocalPort <port> -Profile <zone>` |
-| Remove service | `Remove-NetFirewallRule -DisplayName 'automojo-svc-<service>'` |
-| Add port | `New-NetFirewallRule -DisplayName 'automojo-port-<port>-<proto>' -Direction Inbound -Action Allow -Protocol <proto> -LocalPort <port> -Profile <zone>` |
-| Remove port | `Remove-NetFirewallRule -DisplayName 'automojo-port-<port>-<proto>'` |
+| Add service | `New-NetFirewallRule -DisplayName 'codecraftai-svc-<service>' -Direction Inbound -Action Allow -Protocol <proto> -LocalPort <port> -Profile <zone>` |
+| Remove service | `Remove-NetFirewallRule -DisplayName 'codecraftai-svc-<service>'` |
+| Add port | `New-NetFirewallRule -DisplayName 'codecraftai-port-<port>-<proto>' -Direction Inbound -Action Allow -Protocol <proto> -LocalPort <port> -Profile <zone>` |
+| Remove port | `Remove-NetFirewallRule -DisplayName 'codecraftai-port-<port>-<proto>'` |
 | Add rich rule | `New-NetFirewallRule <rule> -Profile <zone>` (rule is splatted parameters including `-DisplayName`) |
 | Remove rich rule | `Remove-NetFirewallRule -DisplayName '<name>'` where `<name>` is parsed from the rule string |
 | Set default zone | (no command — always `SKIPPED` or `FAILED`) |
@@ -257,10 +257,10 @@ A representative response:
 
 ```json
 [
-  {"DisplayName":"automojo-svc-ssh","Enabled":"True","Direction":"Inbound",
+  {"DisplayName":"codecraftai-svc-ssh","Enabled":"True","Direction":"Inbound",
    "Action":"Allow","Profile":"Public","Protocol":"TCP","LocalPort":"22",
    "RemoteAddress":"Any","InterfaceAlias":null},
-  {"DisplayName":"automojo-port-8080-tcp","Enabled":"True","Direction":"Inbound",
+  {"DisplayName":"codecraftai-port-8080-tcp","Enabled":"True","Direction":"Inbound",
    "Action":"Allow","Profile":"Public","Protocol":"TCP","LocalPort":"8080",
    "RemoteAddress":"Any","InterfaceAlias":null},
   {"DisplayName":"internal-db","Enabled":"True","Direction":"Inbound",
@@ -273,8 +273,8 @@ The parser processes this JSON as follows:
 
 | `DisplayName` pattern | Maps to `WindowsZoneInfo` field |
 |---|---|
-| `automojo-svc-<service>` | `services` gets `<service>` |
-| `automojo-port-<port>-<protocol>` | `ports` gets `"<port>/<protocol>"` |
+| `codecraftai-svc-<service>` | `services` gets `<service>` |
+| `codecraftai-port-<port>-<protocol>` | `ports` gets `"<port>/<protocol>"` |
 | anything else | `rich_rules` gets a reconstructed splatted-parameters string |
 
 The parser:
@@ -328,9 +328,9 @@ profile, and compare against the expected `DisplayName`.
 
 | Method | Guard | Field inspected |
 |---|---|---|
-| `add_service()` | Rule with `DisplayName=automojo-svc-<service>` already exists in profile | `WindowsZoneInfo.services` |
+| `add_service()` | Rule with `DisplayName=codecraftai-svc-<service>` already exists in profile | `WindowsZoneInfo.services` |
 | `remove_service()` | Rule with that name does not exist | `WindowsZoneInfo.services` |
-| `add_port()` | Rule with `DisplayName=automojo-port-<port>-<proto>` exists | `WindowsZoneInfo.ports` |
+| `add_port()` | Rule with `DisplayName=codecraftai-port-<port>-<proto>` exists | `WindowsZoneInfo.ports` |
 | `remove_port()` | Rule with that name does not exist | `WindowsZoneInfo.ports` |
 | `add_rich_rule()` | Rule with the parsed `DisplayName` already exists | `WindowsZoneInfo.rich_rules` |
 | `remove_rich_rule()` | Rule with that `DisplayName` does not exist | `WindowsZoneInfo.rich_rules` |
@@ -379,7 +379,7 @@ All other failures from write operations are surfaced as
 
 ### Property 2: Service Addition Command Construction
 
-*For any* resolved `(port, protocol)` and valid profile `zone`, `add_service()` should dispatch a PowerShell `New-NetFirewallRule` command with `-DisplayName 'automojo-svc-<service>'`, `-Direction Inbound`, `-Action Allow`, `-Protocol <protocol>`, `-LocalPort <port>`, and `-Profile <zone>`.
+*For any* resolved `(port, protocol)` and valid profile `zone`, `add_service()` should dispatch a PowerShell `New-NetFirewallRule` command with `-DisplayName 'codecraftai-svc-<service>'`, `-Direction Inbound`, `-Action Allow`, `-Protocol <protocol>`, `-LocalPort <port>`, and `-Profile <zone>`.
 
 **Validates: Requirements 1.1**
 
@@ -403,7 +403,7 @@ All other failures from write operations are surfaced as
 
 ### Property 6: Service Removal Command Construction
 
-*For any* service name and valid profile `zone`, `remove_service()` should dispatch `Remove-NetFirewallRule -DisplayName 'automojo-svc-<service>'`.
+*For any* service name and valid profile `zone`, `remove_service()` should dispatch `Remove-NetFirewallRule -DisplayName 'codecraftai-svc-<service>'`.
 
 **Validates: Requirements 2.1**
 
@@ -415,7 +415,7 @@ All other failures from write operations are surfaced as
 
 ### Property 8: Port Addition Command Construction
 
-*For any* `(port, protocol, zone)`, `add_port()` should dispatch `New-NetFirewallRule -DisplayName 'automojo-port-<port>-<protocol>' -Direction Inbound -Action Allow -Protocol <protocol> -LocalPort <port> -Profile <zone>`.
+*For any* `(port, protocol, zone)`, `add_port()` should dispatch `New-NetFirewallRule -DisplayName 'codecraftai-port-<port>-<protocol>' -Direction Inbound -Action Allow -Protocol <protocol> -LocalPort <port> -Profile <zone>`.
 
 **Validates: Requirements 3.1**
 
@@ -427,7 +427,7 @@ All other failures from write operations are surfaced as
 
 ### Property 10: Port Removal Command Construction
 
-*For any* `(port, protocol)`, `remove_port()` should dispatch `Remove-NetFirewallRule -DisplayName 'automojo-port-<port>-<protocol>'`.
+*For any* `(port, protocol)`, `remove_port()` should dispatch `Remove-NetFirewallRule -DisplayName 'codecraftai-port-<port>-<protocol>'`.
 
 **Validates: Requirements 4.1**
 
@@ -562,13 +562,13 @@ All other failures from write operations are surfaced as
 ## Module Layout
 
 ```
-source/packages/automojo/sysman/windows/
+source/packages/ccai/sysman/windows/
 ├── __init__.py
 ├── firewallmanagement.py         ← WindowsFirewallManager, config, models, exceptions
 └── _services_table.py            ← bundled (service → port, protocol) mapping
 
 source/testroots/testbase/
-└── automojo/tests/sysman/windows/
+└── ccai/tests/sysman/windows/
     └── test_firewallmanagement.py
 ```
 
@@ -579,8 +579,8 @@ source/testroots/testbase/
 ### Local Execution (Default)
 
 ```python
-from automojo.sysman.windows.runners import LocalCommandRunner, LocalRunnerConfig
-from automojo.sysman.windows.firewallmanagement import (
+from ccai.sysman.windows.runners import LocalCommandRunner, LocalRunnerConfig
+from ccai.sysman.windows.firewallmanagement import (
     WindowsFirewallManager,
     WindowsFirewallManagerConfig,
 )
@@ -622,8 +622,8 @@ print(f"Ports: {zone_info.ports}")
 ### SSH Execution with Aspects
 
 ```python
-from automojo.sysman.windows.runners import SSHCommandRunner, SSHRunnerConfig
-from automojo.sysman.windows.aspects import (
+from ccai.sysman.windows.runners import SSHCommandRunner, SSHRunnerConfig
+from ccai.sysman.windows.aspects import (
     PersistenceAspect,
     RetryAspect,
     TimeoutAspect,
@@ -631,8 +631,8 @@ from automojo.sysman.windows.aspects import (
     RetryAspectConfig,
     TimeoutAspectConfig,
 )
-from automojo.sysman.windows.storage import SQLiteStorage
-from automojo.sysman.windows.firewallmanagement import (
+from ccai.sysman.windows.storage import SQLiteStorage
+from ccai.sysman.windows.firewallmanagement import (
     WindowsFirewallManager,
     WindowsFirewallManagerConfig,
 )

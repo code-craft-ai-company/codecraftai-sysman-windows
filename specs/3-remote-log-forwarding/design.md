@@ -4,7 +4,7 @@
 
 The Windows remote-log-forwarding feature is implemented as a
 single module,
-`automojo.sysman.windows.remotelogforwarding`, exposing a
+`ccai.sysman.windows.remotelogforwarding`, exposing a
 `WindowsRemoteLogForwardingManager` class that manages Windows
 Event Forwarding (WEF) subscriptions through the
 `wecutil.exe` CLI and a PowerShell scriptblock for the test
@@ -12,9 +12,9 @@ verb.  Every verb is dispatched through the
 `ICommandRunner` abstraction.
 
 The cross-OS contract for this feature lives in
-`automojo-sysman-common/specs/contracts/remote-log-forwarding/contract.md`.
+`codecraftai-sysman-common/specs/contracts/remote-log-forwarding/contract.md`.
 The RHEL canonical implementation lives in
-`automojo-sysman-linux-redhat/specs/3-remote-log-forwarding/`.
+`codecraftai-sysman-linux-redhat/specs/3-remote-log-forwarding/`.
 
 ---
 
@@ -42,7 +42,7 @@ configuration (out of scope here).
 The on-disk subscription XML lives at
 `<wec_subscription_dir>\<id>.xml`.  The default
 `wec_subscription_dir` is
-`C:\ProgramData\Automojo\WEC` so that the file does not collide
+`C:\ProgramData\CodeCraftAI\WEC` so that the file does not collide
 with operator-authored subscriptions under
 `%SystemRoot%\System32\winevt\`.
 
@@ -150,8 +150,8 @@ Compared with the Ubuntu and macOS implementations:
 class WindowsForwarderManagerConfig(FeatureConfig):
     powershell_executable: str = "powershell.exe"
     wecutil_executable: str    = "wecutil.exe"
-    wec_subscription_dir: str  = r"C:\ProgramData\Automojo\WEC"
-    test_event_source: str     = "automojo-test"
+    wec_subscription_dir: str  = r"C:\ProgramData\CodeCraftAI\WEC"
+    test_event_source: str     = "codecraftai-test"
     test_event_id: int         = 4242
 ```
 
@@ -228,9 +228,9 @@ idempotency comparison works.
 
 ```xml
 <Subscription xmlns="http://schemas.microsoft.com/2006/03/windows/events/subscription">
-    <SubscriptionId>automojo-fwd-collector1</SubscriptionId>
+    <SubscriptionId>codecraftai-fwd-collector1</SubscriptionId>
     <SubscriptionType>SourceInitiated</SubscriptionType>
-    <Description>automojo collector1</Description>
+    <Description>ccai collector1</Description>
     <Enabled>true</Enabled>
     <Uri>http://schemas.microsoft.com/wbem/wsman/1/windows/EventLog</Uri>
     <ConfigurationMode>Custom</ConfigurationMode>
@@ -311,7 +311,7 @@ pass the inner XPath via `WindowsForwarderSpec.query`.
    `forwarder-test-<int(time.time())>`.
 2. Dispatch a PowerShell scriptblock:
    ```powershell
-   $src = 'automojo-test'
+   $src = 'codecraftai-test'
    if (-not [System.Diagnostics.EventLog]::SourceExists($src)) {
        New-EventLog -LogName Application -Source $src
    }

@@ -3,10 +3,10 @@
 ## Overview
 
 The user and group management feature is implemented as a single module,
-`automojo.sysman.windows.usergroupmanagement`, that exposes a
+`ccai.sysman.windows.usergroupmanagement`, that exposes a
 `WindowsUserGroupManager` class.  This spec implements the user-group-management
 contract defined at
-`automojo-sysman-common/specs/contracts/user-group-management/contract.md` for
+`codecraftai-sysman-common/specs/contracts/user-group-management/contract.md` for
 Windows using the `Microsoft.PowerShell.LocalAccounts` module.  Every verb translates
 to a `powershell.exe -NoProfile -NonInteractive -Command <script>` invocation that
 uses `New-LocalUser`, `Remove-LocalUser`, `Set-LocalUser`, `Get-LocalUser`,
@@ -48,7 +48,7 @@ configuration.
                          ▼
 ┌─────────────────────────────────────────────────────────────┐
 │            WindowsUserGroupManager                          │
-│  automojo.sysman.windows.usergroupmanagement                │
+│  ccai.sysman.windows.usergroupmanagement                │
 │                                                             │
 │  create_user()    delete_user()    modify_user()            │
 │  get_user()       list_users()     set_password()           │
@@ -90,7 +90,7 @@ configuration.
 
 ### `WindowsUserGroupManager`
 
-**Location:** `source/packages/automojo/sysman/windows/usergroupmanagement.py`
+**Location:** `source/packages/ccai/sysman/windows/usergroupmanagement.py`
 
 | Method | Signature | Description |
 |---|---|---|
@@ -207,7 +207,7 @@ class WindowsUserGroupQueryError(Exception):
 
 ## Interfaces
 
-### `ICommandRunner` (from `automojo-interfaces`)
+### `ICommandRunner` (from `codecraftai-interfaces`)
 
 ```python
 class ICommandRunner(Protocol):
@@ -595,12 +595,12 @@ measure for cases where a caller embeds the plaintext inadvertently.
 ## Module Layout
 
 ```
-source/packages/automojo/sysman/windows/
+source/packages/ccai/sysman/windows/
 ├── __init__.py
 └── usergroupmanagement.py        ← WindowsUserGroupManager, config, models, exceptions
 
 source/testroots/testbase/
-└── automojo/tests/sysman/windows/
+└── ccai/tests/sysman/windows/
     └── test_usergroupmanagement.py
 ```
 
@@ -611,8 +611,8 @@ source/testroots/testbase/
 ### Local Execution (Default)
 
 ```python
-from automojo.sysman.windows.runners import LocalCommandRunner, LocalRunnerConfig
-from automojo.sysman.windows.usergroupmanagement import (
+from ccai.sysman.windows.runners import LocalCommandRunner, LocalRunnerConfig
+from ccai.sysman.windows.usergroupmanagement import (
     WindowsUserGroupManager,
     WindowsUserGroupManagerConfig,
     WindowsUserSpec,
@@ -654,19 +654,19 @@ print(f"locked: {user_info.locked}")
 ### SSH/WinRM Execution with Aspects
 
 ```python
-from automojo.sysman.windows.runners import SSHCommandRunner, SSHRunnerConfig
-from automojo.sysman.windows.aspects import (
+from ccai.sysman.windows.runners import SSHCommandRunner, SSHRunnerConfig
+from ccai.sysman.windows.aspects import (
     PersistenceAspect, RetryAspect, TimeoutAspect,
     PersistenceAspectConfig, RetryAspectConfig, TimeoutAspectConfig,
 )
-from automojo.sysman.windows.storage import SQLiteStorage
-from automojo.sysman.windows.usergroupmanagement import (
+from ccai.sysman.windows.storage import SQLiteStorage
+from ccai.sysman.windows.usergroupmanagement import (
     WindowsUserGroupManager, WindowsUserGroupManagerConfig,
 )
 
 runner = SSHCommandRunner(SSHRunnerConfig(host="remote-win", username="admin"))
 
-storage = SQLiteStorage(path=r"C:\ProgramData\automojo\commands.db")
+storage = SQLiteStorage(path=r"C:\ProgramData\ccai\commands.db")
 runner.add_aspect(aspect=PersistenceAspect(PersistenceAspectConfig(storage_backend=storage)))
 runner.add_aspect(aspect=RetryAspect(RetryAspectConfig(max_retries=2)))
 runner.add_aspect(aspect=TimeoutAspect(TimeoutAspectConfig(default_timeout=30.0)))

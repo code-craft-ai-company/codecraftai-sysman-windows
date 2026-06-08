@@ -4,7 +4,7 @@
 
 The precision-time-management feature is implemented as a single
 module,
-`automojo.sysman.windows.precisiontimemanagement`, exposing a
+`ccai.sysman.windows.precisiontimemanagement`, exposing a
 `WindowsPrecisionTimeManager` class that wraps `w32tm.exe` (the
 Windows Time Service utility) plus `net.exe` and `sc.exe` for the
 ``W32Time`` service lifecycle.  All external calls flow through the
@@ -26,7 +26,7 @@ in this package:
 
 **See Also:**
 - `3-network-configuration` — companion infrastructure feature.
-- `automojo-sysman-linux-redhat/specs/3-precision-time-management/`
+- `codecraftai-sysman-linux-redhat/specs/3-precision-time-management/`
   — the RHEL reference, which targets the IEEE 1588 PTP surface and
   is not applicable to Windows.
 

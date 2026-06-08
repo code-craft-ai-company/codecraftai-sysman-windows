@@ -1,6 +1,6 @@
 [tool.poetry]
-name = "automojo-sysman-windows"
-description = "Automation Mojo - System Management Windows"
+name = "codecraftai-sysman-windows"
+description = "Code Craft AI - System Management Windows"
 version = "0.0.1"
 authors = []
 readme = "README.rst"
@@ -13,20 +13,20 @@ classifiers = [
 keywords = [
     "python"
 ]
-packages = [{include="automojo", from="source/packages"}]
+packages = [{include="ccai", from="source/packages"}]
 
 [tool.poetry.dependencies]
 python = ">=3.10,<4.0"
-automojo-this-app = { git = "https://github.com/automationmojo/automojo-this-app.git", branch = "main" }
-automojo-arcli = { git = "https://github.com/automationmojo/automojo-arcli.git", branch = "main" }
-automojo-errors = { git = "https://github.com/automationmojo/automojo-errors.git", branch = "main" }
-automojo-credentials = { git = "https://github.com/automationmojo/automojo-credentials.git", branch = "main" }
-automojo-dataprofiles = { git = "https://github.com/automationmojo/automojo-dataprofiles.git", branch = "main" }
-automojo-interfaces = { git = "https://github.com/automationmojo/automojo-interfaces.git", branch = "main" }
-automojo-testbase = { git = "https://github.com/automationmojo/automojo-testbase.git", branch = "main" }
-automojo-interop = { git = "https://github.com/automationmojo/automojo-interop.git", branch = "main" }
-automojo-sysman-common = { git = "https://github.com/automationmojo/automojo-sysman-common.git", branch = "main" }
-automojo-waiting = { git = "https://github.com/automationmojo/automojo-waiting.git", branch = "main" }
+codecraftai-this-app = { git = "https://github.com/automationmojo/codecraftai-this-app.git", branch = "main" }
+codecraftai-arcli = { git = "https://github.com/automationmojo/codecraftai-arcli.git", branch = "main" }
+codecraftai-errors = { git = "https://github.com/automationmojo/codecraftai-errors.git", branch = "main" }
+codecraftai-credentials = { git = "https://github.com/automationmojo/codecraftai-credentials.git", branch = "main" }
+codecraftai-dataprofiles = { git = "https://github.com/automationmojo/codecraftai-dataprofiles.git", branch = "main" }
+codecraftai-interfaces = { git = "https://github.com/automationmojo/codecraftai-interfaces.git", branch = "main" }
+codecraftai-testbase = { git = "https://github.com/automationmojo/codecraftai-testbase.git", branch = "main" }
+codecraftai-interop = { git = "https://github.com/automationmojo/codecraftai-interop.git", branch = "main" }
+codecraftai-sysman-common = { git = "https://github.com/automationmojo/codecraftai-sysman-common.git", branch = "main" }
+codecraftai-waiting = { git = "https://github.com/automationmojo/codecraftai-waiting.git", branch = "main" }
 
 [tool.poetry.group.dev.dependencies]
 

@@ -3,10 +3,10 @@
 ## Introduction
 
 The precision-time-management feature provides the
-`automojo-sysman-windows` package with the ability to query and
+`codecraftai-sysman-windows` package with the ability to query and
 configure the host's NTP synchronisation surface on Windows.  This
 spec implements the precision-time-management contract defined at
-`automojo-sysman-common/specs/contracts/precision-time-management/contract.md`
+`codecraftai-sysman-common/specs/contracts/precision-time-management/contract.md`
 for Windows using the Windows Time Service (`W32Time`) plus its
 user-space utilities `w32tm.exe`, `net.exe`, and `sc.exe`.
 
@@ -16,7 +16,7 @@ feature does not decide *which* time sources should be active or
 *whether* clock sync should be on — it provides the capability to
 *manipulate the precision-time surface* reliably, idempotently, and
 with full auditability.  All system commands flow through the
-`automojo-interfaces` command-runner abstraction.  Persistent
+`codecraftai-interfaces` command-runner abstraction.  Persistent
 configuration lives under
 `HKLM\SYSTEM\CurrentControlSet\Services\W32Time` in the registry;
 `w32tm /config /update` is the supported public surface for

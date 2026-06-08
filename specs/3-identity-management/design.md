@@ -3,10 +3,10 @@
 ## Overview
 
 The identity management feature is implemented as a single module,
-`automojo.sysman.windows.identitymanagement`, that exposes a
+`ccai.sysman.windows.identitymanagement`, that exposes a
 `WindowsIdentityManager` class.  This spec implements the cross-OS
 identity-management contract defined at
-`automojo-sysman-common/specs/contracts/identity-management/contract.md`
+`codecraftai-sysman-common/specs/contracts/identity-management/contract.md`
 for Windows using PowerShell cmdlets: `Add-Computer` /
 `Remove-Computer` (built-in `Microsoft.PowerShell.Management`
 module) for join / unjoin, `Get-WmiObject Win32_ComputerSystem` for
@@ -40,12 +40,12 @@ remotely over WinRM / SSH.
 - `3-user-group-management` for local-account operations.
 - `3-certificate-trust-management` for the enterprise-CA anchors
   required by LDAPS / Kerberos-over-TLS setups.
-- `automojo-sysman-linux-redhat/specs/3-identity-management/` for
+- `codecraftai-sysman-linux-redhat/specs/3-identity-management/` for
   the FreeIPA / SSSD / realmd reference implementation that
   motivated this cross-OS contract.
-- `automojo-sysman-linux-ubuntu/specs/3-identity-management/` for
+- `codecraftai-sysman-linux-ubuntu/specs/3-identity-management/` for
   the Ubuntu sibling implementation using `realm` + `sssctl`.
-- `automojo-sysman-macos/specs/3-identity-management/` for the
+- `codecraftai-sysman-macos/specs/3-identity-management/` for the
   macOS sibling implementation using `dsconfigad` + `dscl`.
 
 ---
@@ -64,7 +64,7 @@ remotely over WinRM / SSH.
                          ▼
 ┌─────────────────────────────────────────────────────────────┐
 │            WindowsIdentityManager                           │
-│  automojo.sysman.windows.identitymanagement                 │
+│  ccai.sysman.windows.identitymanagement                 │
 │                                                             │
 │  Writes:                                                    │
 │    join_realm()    leave_realm()    sync_users()            │
@@ -86,7 +86,7 @@ remotely over WinRM / SSH.
 
 ### `WindowsIdentityManager`
 
-**Location:** `source/packages/automojo/sysman/windows/identitymanagement.py`
+**Location:** `source/packages/ccai/sysman/windows/identitymanagement.py`
 
 | Method | Signature | Description |
 |---|---|---|
@@ -409,11 +409,11 @@ No live Active Directory or RSAT installation required.
 ## Module Layout
 
 ```
-source/packages/automojo/sysman/windows/
+source/packages/ccai/sysman/windows/
 └── identitymanagement.py
 
 source/testroots/testbase/
-└── automojo/tests/sysman/windows/
+└── ccai/tests/sysman/windows/
     └── test_identitymanagement.py
 ```
 

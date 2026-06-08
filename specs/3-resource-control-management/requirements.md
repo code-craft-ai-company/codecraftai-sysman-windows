@@ -3,11 +3,11 @@
 ## Introduction
 
 The resource-control-management feature provides the
-`automojo-sysman-windows` package with the ability to manage
+`codecraftai-sysman-windows` package with the ability to manage
 named, idempotent, auditable resource ceilings for groups of
 processes on Windows systems.  The implementation rides on
 **logical group records** (one JSON spec per group at
-`%ProgramData%\Automojo\rcgroups\<name>.json`) plus
+`%ProgramData%\CodeCraftAI\rcgroups\<name>.json`) plus
 **per-PID PowerShell adjustments**
 (`(Get-Process).PriorityClass = ...` and `.ProcessorAffinity =
 ...`) — Windows kernel-level Job Objects expose
@@ -19,7 +19,7 @@ its declared ceilings are applied to every attached PID
 best-effort via `Get-Process`.
 
 This package satisfies the cross-OS
-[`resource-control-management` contract](../../../automojo-sysman-common/specs/contracts/resource-control-management/contract.md)
+[`resource-control-management` contract](../../../codecraftai-sysman-common/specs/contracts/resource-control-management/contract.md)
 **with documented limitations** — several verbs return
 `status=FAILED` with a typed `detail`/`message` token when the
 underlying tooling does not exist via PowerShell on Windows.

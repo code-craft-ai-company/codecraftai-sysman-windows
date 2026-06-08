@@ -11,11 +11,11 @@ import json
 from dataclasses import dataclass, field
 from typing import Callable, Optional
 
-from automojo import testbase
+from ccai import testbase
 
-from automojo.interfaces.icommandrunner import RunResult
+from ccai.interfaces.icommandrunner import RunResult
 
-from automojo.sysman.windows.maintenancereporting import (
+from ccai.sysman.windows.maintenancereporting import (
     WindowsActionRecord,
     WindowsActionStatus,
     WindowsMaintenanceReporter,
@@ -339,13 +339,13 @@ def test_default_session_path_uses_output_dir():
     """
     reporter, _runner = _make_reporter(
         config=WindowsMaintenanceReporterConfig(
-            output_dir="C:\\ProgramData\\Automojo\\Maintenance",
+            output_dir="C:\\ProgramData\\CodeCraftAI\\Maintenance",
         ),
     )
     path = reporter.default_session_path(session_id="windows-013")
     testbase.assert_equal(
         path,
-        "C:\\ProgramData\\Automojo\\Maintenance\\windows-013\\",
+        "C:\\ProgramData\\CodeCraftAI\\Maintenance\\windows-013\\",
     )
     return
 
@@ -360,7 +360,7 @@ def test_default_session_path_expands_programdata_token():
     path = reporter.default_session_path(session_id="windows-014")
     testbase.assert_false("%ProgramData%" in path)
     testbase.assert_true(path.endswith("\\windows-014\\"))
-    testbase.assert_true("Automojo" in path)
+    testbase.assert_true("CodeCraftAI" in path)
     testbase.assert_true("Maintenance" in path)
     return
 

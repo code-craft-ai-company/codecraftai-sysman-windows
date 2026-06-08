@@ -3,12 +3,12 @@
 ## Overview
 
 The Windows backup-restore feature is implemented as a single module,
-`automojo.sysman.windows.backuprestore`, exposing a
+`ccai.sysman.windows.backuprestore`, exposing a
 `WindowsBackupRestoreManager` class and its associated dataclasses and
 enum. The manager wraps three backend tools — `wbadmin` (Windows Server
 Backup, default), PowerShell `Robocopy`, and `restic.exe` — behind a
 single verb surface defined by the cross-OS contract at
-`automojo-sysman-common/specs/contracts/backup-restore/contract.md`.
+`codecraftai-sysman-common/specs/contracts/backup-restore/contract.md`.
 
 Windows offers two first-party backup tools whose availability depends on
 the SKU: `wbadmin` (the Windows Server Backup CLI; ships with the "Windows
@@ -54,7 +54,7 @@ is transparent to the manager.
                          ▼
 ┌─────────────────────────────────────────────────────────────┐
 │           WindowsBackupRestoreManager                       │
-│  automojo.sysman.windows.backuprestore                      │
+│  ccai.sysman.windows.backuprestore                      │
 │                                                             │
 │  create_backup_job()      run_backup_now()                  │
 │  delete_backup_job()      restore_from_backup()             │
@@ -161,11 +161,11 @@ destination volume.
 ## Job Persistence
 
 Backup-job specs are persisted as JSON files at
-`%ProgramData%\Automojo\backup\jobs\<job_id>.json`. `%ProgramData%`
+`%ProgramData%\CodeCraftAI\backup\jobs\<job_id>.json`. `%ProgramData%`
 expands to `C:\ProgramData` on every modern Windows install; the manager
 hard-codes this path on the assumption that the operator has not moved
 `%ProgramData%`. The default `job_dir` config field is
-`r"C:\ProgramData\Automojo\backup\jobs"` (raw string to avoid escape
+`r"C:\ProgramData\CodeCraftAI\backup\jobs"` (raw string to avoid escape
 issues with the backslashes).
 
 Idempotency for `create_backup_job` is implemented by reading the
@@ -187,7 +187,7 @@ backuprestore.py
 ├── module-level constants
 │   ├── _POWERSHELL, _PS_NOPROFILE, _PS_NONINTERACTIVE, _PS_COMMAND
 │   ├── _WBADMIN, _ROBOCOPY, _RESTIC
-│   └── _DEFAULT_JOB_DIR (r"C:\ProgramData\Automojo\backup\jobs")
+│   └── _DEFAULT_JOB_DIR (r"C:\ProgramData\CodeCraftAI\backup\jobs")
 ├── enums
 │   └── WindowsBackupKind (WBADMIN, ROBOCOPY, RESTIC)
 ├── data classes
@@ -309,7 +309,7 @@ verification.
 ## Test Strategy
 
 The test suite at
-`source/testroots/testbase/automojo/tests/sysman/windows/test_backuprestore.py`
+`source/testroots/testbase/ccai/tests/sysman/windows/test_backuprestore.py`
 covers, at minimum, the following surface:
 
 * Command construction: one test per write verb per backend.
@@ -336,7 +336,7 @@ matching pattern used by `test_dnsservermanagement.py`.
 | Concept                | Windows                                          | Ubuntu                                    | macOS                                    |
 |------------------------|--------------------------------------------------|-------------------------------------------|------------------------------------------|
 | Default backup tool    | `wbadmin` (Server) / Robocopy (client)           | `rsync` (selected via enum)               | Time Machine via `tmutil`                |
-| Job persistence        | `%ProgramData%\Automojo\backup\jobs\`            | `/var/lib/automojo/backups/jobs/`         | `/var/db/automojo/backups/jobs/`         |
+| Job persistence        | `%ProgramData%\CodeCraftAI\backup\jobs\`            | `/var/lib/ccai/backups/jobs/`         | `/var/db/ccai/backups/jobs/`         |
 | Repository layout      | `wbadmin` catalogue on a backup volume           | tool-specific                             | TM volume + `Backups.backupdb`           |
 | Encryption native?     | none (relies on BitLocker on volume)             | only for `restic`                         | Volume-level (FileVault on destination)  |
 | Snapshot model         | block-level VHDX                                 | none                                      | block-level (HFS+/APFS)                  |

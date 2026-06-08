@@ -18,14 +18,14 @@ import subprocess
 
 from unittest import mock
 
-from automojo import testbase
+from ccai import testbase
 
-from automojo.sysman.windows.runners.aspects.base import IWindowsExecutionAspect
-from automojo.sysman.windows.runners.local import (
+from ccai.sysman.windows.runners.aspects.base import IWindowsExecutionAspect
+from ccai.sysman.windows.runners.local import (
     WindowsLocalCommandRunner,
     WindowsLocalRunnerConfig,
 )
-from automojo.sysman.windows.runners.models import (
+from ccai.sysman.windows.runners.models import (
     WindowsExecutionContext,
     WindowsRunResult,
 )

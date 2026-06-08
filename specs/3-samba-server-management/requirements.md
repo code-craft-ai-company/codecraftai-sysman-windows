@@ -3,7 +3,7 @@
 ## Introduction
 
 The samba-server-management feature provides the
-`automojo-sysman-windows` package with the ability to manage the
+`codecraftai-sysman-windows` package with the ability to manage the
 SMB-share surface on Windows hosts.  Windows ships its own SMB
 server as part of the base operating system; the canonical
 management toolchain is the PowerShell ``SmbShare`` /
@@ -17,13 +17,13 @@ account database (or a domain controller for domain-joined hosts).
 
 This spec implements the cross-OS samba-server-management contract
 defined at
-``automojo-sysman-common/specs/contracts/samba-server-management/contract.md``
+``codecraftai-sysman-common/specs/contracts/samba-server-management/contract.md``
 for Windows, scoped to native SMB.
 
 A maintenance coordinator running in an external package drives all
 operations by calling into this feature's public interfaces.  All
 PowerShell scriptblocks are dispatched through the
-``automojo-interfaces`` command-runner abstraction with the
+``codecraftai-interfaces`` command-runner abstraction with the
 canonical ``powershell.exe -NoProfile -NonInteractive -Command``
 argv shape so that ``$PROFILE`` cannot mutate cmdlet behaviour and
 PowerShell never blocks waiting for interactive input.

@@ -1,8 +1,8 @@
 ===============================
-Automation Mojo Sysman Windows
+Code Craft AI Sysman Windows
 ===============================
 
-The ``automojo-sysman-windows`` package provides system-management primitives for Microsoft Windows hosts, parallel to what ``automojo-sysman-linux-redhat`` provides for Red Hat Enterprise Linux. It implements the cross-OS contracts published by ``automojo-sysman-common`` through PowerShell over the standard Windows admin toolchain — ``winget``, ``Get-Service``/``Set-Service``, ``NetSecurity``, ``bcdedit``, the Windows event log, certificate stores, and friends — exposed through the same ``ICommandRunner`` / ``IFileOperator`` abstractions and ``Aspects``-style behaviour parameters used elsewhere in the suite.
+The ``codecraftai-sysman-windows`` package provides system-management primitives for Microsoft Windows hosts, parallel to what ``codecraftai-sysman-linux-redhat`` provides for Red Hat Enterprise Linux. It implements the cross-OS contracts published by ``codecraftai-sysman-common`` through PowerShell over the standard Windows admin toolchain — ``winget``, ``Get-Service``/``Set-Service``, ``NetSecurity``, ``bcdedit``, the Windows event log, certificate stores, and friends — exposed through the same ``ICommandRunner`` / ``IFileOperator`` abstractions and ``Aspects``-style behaviour parameters used elsewhere in the suite.
 
 Status
 ======
@@ -14,8 +14,8 @@ Repository Structure
 
 - ``development/`` - Runtime environment scripts.
 - ``repository-setup/`` - Repository homing and setup scripts.
-- ``source/packages/automojo/sysman/windows/`` - Implementation modules.
-- ``source/testroots/testbase/automojo/tests/sysman/windows/`` - testbase test suite.
+- ``source/packages/ccai/sysman/windows/`` - Implementation modules.
+- ``source/testroots/testbase/ccai/tests/sysman/windows/`` - testbase test suite.
 - ``specs/`` - Feature specifications organised by phase and domain area.
 - ``userguide/`` - Standards, conventions, and documentation.
 
@@ -44,7 +44,7 @@ Activate the virtual environment and run the testbase suite:
 
    source .venv/bin/activate
    testbase testing run --root source/testroots/testbase \
-       --includes=testbase.automojo.tests.sysman.windows \
+       --includes=testbase.ccai.tests.sysman.windows \
        --output=./.output
 
 Standards and Conventions
@@ -58,4 +58,4 @@ Additional Resources
 ====================
 
 - User guide entry point: ``userguide/userguide.rst``
-- Cross-OS contracts: ``../automojo-sysman-common/specs/contracts/``
+- Cross-OS contracts: ``../codecraftai-sysman-common/specs/contracts/``

@@ -3,11 +3,11 @@
 ## Introduction
 
 The certificate-issuance feature provides the
-`automojo-sysman-windows` package with the ability to *issue*,
+`codecraftai-sysman-windows` package with the ability to *issue*,
 *renew*, *revoke*, *export*, *import*, *get*, and *list* X.509
 certificates on Windows hosts.  This spec implements the
 certificate-issuance contract defined at
-`automojo-sysman-common/specs/contracts/certificate-issuance/contract.md`
+`codecraftai-sysman-common/specs/contracts/certificate-issuance/contract.md`
 for Windows.
 
 A maintenance coordinator drives all operations by calling into this
@@ -16,7 +16,7 @@ module cmdlets — `New-SelfSignedCertificate`, `Get-ChildItem`
 against ``Cert:\\``, `Export-PfxCertificate`, `Export-Certificate`,
 `Import-PfxCertificate`, `Import-Certificate`, `Remove-Item` — plus
 optional `certreq.exe` invocations for AD CS) are executed
-exclusively through the `automojo-interfaces` command-runner
+exclusively through the `codecraftai-interfaces` command-runner
 abstraction.  No `subprocess`, no direct `open`, and no direct
 `pathlib` calls are made inside this module.
 

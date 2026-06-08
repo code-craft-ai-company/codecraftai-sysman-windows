@@ -2,12 +2,12 @@
 
 ## Introduction
 
-The filesystem management feature provides the `automojo-sysman-windows` package with
+The filesystem management feature provides the `codecraftai-sysman-windows` package with
 the ability to mount and unmount drive letters, manage persistent drive-letter
 assignments, create and remove directories and symbolic links, change ownership and
 permissions, and inspect file / volume metadata on Windows systems.  This spec
 implements the filesystem-management contract defined at
-`automojo-sysman-common/specs/contracts/filesystem-management/contract.md` for
+`codecraftai-sysman-common/specs/contracts/filesystem-management/contract.md` for
 Windows using PowerShell cmdlets (`New-PSDrive`, `Remove-PSDrive`, `Get-Volume`,
 `Get-Partition`, `Set-Partition`, `Add-PartitionAccessPath`, `Get-Item`, `New-Item`,
 `Remove-Item`, `Set-Acl`), the `icacls.exe` legacy tool for POSIX-mode-to-ACL
@@ -20,7 +20,7 @@ paths should be mounted or which permissions are correct — it provides the
 capability to *manipulate filesystem state* reliably, idempotently, and with full
 auditability.  Windows has no POSIX mode; the manager documents and uses a bundled
 translation table that maps the abstract contract's integer `mode` to an approximate
-ACL.  All system commands are executed exclusively through the `automojo-interfaces`
+ACL.  All system commands are executed exclusively through the `codecraftai-interfaces`
 command-runner abstraction.
 
 ---

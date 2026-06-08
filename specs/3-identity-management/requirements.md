@@ -3,11 +3,11 @@
 ## Introduction
 
 The identity management feature provides the
-`automojo-sysman-windows` package with the ability to join a Windows
+`codecraftai-sysman-windows` package with the ability to join a Windows
 host to an Active Directory domain and resolve directory-backed users
 and groups against the local SAM and the AD directory.  This spec
 implements the cross-OS contract defined at
-`automojo-sysman-common/specs/contracts/identity-management/contract.md`
+`codecraftai-sysman-common/specs/contracts/identity-management/contract.md`
 for Windows using PowerShell cmdlets: `Add-Computer` /
 `Remove-Computer` for join / unjoin, `Get-WmiObject
 Win32_ComputerSystem` for membership query, `Get-ADUser` /
@@ -21,7 +21,7 @@ feature's public surface.  The feature does not decide *which* domain
 the host should join — it provides the capability to *manipulate
 domain membership and inspect directory state* reliably,
 idempotently, and with full auditability.  Every system command is
-executed exclusively through the `automojo-interfaces` command-runner
+executed exclusively through the `codecraftai-interfaces` command-runner
 abstraction, enabling dry-run simulation, auditing, and test mocking
 without requiring a live system.  Administrator passwords land
 inside the PowerShell scriptblock as a SecureString but are

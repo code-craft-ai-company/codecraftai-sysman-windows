@@ -2,10 +2,10 @@
 
 ## Introduction
 
-The user and group management feature provides the `automojo-sysman-windows` package
+The user and group management feature provides the `codecraftai-sysman-windows` package
 with the ability to manage local users and local groups on Windows systems.  This spec
 implements the user-group-management contract defined at
-`automojo-sysman-common/specs/contracts/user-group-management/contract.md` for
+`codecraftai-sysman-common/specs/contracts/user-group-management/contract.md` for
 Windows using the `Microsoft.PowerShell.LocalAccounts` module (`New-LocalUser`,
 `Remove-LocalUser`, `Set-LocalUser`, `Get-LocalUser`, `Disable-LocalUser`,
 `Enable-LocalUser`, `New-LocalGroup`, `Remove-LocalGroup`, `Get-LocalGroup`,
@@ -17,7 +17,7 @@ A maintenance coordinator running in an external package drives all operations b
 calling into this feature's public interfaces.  The feature does not decide *which*
 users or groups should exist — it provides the capability to *manipulate them*
 reliably, idempotently, and with full auditability.  All system commands are executed
-exclusively through the `automojo-interfaces` command-runner abstraction, enabling
+exclusively through the `codecraftai-interfaces` command-runner abstraction, enabling
 dry-run simulation, auditing, and test mocking without requiring a live system.
 Passwords passed to `set_password` and `create_user` are converted to a
 `SecureString` via `ConvertTo-SecureString -AsPlainText -Force` *inside* the

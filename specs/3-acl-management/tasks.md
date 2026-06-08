@@ -3,7 +3,7 @@
 ## Source Module
 
 - [x] Create `aclmanagement.py` under
-      `source/packages/automojo/sysman/windows/`.
+      `source/packages/ccai/sysman/windows/`.
 - [x] Module docstring covering the verb catalogue, file-I/O
       policy, elevation policy, idempotency policy, ACL-model
       commentary, and the canonical PowerShell argv shape.
@@ -96,7 +96,7 @@
 ## Test Module
 
 - [x] Create `test_aclmanagement.py` under
-      `source/testroots/testbase/automojo/tests/sysman/windows/`.
+      `source/testroots/testbase/ccai/tests/sysman/windows/`.
 - [x] `_MockCommandRunner` recorder.
 - [x] `_full_acl_payload()` JSON fixture (multi-ACE array form;
       one allow user, one allow group, one deny, one inherited).
@@ -161,7 +161,7 @@
 ## Follow-ups
 
 - **Cross-OS contract conformance review.**  Once the cross-OS
-  adapter layer in `automojo-interfaces` materialises, revisit the
+  adapter layer in `codecraftai-interfaces` materialises, revisit the
   type-name divergence (`WindowsAclInfo` vs the contract's
   `AclSet`) and decide whether the adapter or the per-OS module
   carries the rename.

@@ -3,13 +3,13 @@
 ## Introduction
 
 This spec implements the acl-management contract defined at
-`automojo-sysman-common/specs/contracts/acl-management/contract.md`
+`codecraftai-sysman-common/specs/contracts/acl-management/contract.md`
 for Windows using PowerShell `Get-Acl` / `Set-Acl` for reads and the
 combined PowerShell + `icacls.exe` toolchain for writes — the
 canonical NTFS DACL surface shipped with every supported Windows
 edition.
 
-The ACL management feature provides the `automojo-sysman-windows`
+The ACL management feature provides the `codecraftai-sysman-windows`
 package with the ability to query and mutate NTFS Discretionary
 Access Control Lists (DACLs) on individual filesystem paths.  A
 maintenance coordinator running in an external package drives all
@@ -17,7 +17,7 @@ operations by calling into this feature's public verbs.  The feature
 does not decide which ACL a path should carry — it provides the
 capability to apply, observe, and idempotently re-apply DACLs
 reliably and with full auditability.  Every system command is
-executed exclusively through the `automojo-interfaces` command-runner
+executed exclusively through the `codecraftai-interfaces` command-runner
 abstraction; this module does not import `subprocess`, does not call
 `open`, and does not consume an `IFileOperator`.  Persistence is
 owned by `Set-Acl` and `icacls` themselves (the kernel-level

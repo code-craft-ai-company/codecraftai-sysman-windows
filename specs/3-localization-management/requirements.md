@@ -3,10 +3,10 @@
 ## Introduction
 
 The localization management feature provides the
-`automojo-sysman-windows` package with the ability to query and set
+`codecraftai-sysman-windows` package with the ability to query and set
 host-wide locale, keymap, and timezone settings on Windows hosts.
 This spec implements the localization-management contract defined at
-`automojo-sysman-common/specs/contracts/localization-management/contract.md`
+`codecraftai-sysman-common/specs/contracts/localization-management/contract.md`
 for Windows using the PowerShell cmdlets `Get-Culture` /
 `Set-Culture`, `Get-WinSystemLocale` / `Set-WinSystemLocale`,
 `Get-WinUserLanguageList` / `Set-WinUserLanguageList`, `Get-TimeZone`
@@ -19,7 +19,7 @@ does not decide which locale, keymap, or timezone the host should
 carry — it provides the capability to apply, observe, and idempotently
 re-apply those values reliably and with full auditability. Every
 PowerShell scriptblock is dispatched through the
-`automojo-interfaces` command-runner abstraction; this module does
+`codecraftai-interfaces` command-runner abstraction; this module does
 not import `subprocess`, does not call `open`, and does not consume an
 `IFileOperator`.
 

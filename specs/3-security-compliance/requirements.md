@@ -2,11 +2,11 @@
 
 ## Introduction
 
-The security compliance feature provides the `automojo-sysman-windows`
+The security compliance feature provides the `codecraftai-sysman-windows`
 package with the ability to run compliance baselines, iterate their
 findings, and remediate individual findings on Windows systems.  This
 spec implements the security-compliance contract defined at
-`automojo-sysman-common/specs/contracts/security-compliance/contract.md`
+`codecraftai-sysman-common/specs/contracts/security-compliance/contract.md`
 for Windows using the Microsoft **Security Compliance Toolkit** and
 native tooling: `secedit /analyze` / `secedit /configure` for Local
 Security Policy baselines, LGPO.exe for Group Policy template
@@ -15,9 +15,9 @@ registry-based baseline items.
 
 A maintenance coordinator running in an external package drives all
 operations by calling into this feature's public interfaces.  All system
-commands are executed exclusively through the `automojo-interfaces`
+commands are executed exclusively through the `codecraftai-interfaces`
 command-runner abstraction, and all baseline-metadata mutations are
-executed through the `automojo-interfaces` file-operator abstraction.
+executed through the `codecraftai-interfaces` file-operator abstraction.
 
 Unlike firewall / package / service management where the verb set maps
 cleanly, security-compliance is intrinsically **advisory** — the verb set
@@ -41,7 +41,7 @@ so that I can choose one to evaluate.
 
 1. WHEN the coordinator calls `list_profiles()` THE SYSTEM SHALL
    enumerate subdirectories of `<baselines_dir>` (default
-   `C:\ProgramData\Automojo\Compliance\Baselines\`) via the
+   `C:\ProgramData\CodeCraftAI\Compliance\Baselines\`) via the
    `IFileOperator` and SHALL include only those subdirectories that
    contain a `GPOs\` directory AND a `<BaselineName>-findings.json`
    rules manifest.
@@ -198,7 +198,7 @@ policy.
 #### Acceptance Criteria
 
 1. WHEN the coordinator calls `get_baseline()` THE SYSTEM SHALL invoke
-   `IFileOperator.read_text('%ProgramData%\\Automojo\\compliance\\current_baseline.json')`
+   `IFileOperator.read_text('%ProgramData%\\CodeCraftAI\\compliance\\current_baseline.json')`
    (the literal path expansion is performed on the target system;
    the dataclass stores the unexpanded string).
 2. WHEN the file does not exist THE SYSTEM SHALL return a
@@ -232,7 +232,7 @@ recorded.
    return `FAILED` with a `message` identifying the failing step,
    AND SHALL NOT write the baseline file.
 4. WHEN the baseline write succeeds THE SYSTEM SHALL return `SUCCESS`
-   with `target=%ProgramData%\Automojo\compliance\current_baseline.json`.
+   with `target=%ProgramData%\CodeCraftAI\compliance\current_baseline.json`.
 5. WHEN dry-run mode is active THE SYSTEM SHALL NOT invoke any
    mutation and SHALL return `DRY_RUN`.
 

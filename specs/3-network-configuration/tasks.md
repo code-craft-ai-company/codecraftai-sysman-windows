@@ -5,7 +5,7 @@ items (`[ ]`) identify remaining work.
 
 ## Module and Models
 
-- [x] 1. Create the `automojo.sysman.windows.networkconfiguration`
+- [x] 1. Create the `ccai.sysman.windows.networkconfiguration`
   module
 
 - [x] 2. Define `WindowsNetworkActionStatus` enum (SUCCESS / FAILED /
@@ -224,7 +224,7 @@ suite consolidates / renames where helpful.
 - [ ] 64. **Cross-OS contract conformance review**: verify the
   `WindowsNetworkActionResult` field shapes match the cross-OS
   contract at
-  `automojo-sysman-common/specs/contracts/network-configuration/contract.md`.
+  `codecraftai-sysman-common/specs/contracts/network-configuration/contract.md`.
   In particular: confirm `requires_reboot` belongs in the contract
   (cross-OS callers can otherwise miss the deferred change).
 
@@ -232,8 +232,8 @@ suite consolidates / renames where helpful.
   companion `set_hostname_and_reboot` verb belongs in this manager
   or a separate lifecycle-management feature.
 
-- [ ] 66. **automojo-* reuse check**: confirm no other feature in
-  `automojo-sysman-windows` invokes `Get-NetAdapter` /
+- [ ] 66. **codecraftai-* reuse check**: confirm no other feature in
+  `codecraftai-sysman-windows` invokes `Get-NetAdapter` /
   `New-NetIPAddress` / `Set-DnsClientServerAddress` /
   `Rename-Computer` directly; all such calls should go through
   `WindowsNetworkConfigurationManager`.

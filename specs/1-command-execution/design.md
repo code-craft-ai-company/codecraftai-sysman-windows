@@ -3,12 +3,12 @@
 ## Overview
 
 The command-execution feature is implemented as a single module,
-`automojo.sysman.windows.commandexecution`, that exposes a `WindowsCommandExecutor`
+`ccai.sysman.windows.commandexecution`, that exposes a `WindowsCommandExecutor`
 class.  This spec implements the command-execution contract defined at
-`automojo-sysman-common/specs/contracts/command-execution/contract.md` for Windows
+`codecraftai-sysman-common/specs/contracts/command-execution/contract.md` for Windows
 using `subprocess.run` (wrapped inside `WindowsLocalCommandRunner`) for local execution
 and `paramiko` (wrapped inside `WindowsSSHCommandRunner`, which lives in
-`automojo-protocol-ssh`) for remote execution over OpenSSH Server.  The coordinator
+`codecraftai-protocol-ssh`) for remote execution over OpenSSH Server.  The coordinator
 instantiates the executor with a runner and a config, then calls `run`, `run_sequence`,
 or `run_script` to dispatch work.
 
@@ -53,7 +53,7 @@ details on local/SSH execution, reliability tracking, and aspect configuration.
                          ▼
 ┌─────────────────────────────────────────────────────────────┐
 │            WindowsCommandExecutor                           │
-│  automojo.sysman.windows.commandexecution                   │
+│  ccai.sysman.windows.commandexecution                   │
 │                                                             │
 │  run()           run_sequence()                             │
 │  run_script()                                               │
@@ -92,7 +92,7 @@ details on local/SSH execution, reliability tracking, and aspect configuration.
 
 ### `WindowsCommandExecutor`
 
-**Location:** `source/packages/automojo/sysman/windows/commandexecution.py`
+**Location:** `source/packages/ccai/sysman/windows/commandexecution.py`
 
 | Method | Signature | Description |
 |---|---|---|
@@ -166,7 +166,7 @@ class WindowsSequenceResult:
 
 ## Interfaces
 
-### `ICommandRunner` (from `automojo-interfaces`)
+### `ICommandRunner` (from `codecraftai-interfaces`)
 
 ```python
 class ICommandRunner(Protocol):
@@ -182,7 +182,7 @@ class ICommandRunner(Protocol):
     ) -> RunResult: ...
 ```
 
-### `RunResult` (from `automojo-interfaces`)
+### `RunResult` (from `codecraftai-interfaces`)
 
 ```python
 @dataclass
@@ -606,13 +606,13 @@ returned `success` equals `True`; `args`, `elevated`, and `dry_run` are preserve
 ## Module Layout
 
 ```
-source/packages/automojo/sysman/windows/
+source/packages/ccai/sysman/windows/
 ├── __init__.py
 ├── commandexecution.py      ← WindowsCommandExecutor, config, spec, results, enum
 └── _elevation.py            ← _is_process_elevated() helper using ctypes
 
 source/testroots/testbase/
-└── automojo/tests/sysman/windows/
+└── ccai/tests/sysman/windows/
     └── test_commandexecution.py
 ```
 
@@ -623,11 +623,11 @@ source/testroots/testbase/
 ### Local Execution (Default)
 
 ```python
-from automojo.sysman.windows.runners import (
+from ccai.sysman.windows.runners import (
     WindowsLocalCommandRunner,
     WindowsLocalRunnerConfig,
 )
-from automojo.sysman.windows.commandexecution import (
+from ccai.sysman.windows.commandexecution import (
     WindowsCommandExecutor,
     WindowsCommandExecutorConfig,
     WindowsCommandSpec,
@@ -668,11 +668,11 @@ print(f"all_succeeded={seq_result.all_succeeded} failed_at={seq_result.failed_at
 ### SSH with Aspects
 
 ```python
-from automojo.sysman.windows.runners import (
+from ccai.sysman.windows.runners import (
     WindowsSSHCommandRunner,
     WindowsSSHRunnerConfig,
 )
-from automojo.sysman.windows.aspects import (
+from ccai.sysman.windows.aspects import (
     PersistenceAspect,
     RetryAspect,
     TimeoutAspect,
@@ -680,7 +680,7 @@ from automojo.sysman.windows.aspects import (
     RetryAspectConfig,
     TimeoutAspectConfig,
 )
-from automojo.sysman.windows.storage import SQLiteStorage
+from ccai.sysman.windows.storage import SQLiteStorage
 
 runner = WindowsSSHCommandRunner(
     WindowsSSHRunnerConfig(host="win-prod-01", username="Administrator"),

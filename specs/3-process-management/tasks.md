@@ -9,7 +9,7 @@ idempotent where the verb's nature permits; reads never elevate.
 ## Module and Models
 
 - [x] 1. Create the
-  `automojo.sysman.windows.processmanagement` module.
+  `ccai.sysman.windows.processmanagement` module.
 
 - [x] 2. Define `WindowsProcessActionStatus` (alias of the package's
   shared `ActionStatus`: `SUCCESS / FAILED / SKIPPED / DRY_RUN`).
@@ -209,7 +209,7 @@ idempotent where the verb's nature permits; reads never elevate.
   `ProcessManager` facade can wrap `WindowsProcessManager`,
   `MacosProcessManager`, and `UbuntuProcessManager` uniformly.
 
-- [ ] 49. **automojo-* reuse check**: confirm that
+- [ ] 49. **codecraftai-* reuse check**: confirm that
   `service-management` and `scheduled-tasks` do not duplicate
   the `Get-Process` / `Stop-Process` argv shapes; both should
   delegate to `WindowsProcessManager` for "is this process

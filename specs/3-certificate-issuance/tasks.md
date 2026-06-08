@@ -6,7 +6,7 @@ Unchecked items (`[ ]`) identify out-of-scope or follow-up work.
 ## Module and Models
 
 - [x] 1. Create the `certificateissuance` module under
-  `source/packages/automojo/sysman/windows/`.
+  `source/packages/ccai/sysman/windows/`.
 
 - [x] 2. Define `WindowsCertIssuanceActionStatus` alias to the shared
   `ActionStatus` enum.
@@ -123,7 +123,7 @@ Unchecked items (`[ ]`) identify out-of-scope or follow-up work.
 ## Out of Scope (Contract Surface Not Yet Implemented)
 
 - [ ] 40. `Credential` parameter — defer until the cross-package
-  `automojo-credentials` integration lands.
+  `codecraftai-credentials` integration lands.
 
 - [ ] 41. ACME issuance via Posh-ACME / win-acme — defer to a
   follow-up wave; current pilot covers self-signed +

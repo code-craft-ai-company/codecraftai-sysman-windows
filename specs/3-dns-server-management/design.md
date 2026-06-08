@@ -4,21 +4,21 @@
 
 The Windows dns-server-management feature is implemented as a
 single module,
-`automojo.sysman.windows.dnsservermanagement`, exposing a
+`ccai.sysman.windows.dnsservermanagement`, exposing a
 `WindowsDnsServerManager` class that wraps the PowerShell
 `DnsServer` module through the `ICommandRunner` abstraction.
 
 The module follows the standard manager pattern shared with
 every other Layer 3 feature in this package: it consumes the
 `BaseFeatureManager` mixin from
-`automojo.sysman.windows.featurebase`, accepts an injected
+`ccai.sysman.windows.featurebase`, accepts an injected
 runner plus a `WindowsDnsManagerConfig`, and dispatches every
 PowerShell scriptblock through the runner.
 
 The cross-OS contract for this feature lives in
-`automojo-sysman-common/specs/contracts/dns-server-management/contract.md`.
+`codecraftai-sysman-common/specs/contracts/dns-server-management/contract.md`.
 The RHEL canonical implementation lives in
-`automojo-sysman-linux-redhat/specs/3-dns-server-management/`.
+`codecraftai-sysman-linux-redhat/specs/3-dns-server-management/`.
 
 **See Also:**
 - `3-network-configuration` — owns DNS *client* (resolver)

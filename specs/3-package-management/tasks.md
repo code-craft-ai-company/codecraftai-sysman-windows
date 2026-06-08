@@ -5,7 +5,7 @@ items (`[ ]`) identify remaining work.
 
 ## Module and Models
 
-- [x] 1. Create the `automojo.sysman.windows.packagemanagement`
+- [x] 1. Create the `ccai.sysman.windows.packagemanagement`
   module
 
 - [x] 2. Define `WindowsPackageActionStatus` enum (SUCCESS / FAILED /
@@ -201,7 +201,7 @@ Total: 27 tests, all passing.
 - [ ] 57. **Cross-OS contract conformance review**: verify the
   `WindowsPackageActionResult` / `WindowsPackageInfo` field shapes
   match the cross-OS contract at
-  `automojo-sysman-common/specs/contracts/package-management/contract.md`.
+  `codecraftai-sysman-common/specs/contracts/package-management/contract.md`.
   The contract currently names `package_name` on the result; this
   batch uses `name` to match the Ubuntu / macOS sibling
   implementations.
@@ -223,6 +223,6 @@ Total: 27 tests, all passing.
   upgrade", `0x8A150014` "install cancelled") to drive
   `RetryAspect` configuration across features.
 
-- [ ] 61. **automojo-* reuse check**: confirm no other feature in
-  `automojo-sysman-windows` invokes `winget` directly; all such
+- [ ] 61. **codecraftai-* reuse check**: confirm no other feature in
+  `codecraftai-sysman-windows` invokes `winget` directly; all such
   calls should go through `WindowsPackageManager`.

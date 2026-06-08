@@ -5,7 +5,7 @@ items (`[ ]`) identify remaining work.
 
 ## Module and Models
 
-- [x] 1. Create the `automojo.sysman.windows.scheduledtasks` module
+- [x] 1. Create the `ccai.sysman.windows.scheduledtasks` module
 
 - [x] 2. Define `WindowsScheduledTaskActionStatus` and
   `WindowsTaskOwner` enums
@@ -127,7 +127,7 @@ items (`[ ]`) identify remaining work.
 - [ ] 25. Raw XML authoring (`Register-ScheduledTask -Xml`) — out
   of base contract
 
-- [ ] 26. Task-folder namespacing (`\\AutomojoSysman\\`) — out of
+- [ ] 26. Task-folder namespacing (`\\CodeCraftAISysman\\`) — out of
   base contract; reserved extension
 
 - [ ] 27. Concurrency-control / resource-gated settings
@@ -232,7 +232,7 @@ implemented suite consolidates / renames where helpful.
   `WindowsTaskSpec` / `WindowsTaskInfo` /
   `WindowsScheduledTaskActionResult` field shapes match the
   cross-OS contract at
-  `automojo-sysman-common/specs/contracts/scheduled-tasks/contract.md`
+  `codecraftai-sysman-common/specs/contracts/scheduled-tasks/contract.md`
   and that the owner-scope mapping (SYSTEM vs USER) matches the
   contract's Windows row.
 
@@ -243,10 +243,10 @@ implemented suite consolidates / renames where helpful.
 
 - [ ] 64. **Task-folder namespacing plan**: scope whether to add an
   optional `task_path` config field so operator-managed tasks live
-  under `\\AutomojoSysman\\` rather than at the scheduler root.
+  under `\\CodeCraftAISysman\\` rather than at the scheduler root.
 
-- [ ] 65. **automojo-* reuse check**: confirm no other feature in
-  `automojo-sysman-windows` invokes `Register-ScheduledTask` /
+- [ ] 65. **codecraftai-* reuse check**: confirm no other feature in
+  `codecraftai-sysman-windows` invokes `Register-ScheduledTask` /
   `Unregister-ScheduledTask` / `Enable-ScheduledTask` /
   `Disable-ScheduledTask` / `Start-ScheduledTask` /
   `Get-ScheduledTask` directly; all such calls should go through

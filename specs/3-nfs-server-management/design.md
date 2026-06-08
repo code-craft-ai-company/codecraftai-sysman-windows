@@ -3,7 +3,7 @@
 ## Overview
 
 The Windows nfs-server-management feature is implemented as a
-single module, ``automojo.sysman.windows.nfsservermanagement``,
+single module, ``ccai.sysman.windows.nfsservermanagement``,
 exposing a ``WindowsNfsServerManager`` class that wraps the
 PowerShell ``NFS`` module (``New-NfsShare`` / ``Remove-NfsShare`` /
 ``Set-NfsShare`` / ``Get-NfsShare``) and the ``NfsService`` Windows
@@ -13,10 +13,10 @@ Follows the standard manager pattern; delegates daemon lifecycle to
 ``3-service-management``.
 
 **See Also:**
-- ``automojo-sysman-common/specs/contracts/nfs-server-management/contract.md``
+- ``codecraftai-sysman-common/specs/contracts/nfs-server-management/contract.md``
   — the cross-OS abstract contract.
-- ``automojo-sysman-linux-ubuntu/specs/3-nfs-server-management/`` /
-  ``automojo-sysman-macos/specs/3-nfs-server-management/`` —
+- ``codecraftai-sysman-linux-ubuntu/specs/3-nfs-server-management/`` /
+  ``codecraftai-sysman-macos/specs/3-nfs-server-management/`` —
   Unix-flavoured implementations of the same contract that operate
   on an on-disk ``/etc/exports`` file.  Windows differs in that the
   share table is held in the registry / service-store, and shares

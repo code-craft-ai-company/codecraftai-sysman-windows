@@ -3,10 +3,10 @@
 ## Overview
 
 The ssh-server-configuration feature is implemented as a single
-module, `automojo.sysman.windows.sshserverconfiguration`, that
+module, `ccai.sysman.windows.sshserverconfiguration`, that
 exposes a `WindowsSshServerConfigurationManager` class.  This spec
 implements the ssh-server-configuration contract defined at
-`automojo-sysman-common/specs/contracts/ssh-server-configuration/contract.md`
+`codecraftai-sysman-common/specs/contracts/ssh-server-configuration/contract.md`
 for Windows using the OpenSSH server feature shipped with current
 Windows Server / Windows 10 / Windows 11 releases.
 
@@ -39,7 +39,7 @@ configuration.
                          ▼
 ┌─────────────────────────────────────────────────────────────┐
 │        WindowsSshServerConfigurationManager                 │
-│  automojo.sysman.windows.sshserverconfiguration             │
+│  ccai.sysman.windows.sshserverconfiguration             │
 │                                                             │
 │  get_sshd_setting()       set_sshd_setting()                │
 │  remove_sshd_setting()    list_sshd_settings()              │
@@ -82,7 +82,7 @@ configuration.
 ### `WindowsSshServerConfigurationManager`
 
 **Location:**
-`source/packages/automojo/sysman/windows/sshserverconfiguration.py`
+`source/packages/ccai/sysman/windows/sshserverconfiguration.py`
 
 | Method | Signature | Description |
 |---|---|---|
@@ -172,7 +172,7 @@ class WindowsSshQueryError(Exception):
 
 ## Interfaces
 
-### `ICommandRunner` (from `automojo-interfaces`)
+### `ICommandRunner` (from `codecraftai-interfaces`)
 
 ```python
 class ICommandRunner(Protocol):
@@ -600,14 +600,14 @@ is invoked with `elevated=True` for the mutating command.
 ## Module Layout
 
 ```
-source/packages/automojo/sysman/windows/
+source/packages/ccai/sysman/windows/
 ├── __init__.py
 └── sshserverconfiguration.py   ← WindowsSshServerConfigurationManager,
                                    config, models, exceptions, parser
                                    helpers
 
 source/testroots/testbase/
-└── automojo/tests/sysman/windows/
+└── ccai/tests/sysman/windows/
     └── test_sshserverconfiguration.py
 ```
 
@@ -618,11 +618,11 @@ source/testroots/testbase/
 ### Local Execution (Default)
 
 ```python
-from automojo.sysman.windows.runners import (
+from ccai.sysman.windows.runners import (
     LocalCommandRunner,
     LocalRunnerConfig,
 )
-from automojo.sysman.windows.sshserverconfiguration import (
+from ccai.sysman.windows.sshserverconfiguration import (
     WindowsSshServerConfigurationManager,
     WindowsSshServerConfigurationManagerConfig,
 )
@@ -657,16 +657,16 @@ if test_result.status.name == "SUCCESS":
 ### SSH Execution with Aspects
 
 ```python
-from automojo.sysman.windows.runners import (
+from ccai.sysman.windows.runners import (
     SSHCommandRunner,
     SSHRunnerConfig,
 )
-from automojo.sysman.windows.aspects import (
+from ccai.sysman.windows.aspects import (
     PersistenceAspect,
     PersistenceAspectConfig,
 )
-from automojo.sysman.windows.storage import SQLiteStorage
-from automojo.sysman.windows.sshserverconfiguration import (
+from ccai.sysman.windows.storage import SQLiteStorage
+from ccai.sysman.windows.sshserverconfiguration import (
     WindowsSshServerConfigurationManager,
     WindowsSshServerConfigurationManagerConfig,
 )

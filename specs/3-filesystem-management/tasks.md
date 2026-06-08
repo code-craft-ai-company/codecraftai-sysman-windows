@@ -5,7 +5,7 @@ items (`[ ]`) identify remaining work.
 
 ## Module and Models
 
-- [x] 1. Create the `automojo.sysman.windows.filesystemmanagement`
+- [x] 1. Create the `ccai.sysman.windows.filesystemmanagement`
   module
 
 - [x] 2. Define `WindowsFilesystemActionStatus` enum (SUCCESS /
@@ -177,14 +177,14 @@ items (`[ ]`) identify remaining work.
 - [ ] 56. **Cross-OS contract conformance review**: verify this
   implementation's `WindowsFilesystemActionResult` field shapes match
   the cross-OS contract at
-  `automojo-sysman-common/specs/contracts/filesystem-management/contract.md`,
+  `codecraftai-sysman-common/specs/contracts/filesystem-management/contract.md`,
   and that the OS-specific mode-to-ACL translation is documented as
   an extension rather than a contract requirement.  Particular
   attention: the FAILED-with-message behaviour of `add_fstab_entry`
   / `remove_fstab_entry` may require a contract amendment to mark
   fstab as N/A on Windows.
 
-- [ ] 57. **automojo-* reuse check**: confirm that no other feature
-  in `automojo-sysman-windows` invokes `Add-PartitionAccessPath` /
+- [ ] 57. **codecraftai-* reuse check**: confirm that no other feature
+  in `codecraftai-sysman-windows` invokes `Add-PartitionAccessPath` /
   `icacls` directly; all such calls should go through
   `WindowsFilesystemManager`.

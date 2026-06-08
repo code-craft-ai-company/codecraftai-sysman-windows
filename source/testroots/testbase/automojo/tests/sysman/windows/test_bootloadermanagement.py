@@ -9,11 +9,11 @@
 from dataclasses import dataclass, field
 from typing import Callable, Optional
 
-from automojo import testbase
+from ccai import testbase
 
-from automojo.interfaces.icommandrunner import RunResult
+from ccai.interfaces.icommandrunner import RunResult
 
-from automojo.sysman.windows.bootloadermanagement import (
+from ccai.sysman.windows.bootloadermanagement import (
     WindowsBootEntrySpec,
     WindowsBootloaderActionStatus,
     WindowsBootloaderManager,

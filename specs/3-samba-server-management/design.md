@@ -4,7 +4,7 @@
 
 The Windows samba-server-management feature is implemented as a
 single module,
-``automojo.sysman.windows.sambaservermanagement``, exposing a
+``ccai.sysman.windows.sambaservermanagement``, exposing a
 ``WindowsSambaServerManager`` class that wraps Windows's native SMB
 surface (``New-SmbShare`` / ``Remove-SmbShare`` / ``Get-SmbShare``
 / ``Grant-SmbShareAccess`` / ``Revoke-SmbShareAccess`` /
@@ -18,9 +18,9 @@ database (or a domain controller for domain-joined hosts), so SMB
 user creation / removal is delegated to ``user-group-management``.
 
 **See Also:**
-- ``automojo-sysman-common/specs/contracts/samba-server-management/contract.md``
+- ``codecraftai-sysman-common/specs/contracts/samba-server-management/contract.md``
   — the cross-OS abstract contract.
-- ``automojo-sysman-linux-ubuntu/specs/3-samba-server-management/``
+- ``codecraftai-sysman-linux-ubuntu/specs/3-samba-server-management/``
   — Ubuntu's implementation, which uses the Samba project's
   ``smb.conf`` / ``smbpasswd`` / ``pdbedit`` toolchain.
 - ``3-service-management`` — ``LanmanServer`` Windows service

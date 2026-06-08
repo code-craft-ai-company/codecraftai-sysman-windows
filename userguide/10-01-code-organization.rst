@@ -1,9 +1,9 @@
 .. _10-01-code-organziation-and-conventions:
 
 ===================================================
-Automation Mojo - Code Organization and Conventions
+Code Craft AI - Code Organization and Conventions
 ===================================================
-This document describes the organization of the code used by Automation Mojo for python repositories.
+This document describes the organization of the code used by Code Craft AI for python repositories.
 
 Root Directory
 ==============
@@ -85,17 +85,17 @@ job files that are used to enable the use of configuration as code to create jen
 'source/packages' Folder
 ------------------------
 The *packages* folder contains the python code that makes up any python packages created by the project.  The packages
-folder contains a folder 'automojo' which is the root namespace package for all Automation Mojo projects.  The next folder
-under the 'automojo' folder is generally named after the package itself.  For example, for the 'automojo-errors'
-distribution package.  There will be a folder 'source/packages/automojo/errors'.  The 'source/packages/automojo' is a
+folder contains a folder 'ccai' which is the root namespace package for all Code Craft AI projects.  The next folder
+under the 'ccai' folder is generally named after the package itself.  For example, for the 'codecraftai-errors'
+distribution package.  There will be a folder 'source/packages/ccai/errors'.  The 'source/packages/ccai' is a
 namespace package so it does not contain an '__init__.py' file.   The next folder down, in this case the
-'source/packages/automojo/errors' folder, is the first folder that would contain a '__init__.py' file.
+'source/packages/ccai/errors' folder, is the first folder that would contain a '__init__.py' file.
 
-When you have a root namespace package, such as the 'automojo' package.  Then when you install different python
-distribution packages such as 'automojo-errors' and 'automojo-foundation'.  The packages install into the common
+When you have a root namespace package, such as the 'ccai' package.  Then when you install different python
+distribution packages such as 'codecraftai-errors' and 'codecraftai-foundation'.  The packages install into the common
 namespace alongside each other in the virtual environment like:
 
-    '.env/lib/<python-version>/site-packages/automojo/errors' and '.env/lib/<python-version>/site-packages/automojo/foundation'
+    '.env/lib/<python-version>/site-packages/ccai/errors' and '.env/lib/<python-version>/site-packages/ccai/foundation'
 
 
 'source/site' Folder
@@ -109,14 +109,14 @@ the graphical interface and REST API elements of a website or microservice.
 The *<namespace>* folder provides the root namespace for python imports related to the website server side code.  The
 *PYTHONPATH* variable is set to point to the *source/site* folder and imports are made relative to the *site* folder.
 Generally the name used for the namespace folder is the root namespace for the company and project.  For example, the
-root namespace for a hello world service written by the company *Automation Mojo* would be *source/site/automojo/hello*
+root namespace for a hello world service written by the company *Code Craft AI* would be *source/site/ccai/hello*
 and the code would be imported like:
 
     .. code-block:: python
 
-        from automojo.hello.restapi.v1.HelloMessage import HelloMessage
+        from ccai.hello.restapi.v1.HelloMessage import HelloMessage
 
-        from automojo.hello.webinterface.blueprints.home import HomeBlueprint
+        from ccai.hello.webinterface.blueprints.home import HomeBlueprint
 
 
 'source/site/<namespace>/restapis' Folder
@@ -155,9 +155,9 @@ For repositories that use 'testplus', the tests are organized based in the autom
     'source/testroots/<org-namespace>/tests/<automation-configuration>/<package-namespace>/<module-path>/<testroot-name>/<functionality>.py'
 
 The '<automation-configuration>' is that name of the automation configuration that the test is running under.  Automation configuraitons provide specific
-test resources and dependencies that are used by the test.  The '<org-namespace>' for all automation mojo repositories is 'automojo'.  The '<package-namespace>'
-for a package is generally the second part of the package name.  For example, the 'automojo-interop' would use a package name like 'automojo.interop' for the
-package namespace and 'automojo.tests.interop' for the prefix for all of the packages tests. 
+test resources and dependencies that are used by the test.  The '<org-namespace>' for all Code Craft AI repositories is 'ccai'.  The '<package-namespace>'
+for a package is generally the second part of the package name.  For example, the 'codecraftai-interop' would use a package name like 'ccai.interop' for the
+package namespace and 'ccai.tests.interop' for the prefix for all of the packages tests. 
 
 'source/tests' Folder
 ----------------------

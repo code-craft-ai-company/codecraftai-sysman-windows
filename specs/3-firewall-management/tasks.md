@@ -5,7 +5,7 @@ items (`[ ]`) identify remaining work.
 
 ## Module and Models
 
-- [x] 1. Create the `automojo.sysman.windows.firewallmanagement`
+- [x] 1. Create the `ccai.sysman.windows.firewallmanagement`
   module.  The bundled services-to-(port, protocol) table lives
   inline in the same module as `_BUNDLED_SERVICES_TABLE` rather than
   in a separate `_services_table.py` file (matching the macOS
@@ -37,7 +37,7 @@ items (`[ ]`) identify remaining work.
 - [x] 8. `add_port(port, protocol, zone)` /
   `remove_port(port, protocol, zone)` — protocol validation
   (`tcp` / `udp`), zone validation, idempotent with
-  `DisplayName=automojo-port-<port>-<protocol>`
+  `DisplayName=codecraftai-port-<port>-<protocol>`
 
 - [x] 9. `add_rich_rule(rule, zone)` /
   `remove_rich_rule(rule, zone)` — `-DisplayName` clause is required
@@ -65,7 +65,7 @@ items (`[ ]`) identify remaining work.
 
 - [x] 13. `query_zone(zone)` / `query_all_zones()` —
   `Get-NetFirewallRule | ConvertTo-Json` parse, classified by
-  `DisplayName` prefix (`automojo-svc-` / `automojo-port-` /
+  `DisplayName` prefix (`codecraftai-svc-` / `codecraftai-port-` /
   rich-rule passthrough); `interfaces` and `sources` are always
   empty lists (Windows has no per-zone interface or source concept)
 

@@ -3,11 +3,11 @@
 ## Introduction
 
 This spec implements the hardware-inventory contract defined at
-`automojo-sysman-common/specs/contracts/hardware-inventory/contract.md` for
+`codecraftai-sysman-common/specs/contracts/hardware-inventory/contract.md` for
 Windows using PowerShell ``Get-ComputerInfo``, ``Get-CimInstance``,
 ``Get-Disk``, ``Get-Volume``, and ``Get-NetAdapter`` cmdlets.
 
-The hardware-inventory feature provides the `automojo-sysman-windows` package
+The hardware-inventory feature provides the `codecraftai-sysman-windows` package
 with the ability to query, classify, and aggregate hardware and platform
 identity information on Windows systems: hardware identity, CPU topology,
 memory (aggregate plus per-DIMM detail), storage devices, network link-layer
@@ -15,7 +15,7 @@ hardware, PCI devices, USB devices, and BIOS / UEFI firmware identity.
 
 A maintenance coordinator drives every operation by calling into this
 feature's public interfaces.  All system commands are executed exclusively
-through the `automojo-interfaces` command-runner abstraction, enabling
+through the `codecraftai-interfaces` command-runner abstraction, enabling
 auditing, tracing, and test mocking without requiring a live Windows host.
 
 This feature is **strictly read-only**.  Every verb is inherently idempotent

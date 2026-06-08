@@ -3,10 +3,10 @@
 ## Overview
 
 The scheduled-tasks feature is implemented as a single module,
-`automojo.sysman.windows.scheduledtasks`, that exposes a
+`ccai.sysman.windows.scheduledtasks`, that exposes a
 `WindowsScheduledTaskManager` class.  This spec implements the
 scheduled-tasks contract defined at
-`automojo-sysman-common/specs/contracts/scheduled-tasks/contract.md`
+`codecraftai-sysman-common/specs/contracts/scheduled-tasks/contract.md`
 for Windows using the Task Scheduler through its PowerShell module.
 The coordinator instantiates the manager with a command runner and a
 config, then calls the contract's verbs.
@@ -50,7 +50,7 @@ configuration.
                          ▼
 ┌─────────────────────────────────────────────────────────────┐
 │       WindowsScheduledTaskManager                           │
-│  automojo.sysman.windows.scheduledtasks                     │
+│  ccai.sysman.windows.scheduledtasks                     │
 │                                                             │
 │  create_task()   delete_task()                              │
 │  enable_task()   disable_task()   run_task_now()            │
@@ -70,7 +70,7 @@ configuration.
 
 ### `WindowsScheduledTaskManager`
 
-**Location:** `source/packages/automojo/sysman/windows/scheduledtasks.py`
+**Location:** `source/packages/ccai/sysman/windows/scheduledtasks.py`
 
 | Method | Signature | Description |
 |---|---|---|
@@ -531,13 +531,13 @@ failing step.
 ## Module Layout
 
 ```
-source/packages/automojo/sysman/windows/
+source/packages/ccai/sysman/windows/
 ├── __init__.py
 └── scheduledtasks.py    ← WindowsScheduledTaskManager,
                            models, config, exception
 
 source/testroots/testbase/
-└── automojo/tests/sysman/windows/
+└── ccai/tests/sysman/windows/
     └── test_scheduledtasks.py
 ```
 
@@ -548,10 +548,10 @@ source/testroots/testbase/
 ### Local Execution (Default)
 
 ```python
-from automojo.sysman.windows.runners import (
+from ccai.sysman.windows.runners import (
     WindowsLocalCommandRunner, WindowsLocalRunnerConfig,
 )
-from automojo.sysman.windows.scheduledtasks import (
+from ccai.sysman.windows.scheduledtasks import (
     WindowsScheduledTaskManager,
     WindowsScheduledTaskManagerConfig,
     WindowsTaskSpec,
@@ -576,10 +576,10 @@ print(f"create_task: {result.status.value}")
 ### WinRM Execution With Aspects
 
 ```python
-from automojo.sysman.windows.runners import (
+from ccai.sysman.windows.runners import (
     WindowsWinRMCommandRunner, WindowsWinRMRunnerConfig,
 )
-from automojo.sysman.windows.aspects import (
+from ccai.sysman.windows.aspects import (
     RetryAspect, RetryAspectConfig, TimeoutAspect, TimeoutAspectConfig,
 )
 
@@ -672,7 +672,7 @@ alternatives.
 
 By default the manager registers tasks at the Task Scheduler root
 (`\`).  A future extension may add an optional `task_path` config
-field that prepends `\\AutomojoSysman\\` (or similar) to every
+field that prepends `\\CodeCraftAISysman\\` (or similar) to every
 `TaskName`, so operator-managed tasks are visibly separated from the
 OS's own.
 

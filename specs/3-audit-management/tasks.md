@@ -5,11 +5,11 @@ Unchecked items (`[ ]`) identify remaining work.
 
 ## Module and Models
 
-- [x] 1. Create the `automojo.sysman.windows.auditmanagement`
+- [x] 1. Create the `ccai.sysman.windows.auditmanagement`
   module.
 
 - [x] 2. Define `WindowsAuditActionStatus` enum (re-exported alias
-  of `automojo.sysman.windows.featurebase.ActionStatus`).
+  of `ccai.sysman.windows.featurebase.ActionStatus`).
 
 - [x] 3. Define `WindowsAuditManagerConfig` dataclass (`dry_run`,
   `elevated`, `powershell_executable`, `default_log_channel`,
@@ -146,7 +146,7 @@ Unchecked items (`[ ]`) identify remaining work.
 
 - [ ] 53. **Cross-OS contract conformance review**: verify that
   the shipping dataclasses match the abstract names in
-  `automojo-sysman-common/specs/contracts/audit-management/contract.md`.
+  `codecraftai-sysman-common/specs/contracts/audit-management/contract.md`.
 
 - [ ] 54. **SACL coverage**: document the boundary between
   audit-management (subcategory-level policy) and acl-management

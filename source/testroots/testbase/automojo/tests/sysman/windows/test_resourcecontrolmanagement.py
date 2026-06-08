@@ -10,11 +10,11 @@
 from dataclasses import dataclass, field
 from typing import Callable, Optional
 
-from automojo import testbase
+from ccai import testbase
 
-from automojo.interfaces.icommandrunner import RunResult
+from ccai.interfaces.icommandrunner import RunResult
 
-from automojo.sysman.windows.resourcecontrolmanagement import (
+from ccai.sysman.windows.resourcecontrolmanagement import (
     WindowsIoLimitSpec,
     WindowsResourceControlActionResult,
     WindowsResourceControlActionStatus,
@@ -102,7 +102,7 @@ def _spec_path(name: str) -> str:
     """
         :returns: Default spec path for ``name``.
     """
-    rtnval = "C:\\ProgramData\\Automojo\\rcgroups\\{}.json".format(name)
+    rtnval = "C:\\ProgramData\\CodeCraftAI\\rcgroups\\{}.json".format(name)
     return rtnval
 
 
@@ -496,8 +496,8 @@ def test_list_groups_returns_list():
     """
     runner = _MockCommandRunner()
     list_scriptblock = (
-        "if (Test-Path -LiteralPath 'C:\\ProgramData\\Automojo\\rcgroups') { "
-        "Get-ChildItem -LiteralPath 'C:\\ProgramData\\Automojo\\rcgroups' -Filter '*.json' | "
+        "if (Test-Path -LiteralPath 'C:\\ProgramData\\CodeCraftAI\\rcgroups') { "
+        "Get-ChildItem -LiteralPath 'C:\\ProgramData\\CodeCraftAI\\rcgroups' -Filter '*.json' | "
         "Select-Object -ExpandProperty Name | "
         "ConvertTo-Json -Compress } else { '[]' }"
     )
@@ -645,8 +645,8 @@ def test_reads_never_elevate():
     """
     runner = _MockCommandRunner()
     list_scriptblock = (
-        "if (Test-Path -LiteralPath 'C:\\ProgramData\\Automojo\\rcgroups') { "
-        "Get-ChildItem -LiteralPath 'C:\\ProgramData\\Automojo\\rcgroups' -Filter '*.json' | "
+        "if (Test-Path -LiteralPath 'C:\\ProgramData\\CodeCraftAI\\rcgroups') { "
+        "Get-ChildItem -LiteralPath 'C:\\ProgramData\\CodeCraftAI\\rcgroups' -Filter '*.json' | "
         "Select-Object -ExpandProperty Name | "
         "ConvertTo-Json -Compress } else { '[]' }"
     )

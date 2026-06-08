@@ -10,12 +10,12 @@
 from dataclasses import dataclass, field
 from typing import Callable, Optional
 
-from automojo import testbase
+from ccai import testbase
 
-from automojo.interfaces.icommandrunner import RunResult
+from ccai.interfaces.icommandrunner import RunResult
 
-from automojo.sysman.windows import remotelogforwarding as rlf
-from automojo.sysman.windows.remotelogforwarding import (
+from ccai.sysman.windows import remotelogforwarding as rlf
+from ccai.sysman.windows.remotelogforwarding import (
     WindowsForwarderActionStatus,
     WindowsForwarderInfo,
     WindowsForwarderManagerConfig,
@@ -577,7 +577,7 @@ def test_test_forwarder_invokes_write_eventlog():
     """
         test_forwarder dispatches a PowerShell scriptblock that
         invokes ``Write-EventLog`` against the
-        ``automojo-test`` source on the Application channel.
+        ``codecraftai-test`` source on the Application channel.
     """
     runner = _MockCommandRunner()
     runner.default_result = RunResult(
@@ -610,7 +610,7 @@ def test_test_forwarder_invokes_write_eventlog():
         "Write-EventLog -LogName Application" in last_script, True,
     )
     testbase.assert_equal(
-        "automojo-test" in last_script, True,
+        "codecraftai-test" in last_script, True,
     )
     testbase.assert_equal(powershell_calls[-1]["elevated"], False)
     return
@@ -768,7 +768,7 @@ def test_failed_command_surfaces_stderr():
         id="collector1", host="example.com", port=5985,
     )
     xml_path = (
-        "C:\\ProgramData\\Automojo\\WEC\\collector1.xml"
+        "C:\\ProgramData\\CodeCraftAI\\WEC\\collector1.xml"
     )
     runner.results[
         ("wecutil.exe", "cs", xml_path)
