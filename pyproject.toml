@@ -2,12 +2,12 @@
 name = "codecraftai-sysman-windows"
 description = "Code Craft AI - System Management Windows"
 version = "0.0.1"
-authors = []
+authors = ["Myron Walker <myron.walker@gmail.com>"]
 readme = "README.rst"
-license = "LICENSE.txt"
+license = "LicenseRef-CodeCraftAI-Dual-License"
 classifiers = [
     "Programming Language :: Python :: 3",
-    "License :: OSI Approved :: MIT License",
+    "License :: Other/Proprietary License",
     "Operating System :: Microsoft :: Windows"
 ]
 keywords = [
@@ -23,14 +23,14 @@ codecraftai-errors = { git = "https://github.com/automationmojo/codecraftai-erro
 codecraftai-credentials = { git = "https://github.com/automationmojo/codecraftai-credentials.git", branch = "main" }
 codecraftai-dataprofiles = { git = "https://github.com/automationmojo/codecraftai-dataprofiles.git", branch = "main" }
 codecraftai-interfaces = { git = "https://github.com/automationmojo/codecraftai-interfaces.git", branch = "main" }
-codecraftai-testbase = { git = "https://github.com/automationmojo/codecraftai-testbase.git", branch = "main" }
 codecraftai-interop = { git = "https://github.com/automationmojo/codecraftai-interop.git", branch = "main" }
 codecraftai-sysman-common = { git = "https://github.com/automationmojo/codecraftai-sysman-common.git", branch = "main" }
 codecraftai-waiting = { git = "https://github.com/automationmojo/codecraftai-waiting.git", branch = "main" }
 
 [tool.poetry.group.dev.dependencies]
+hypothesis = "^6.0.0"
+codecraftai-testbase = { git = "https://github.com/automationmojo/codecraftai-testbase.git", branch = "main" }
 
-[tool.poetry.group.dbio.dependencies]
 
 [build-system]
 requires = ["poetry-core"]
