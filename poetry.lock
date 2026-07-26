@@ -388,7 +388,7 @@ codecraftai-errors = {git = "https://github.com/automationmojo/codecraftai-error
 type = "git"
 url = "https://github.com/automationmojo/codecraftai-credentials.git"
 reference = "main"
-resolved_reference = "72b2e1b570e7887a999d8038e894d5a561b89257"
+resolved_reference = "0c52375f9670cf6fbae22eb6ebf9a65182eeb0b9"
 
 [[package]]
 name = "codecraftai-dataprofiles"
@@ -520,7 +520,7 @@ rpyc = "^6.0.1"
 type = "git"
 url = "https://github.com/automationmojo/codecraftai-interop.git"
 reference = "main"
-resolved_reference = "1d05fc3467f76df00605158f7ce75551319ab55a"
+resolved_reference = "3e5c9e3d7083ceb129ca3d0626ce0ba940af4ab7"
 
 [[package]]
 name = "codecraftai-networking"
@@ -630,7 +630,7 @@ pyyaml = "^6.0.2"
 type = "git"
 url = "https://github.com/automationmojo/codecraftai-testbase.git"
 reference = "main"
-resolved_reference = "e7a98b287998ed061fd3fd6b09655f7ee6446dc0"
+resolved_reference = "1b7eb659093974fa1276a56ab5f9f5d525e01b2e"
 
 [[package]]
 name = "codecraftai-this-app"
