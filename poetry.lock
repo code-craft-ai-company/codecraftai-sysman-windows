@@ -6,7 +6,7 @@ version = "5.0.0"
 description = "Modern password hashing for your software and your servers"
 optional = false
 python-versions = ">=3.8"
-groups = ["main", "dev"]
+groups = ["main"]
 files = [
     {file = "bcrypt-5.0.0-cp313-cp313t-macosx_10_12_universal2.whl", hash = "sha256:f3c08197f3039bec79cee59a606d62b96b16669cff3949f21e74796b6e3cd2be"},
     {file = "bcrypt-5.0.0-cp313-cp313t-manylinux2014_aarch64.manylinux_2_17_aarch64.whl", hash = "sha256:200af71bc25f22006f4069060c88ed36f8aa4ff7f53e67ff04d2ab3f1e79a5b2"},
@@ -312,7 +312,7 @@ version = "8.4.2"
 description = "Composable command line interface toolkit"
 optional = false
 python-versions = ">=3.10"
-groups = ["main", "dev"]
+groups = ["main"]
 files = [
     {file = "click-8.4.2-py3-none-any.whl", hash = "sha256:e6f9f66136c816745b9d65817da91d61d957fb16e02e4dcd0552553c5a197b76"},
     {file = "click-8.4.2.tar.gz", hash = "sha256:9a6cea6e60b17ebe0a44c5cc636d94f09bd66142c1cd7d8b4cd731c4917a15f6"},
@@ -355,8 +355,6 @@ develop = false
 codecraftai-credentials = {git = "https://github.com/automationmojo/codecraftai-credentials.git", branch = "main"}
 codecraftai-errors = {git = "https://github.com/automationmojo/codecraftai-errors.git", branch = "main"}
 codecraftai-interfaces = {git = "https://github.com/automationmojo/codecraftai-interfaces.git", branch = "main"}
-codecraftai-networking = {git = "https://github.com/automationmojo/codecraftai-networking.git", branch = "main"}
-codecraftai-provisioning = {git = "https://github.com/automationmojo/codecraftai-provisioning.git", branch = "main"}
 codecraftai-this-app = {git = "https://github.com/automationmojo/codecraftai-this-app.git", branch = "main"}
 codecraftai-xmodules = {git = "https://github.com/automationmojo/codecraftai-xmodules.git", branch = "main"}
 cryptography = "^45.0.5"
@@ -371,7 +369,7 @@ pymongo = ["pymongo (>=4.13.2,<5.0.0)"]
 type = "git"
 url = "https://github.com/automationmojo/codecraftai-configuration.git"
 reference = "main"
-resolved_reference = "99bd40962625f5f52ff2e08f1fd6222c4752a968"
+resolved_reference = "5f1c0f9c5092b9a8f3e37cb086391f3aa793b2d0"
 
 [[package]]
 name = "codecraftai-credentials"
@@ -390,7 +388,7 @@ codecraftai-errors = {git = "https://github.com/automationmojo/codecraftai-error
 type = "git"
 url = "https://github.com/automationmojo/codecraftai-credentials.git"
 reference = "main"
-resolved_reference = "9590e4e28c611c826232c469ddc53876ee2bab2b"
+resolved_reference = "72b2e1b570e7887a999d8038e894d5a561b89257"
 
 [[package]]
 name = "codecraftai-dataprofiles"
@@ -398,7 +396,7 @@ version = "0.0.1"
 description = "Code Craft AI - Data Profiles Package"
 optional = false
 python-versions = ">=3.10,<4.0"
-groups = ["main", "dev"]
+groups = ["main"]
 files = []
 develop = false
 
@@ -410,7 +408,7 @@ codecraftai-interfaces = {git = "https://github.com/automationmojo/codecraftai-i
 type = "git"
 url = "https://github.com/automationmojo/codecraftai-dataprofiles.git"
 reference = "main"
-resolved_reference = "be4a067685dcebefc0cca85184c27adbac52bb64"
+resolved_reference = "612f77f71d8d73fd8af3cce025712a9443087ef1"
 
 [[package]]
 name = "codecraftai-errors"
@@ -450,7 +448,7 @@ version = "0.0.1"
 description = "Code Craft AI - Integration Runtime"
 optional = false
 python-versions = ">=3.10,<4.0"
-groups = ["main", "dev"]
+groups = ["main"]
 files = []
 develop = false
 
@@ -469,7 +467,7 @@ websocket = ["websocket-client (>=1.8.0,<2.0.0)"]
 type = "git"
 url = "https://github.com/automationmojo/codecraftai-integration-runtime.git"
 reference = "main"
-resolved_reference = "b6547fe7b1bd7c325930da4139d22f859d02a2d3"
+resolved_reference = "3d0bfa2f37c898813bf0f88aaf0874768aa656aa"
 
 [[package]]
 name = "codecraftai-interfaces"
@@ -481,11 +479,14 @@ groups = ["main", "dev"]
 files = []
 develop = false
 
+[package.dependencies]
+codecraftai-errors = {git = "https://github.com/automationmojo/codecraftai-errors.git", branch = "main"}
+
 [package.source]
 type = "git"
 url = "https://github.com/automationmojo/codecraftai-interfaces.git"
 reference = "main"
-resolved_reference = "d2a82b380316a13fd43430226bd2a0785332e6a7"
+resolved_reference = "6e332363c9047647f57d14d327b7e015a2bb2b5f"
 
 [[package]]
 name = "codecraftai-interop"
@@ -493,7 +494,7 @@ version = "0.0.1"
 description = "Code Craft AI - Interop Package"
 optional = false
 python-versions = ">=3.10,<4.0"
-groups = ["main", "dev"]
+groups = ["main"]
 files = []
 develop = false
 
@@ -519,40 +520,7 @@ rpyc = "^6.0.1"
 type = "git"
 url = "https://github.com/automationmojo/codecraftai-interop.git"
 reference = "main"
-resolved_reference = "73f35b8a43a7589fe3a7d5d5dab143a16ddfab04"
-
-[[package]]
-name = "codecraftai-landscaping"
-version = "0.0.1"
-description = "Code Craft AI - Landscaping Package"
-optional = false
-python-versions = ">=3.10,<4.0"
-groups = ["main", "dev"]
-files = []
-develop = false
-
-[package.dependencies]
-codecraftai-configuration = {git = "https://github.com/automationmojo/codecraftai-configuration.git", branch = "main"}
-codecraftai-credentials = {git = "https://github.com/automationmojo/codecraftai-credentials.git", branch = "main"}
-codecraftai-dataprofiles = {git = "https://github.com/automationmojo/codecraftai-dataprofiles.git", branch = "main"}
-codecraftai-errors = {git = "https://github.com/automationmojo/codecraftai-errors.git", branch = "main"}
-codecraftai-extension = {git = "https://github.com/automationmojo/codecraftai-extension.git", branch = "main"}
-codecraftai-integration-runtime = {git = "https://github.com/automationmojo/codecraftai-integration-runtime.git", branch = "main"}
-codecraftai-interfaces = {git = "https://github.com/automationmojo/codecraftai-interfaces.git", branch = "main"}
-codecraftai-interop = {git = "https://github.com/automationmojo/codecraftai-interop.git", branch = "main"}
-codecraftai-networking = {git = "https://github.com/automationmojo/codecraftai-networking.git", branch = "main"}
-codecraftai-restclient-vsphere = {git = "https://github.com/automationmojo/codecraftai-restclient-vsphere.git", branch = "main"}
-codecraftai-testbase = {git = "https://github.com/automationmojo/codecraftai-testbase.git", branch = "main"}
-codecraftai-this-app = {git = "https://github.com/automationmojo/codecraftai-this-app.git", branch = "main"}
-codecraftai-waiting = {git = "https://github.com/automationmojo/codecraftai-waiting.git", branch = "main"}
-codecraftai-xmodules = {git = "https://github.com/automationmojo/codecraftai-xmodules.git", branch = "main"}
-pyyaml = "^6.0.2"
-
-[package.source]
-type = "git"
-url = "https://github.com/automationmojo/codecraftai-landscaping.git"
-reference = "main"
-resolved_reference = "732e25e079f66bd4ed2e24a1e21e4660ccdc220f"
+resolved_reference = "1d05fc3467f76df00605158f7ce75551319ab55a"
 
 [[package]]
 name = "codecraftai-networking"
@@ -560,7 +528,7 @@ version = "0.0.1"
 description = "Code Craft AI - Networking Package"
 optional = false
 python-versions = ">=3.10,<4.0"
-groups = ["main", "dev"]
+groups = ["main"]
 files = []
 develop = false
 
@@ -573,41 +541,7 @@ netifaces = "^0.11.0"
 type = "git"
 url = "https://github.com/automationmojo/codecraftai-networking.git"
 reference = "main"
-resolved_reference = "d9161a8c8f73b0b7a953daf76807457c4023c52a"
-
-[[package]]
-name = "codecraftai-provisioning"
-version = "0.0.1"
-description = "Code Craft AI - Provisioning Package"
-optional = false
-python-versions = ">=3.10,<4.0"
-groups = ["main", "dev"]
-files = []
-develop = false
-
-[package.dependencies]
-codecraftai-configuration = {git = "https://github.com/automationmojo/codecraftai-configuration.git", branch = "main"}
-codecraftai-credentials = {git = "https://github.com/automationmojo/codecraftai-credentials.git", branch = "main"}
-codecraftai-errors = {git = "https://github.com/automationmojo/codecraftai-errors.git", branch = "main"}
-codecraftai-interfaces = {git = "https://github.com/automationmojo/codecraftai-interfaces.git", branch = "main"}
-codecraftai-landscaping = {git = "https://github.com/automationmojo/codecraftai-landscaping.git", branch = "main"}
-codecraftai-restclient-base = {git = "https://github.com/automationmojo/codecraftai-restclient-base.git", branch = "main"}
-codecraftai-restclient-coreweave = {git = "https://github.com/automationmojo/codecraftai-restclient-coreweave.git", branch = "main"}
-codecraftai-restclient-crusoe = {git = "https://github.com/automationmojo/codecraftai-restclient-crusoe.git", branch = "main"}
-codecraftai-restclient-lambdalabs = {git = "https://github.com/automationmojo/codecraftai-restclient-lambdalabs.git", branch = "main"}
-codecraftai-restclient-nebius = {git = "https://github.com/automationmojo/codecraftai-restclient-nebius.git", branch = "main"}
-codecraftai-restclient-nutanix = {git = "https://github.com/automationmojo/codecraftai-restclient-nutanix.git", branch = "main"}
-codecraftai-restclient-proxmox = {git = "https://github.com/automationmojo/codecraftai-restclient-proxmox.git", branch = "main"}
-codecraftai-restclient-runpod = {git = "https://github.com/automationmojo/codecraftai-restclient-runpod.git", branch = "main"}
-codecraftai-restclient-vsphere = {git = "https://github.com/automationmojo/codecraftai-restclient-vsphere.git", branch = "main"}
-pyyaml = "^6.0.2"
-requests = "^2.32.5"
-
-[package.source]
-type = "git"
-url = "https://github.com/automationmojo/codecraftai-provisioning.git"
-reference = "main"
-resolved_reference = "c93d3359628ee9a3b0525746240c37321ef29be5"
+resolved_reference = "8d0b74ad7f74bdeecbd708785b1779dd4521865f"
 
 [[package]]
 name = "codecraftai-restclient-base"
@@ -615,7 +549,7 @@ version = "0.0.1"
 description = "Code Craft AI - Rest Client Base"
 optional = false
 python-versions = ">=3.10,<4.0"
-groups = ["main", "dev"]
+groups = ["main"]
 files = []
 develop = false
 
@@ -630,188 +564,7 @@ requests = "^2.32.5"
 type = "git"
 url = "https://github.com/automationmojo/codecraftai-restclient-base.git"
 reference = "main"
-resolved_reference = "9604e527c469ad43d445c96f55a835c03ea7c085"
-
-[[package]]
-name = "codecraftai-restclient-coreweave"
-version = "0.0.1"
-description = "Code Craft AI - CoreWeave restclient"
-optional = false
-python-versions = ">=3.10,<4.0"
-groups = ["main", "dev"]
-files = []
-develop = false
-
-[package.dependencies]
-codecraftai-credentials = {git = "https://github.com/automationmojo/codecraftai-credentials.git", branch = "main"}
-codecraftai-errors = {git = "https://github.com/automationmojo/codecraftai-errors.git", branch = "main"}
-codecraftai-interfaces = {git = "https://github.com/automationmojo/codecraftai-interfaces.git", branch = "main"}
-codecraftai-restclient-base = {git = "https://github.com/automationmojo/codecraftai-restclient-base.git", branch = "main"}
-pyyaml = "^6.0.2"
-requests = "^2.32.4"
-
-[package.source]
-type = "git"
-url = "https://github.com/automationmojo/codecraftai-restclient-coreweave.git"
-reference = "main"
-resolved_reference = "28e8c23e8f01f448a4be9e3abda5fe7537540c48"
-
-[[package]]
-name = "codecraftai-restclient-crusoe"
-version = "0.0.1"
-description = "Code Craft AI - Crusoe Cloud REST client"
-optional = false
-python-versions = ">=3.10,<4.0"
-groups = ["main", "dev"]
-files = []
-develop = false
-
-[package.dependencies]
-codecraftai-credentials = {git = "https://github.com/automationmojo/codecraftai-credentials.git", branch = "main"}
-codecraftai-errors = {git = "https://github.com/automationmojo/codecraftai-errors.git", branch = "main"}
-codecraftai-interfaces = {git = "https://github.com/automationmojo/codecraftai-interfaces.git", branch = "main"}
-codecraftai-restclient-base = {git = "https://github.com/automationmojo/codecraftai-restclient-base.git", branch = "main"}
-requests = "^2.32.4"
-
-[package.source]
-type = "git"
-url = "https://github.com/automationmojo/codecraftai-restclient-crusoe.git"
-reference = "main"
-resolved_reference = "365de9c3f38805969d32dccf51ad34be97986411"
-
-[[package]]
-name = "codecraftai-restclient-lambdalabs"
-version = "0.0.1"
-description = "Code Craft AI - Lambda Labs REST client"
-optional = false
-python-versions = ">=3.10,<4.0"
-groups = ["main", "dev"]
-files = []
-develop = false
-
-[package.dependencies]
-codecraftai-credentials = {git = "https://github.com/automationmojo/codecraftai-credentials.git", branch = "main"}
-codecraftai-errors = {git = "https://github.com/automationmojo/codecraftai-errors.git", branch = "main"}
-codecraftai-restclient-base = {git = "https://github.com/automationmojo/codecraftai-restclient-base.git", branch = "main"}
-requests = "^2.32.4"
-
-[package.source]
-type = "git"
-url = "https://github.com/automationmojo/codecraftai-restclient-lambdalabs.git"
-reference = "main"
-resolved_reference = "77cb919950c652411b3b4c99f2dd8b7179a51252"
-
-[[package]]
-name = "codecraftai-restclient-nebius"
-version = "0.0.1"
-description = "Code Craft AI - Nebius REST client"
-optional = false
-python-versions = ">=3.10,<4.0"
-groups = ["main", "dev"]
-files = []
-develop = false
-
-[package.dependencies]
-codecraftai-credentials = {git = "https://github.com/automationmojo/codecraftai-credentials.git", branch = "main"}
-codecraftai-errors = {git = "https://github.com/automationmojo/codecraftai-errors.git", branch = "main"}
-codecraftai-interfaces = {git = "https://github.com/automationmojo/codecraftai-interfaces.git", branch = "main"}
-codecraftai-restclient-base = {git = "https://github.com/automationmojo/codecraftai-restclient-base.git", branch = "main"}
-requests = ">=2.31.0"
-
-[package.source]
-type = "git"
-url = "https://github.com/automationmojo/codecraftai-restclient-nebius.git"
-reference = "main"
-resolved_reference = "1c124d2a8bdbc9e1d37ec7ea965b58e1286755e9"
-
-[[package]]
-name = "codecraftai-restclient-nutanix"
-version = "0.0.1"
-description = "Code Craft AI - Nutanix REST client"
-optional = false
-python-versions = ">=3.10,<4.0"
-groups = ["main", "dev"]
-files = []
-develop = false
-
-[package.dependencies]
-codecraftai-errors = {git = "https://github.com/automationmojo/codecraftai-errors.git", branch = "main"}
-codecraftai-restclient-base = {git = "https://github.com/automationmojo/codecraftai-restclient-base.git", branch = "main"}
-requests = "^2.32.4"
-
-[package.source]
-type = "git"
-url = "https://github.com/automationmojo/codecraftai-restclient-nutanix.git"
-reference = "main"
-resolved_reference = "53f9795a283561b95e3389924eb455709ac0c392"
-
-[[package]]
-name = "codecraftai-restclient-proxmox"
-version = "0.0.1"
-description = "Code Craft AI - Proxmox VE REST client"
-optional = false
-python-versions = ">=3.10,<4.0"
-groups = ["main", "dev"]
-files = []
-develop = false
-
-[package.dependencies]
-codecraftai-errors = {git = "https://github.com/automationmojo/codecraftai-errors.git", branch = "main"}
-codecraftai-restclient-base = {git = "https://github.com/automationmojo/codecraftai-restclient-base.git", branch = "main"}
-requests = "^2.32.4"
-
-[package.source]
-type = "git"
-url = "https://github.com/automationmojo/codecraftai-restclient-proxmox.git"
-reference = "main"
-resolved_reference = "4a5c6cfe57d276e3654ba519a3b8d57bc0d4bfd6"
-
-[[package]]
-name = "codecraftai-restclient-runpod"
-version = "0.0.1"
-description = "Code Craft AI - RunPod REST client"
-optional = false
-python-versions = ">=3.10,<4.0"
-groups = ["main", "dev"]
-files = []
-develop = false
-
-[package.dependencies]
-codecraftai-credentials = {git = "https://github.com/automationmojo/codecraftai-credentials.git", branch = "main"}
-codecraftai-errors = {git = "https://github.com/automationmojo/codecraftai-errors.git", branch = "main"}
-codecraftai-restclient-base = {git = "https://github.com/automationmojo/codecraftai-restclient-base.git", branch = "main"}
-requests = "^2.32.4"
-
-[package.source]
-type = "git"
-url = "https://github.com/automationmojo/codecraftai-restclient-runpod.git"
-reference = "main"
-resolved_reference = "9c34612e259b54d3be2fdd2482447d0572561dcb"
-
-[[package]]
-name = "codecraftai-restclient-vsphere"
-version = "0.0.1"
-description = "Code Craft AI - vSphere REST Client Package"
-optional = false
-python-versions = ">=3.10,<4.0"
-groups = ["main", "dev"]
-files = []
-develop = false
-
-[package.dependencies]
-codecraftai-credentials = {git = "https://github.com/automationmojo/codecraftai-credentials.git", branch = "main"}
-codecraftai-errors = {git = "https://github.com/automationmojo/codecraftai-errors.git", branch = "main"}
-codecraftai-interfaces = {git = "https://github.com/automationmojo/codecraftai-interfaces.git", branch = "main"}
-codecraftai-restclient-base = {git = "https://github.com/automationmojo/codecraftai-restclient-base.git", branch = "main"}
-codecraftai-testbase = {git = "https://github.com/automationmojo/codecraftai-testbase.git", branch = "main"}
-codecraftai-waiting = {git = "https://github.com/automationmojo/codecraftai-waiting.git", branch = "main"}
-requests = "^2.32.5"
-
-[package.source]
-type = "git"
-url = "https://github.com/automationmojo/codecraftai-restclient-vsphere.git"
-reference = "main"
-resolved_reference = "dc0d1811cd96c3c0ad6fc02df0190e5d8bf533b1"
+resolved_reference = "83753ff0df35b09d3f5cb998ffe096e1c7be39a6"
 
 [[package]]
 name = "codecraftai-runtime"
@@ -850,7 +603,7 @@ codecraftai-interfaces = {git = "https://github.com/automationmojo/codecraftai-i
 type = "git"
 url = "https://github.com/automationmojo/codecraftai-sysman-common.git"
 reference = "main"
-resolved_reference = "574d7654bc78af7e7f1e34772bce1227fc893d6f"
+resolved_reference = "5a4f01131ba25d506b885ead6397e4522f095799"
 
 [[package]]
 name = "codecraftai-testbase"
@@ -877,7 +630,7 @@ pyyaml = "^6.0.2"
 type = "git"
 url = "https://github.com/automationmojo/codecraftai-testbase.git"
 reference = "main"
-resolved_reference = "8fa6d23f2e4725608ba0b4ed002bc0366e18a173"
+resolved_reference = "e7a98b287998ed061fd3fd6b09655f7ee6446dc0"
 
 [[package]]
 name = "codecraftai-this-app"
@@ -943,7 +696,7 @@ version = "0.4.6"
 description = "Cross-platform colored terminal text."
 optional = false
 python-versions = "!=3.0.*,!=3.1.*,!=3.2.*,!=3.3.*,!=3.4.*,!=3.5.*,!=3.6.*,>=2.7"
-groups = ["main", "dev"]
+groups = ["main"]
 markers = "platform_system == \"Windows\""
 files = [
     {file = "colorama-0.4.6-py2.py3-none-any.whl", hash = "sha256:4f1d9991f5acc0ca119f9d443620b77f9d6b33703e51011c16baf57afb285fc6"},
@@ -1184,7 +937,7 @@ version = "3.0.3"
 description = "Pythonic task execution"
 optional = false
 python-versions = ">=3.9"
-groups = ["main", "dev"]
+groups = ["main"]
 files = [
     {file = "invoke-3.0.3-py3-none-any.whl", hash = "sha256:f11327165e5cbb89b2ad1d88d3292b5113332c43b8553b494da435d6ec6f5053"},
     {file = "invoke-3.0.3.tar.gz", hash = "sha256:437b6a622223824380bfb4e64f612711a6b648c795f565efc8625af66fb57f0c"},
@@ -1196,7 +949,7 @@ version = "0.11.0"
 description = "Portable network interface information."
 optional = false
 python-versions = "*"
-groups = ["main", "dev"]
+groups = ["main"]
 files = [
     {file = "netifaces-0.11.0-cp27-cp27m-manylinux_2_5_i686.manylinux1_i686.whl", hash = "sha256:eb4813b77d5df99903af4757ce980a98c4d702bbcb81f32a0b305a1537bdf0b1"},
     {file = "netifaces-0.11.0-cp27-cp27m-manylinux_2_5_x86_64.manylinux1_x86_64.whl", hash = "sha256:5f9ca13babe4d845e400921973f6165a4c2f9f3379c7abfc7478160e25d196a4"},
@@ -1236,7 +989,7 @@ version = "4.0.0"
 description = "SSH2 protocol library"
 optional = false
 python-versions = ">=3.9"
-groups = ["main", "dev"]
+groups = ["main"]
 files = [
     {file = "paramiko-4.0.0-py3-none-any.whl", hash = "sha256:0e20e00ac666503bf0b4eda3b6d833465a2b7aff2e2b3d79a8bba5ef144ee3b9"},
     {file = "paramiko-4.0.0.tar.gz", hash = "sha256:6a25f07b380cc9c9a88d2b920ad37167ac4667f8d9886ccebd8f90f654b5d69f"},
@@ -1257,7 +1010,7 @@ version = "2.0.2"
 description = "Plumbum: shell combinators library"
 optional = false
 python-versions = ">=3.9"
-groups = ["main", "dev"]
+groups = ["main"]
 files = [
     {file = "plumbum-2.0.2-py3-none-any.whl", hash = "sha256:a865771826c1d2cce0ca8b2a2c48aa0447ed7a518859e389a95f158e9c369547"},
     {file = "plumbum-2.0.2.tar.gz", hash = "sha256:233751d7819c9e6743ec1c2405927eb4fa52a284c7b894bd10e28106a9309a92"},
@@ -1275,7 +1028,7 @@ version = "7.2.2"
 description = "Cross-platform lib for process and system monitoring."
 optional = false
 python-versions = ">=3.6"
-groups = ["main", "dev"]
+groups = ["main"]
 files = [
     {file = "psutil-7.2.2-cp313-cp313t-macosx_10_13_x86_64.whl", hash = "sha256:2edccc433cbfa046b980b0df0171cd25bcaeb3a68fe9022db0979e7aa74a826b"},
     {file = "psutil-7.2.2-cp313-cp313t-macosx_11_0_arm64.whl", hash = "sha256:e78c8603dcd9a04c7364f1a3e670cea95d51ee865e4efb3556a3a63adef958ea"},
@@ -1323,7 +1076,7 @@ version = "1.6.2"
 description = "Python binding to the Networking and Cryptography (NaCl) library"
 optional = false
 python-versions = ">=3.8"
-groups = ["main", "dev"]
+groups = ["main"]
 files = [
     {file = "pynacl-1.6.2-cp314-cp314t-macosx_10_10_universal2.whl", hash = "sha256:622d7b07cc5c02c666795792931b50c91f3ce3c2649762efb1ef0d5684c81594"},
     {file = "pynacl-1.6.2-cp314-cp314t-manylinux2014_aarch64.manylinux_2_17_aarch64.whl", hash = "sha256:d071c6a9a4c94d79eb665db4ce5cedc537faf74f2355e4d502591d850d3913c0"},
@@ -1470,7 +1223,7 @@ version = "6.0.2"
 description = "Remote Python Call (RPyC) is a transparent and symmetric distributed computing library"
 optional = false
 python-versions = ">=3.8"
-groups = ["main", "dev"]
+groups = ["main"]
 files = [
     {file = "rpyc-6.0.2-py3-none-any.whl", hash = "sha256:8072308ad30725bc281c42c011fc8c922be15f3eeda6eafb2917cafe1b6f00ec"},
     {file = "rpyc-6.0.2.tar.gz", hash = "sha256:8e780a6a71b842128a80a337c64adfb6f919014e069951832161c9efc630c93b"},
@@ -1498,11 +1251,11 @@ description = "Backported and Experimental Type Hints for Python 3.9+"
 optional = false
 python-versions = ">=3.9"
 groups = ["main", "dev"]
-markers = "python_version < \"3.13\""
 files = [
     {file = "typing_extensions-4.16.0-py3-none-any.whl", hash = "sha256:481caa481374e813c1b176ada14e97f1f67a4539ce9cfeb3f350d78d6370c2e8"},
     {file = "typing_extensions-4.16.0.tar.gz", hash = "sha256:dc983d19a509c94dba722ee6abd33940f7c05a89e243c47e907eb4db6f1a43e5"},
 ]
+markers = {main = "python_version < \"3.13\"", dev = "python_version == \"3.10\""}
 
 [[package]]
 name = "urllib3"
