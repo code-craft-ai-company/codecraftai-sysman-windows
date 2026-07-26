@@ -28,7 +28,6 @@ codecraftai-sysman-common = { git = "https://github.com/automationmojo/codecraft
 codecraftai-waiting = { git = "https://github.com/automationmojo/codecraftai-waiting.git", branch = "main" }
 
 [tool.poetry.group.dev.dependencies]
-hypothesis = "^6.0.0"
 codecraftai-testbase = { git = "https://github.com/automationmojo/codecraftai-testbase.git", branch = "main" }
 
 

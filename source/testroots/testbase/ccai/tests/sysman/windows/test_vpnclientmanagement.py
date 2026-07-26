@@ -970,7 +970,6 @@ if _HYPOTHESIS_AVAILABLE is True:
         """
 
         @given(version=_VERSION_STRATEGY, channel=_CHANNEL_STRATEGY)
-        @settings(max_examples=25, deadline=None)
         def test_property_install_tailscale_idempotent(
             self, version: str, channel: str,
         ) -> None:
@@ -998,8 +997,7 @@ if _HYPOTHESIS_AVAILABLE is True:
             self.assertEqual(second.status, WindowsVPNActionStatus.SKIPPED)
             return
 
-        @given(purge=st.booleans())
-        @settings(max_examples=10, deadline=None)
+        @given(purge=st.booleans(), constraints={"max_examples": 25})
         def test_property_uninstall_idempotent(self, purge: bool) -> None:
             for provider in (VPNProvider.TAILSCALE, VPNProvider.TWINGATE):
                 runner = _MockCommandRunner(
@@ -1021,11 +1019,11 @@ if _HYPOTHESIS_AVAILABLE is True:
                 self.assertEqual(second.status, WindowsVPNActionStatus.SKIPPED)
             return
 
-        @given(hostname=st.text(
+        @given(
+    constraints={"max_examples": 10},hostname=st.text(
             alphabet="abcdefghijklmnopqrstuvwxyz0123456789-",
             min_size=1, max_size=20,
         ))
-        @settings(max_examples=20, deadline=None)
         def test_property_bring_up_idempotent_on_matching_state(
             self, hostname: str,
         ) -> None:
@@ -1058,10 +1056,10 @@ if _HYPOTHESIS_AVAILABLE is True:
             return
 
         @given(
+    constraints={"max_examples": 20},
             version=_VERSION_STRATEGY,
             purge=st.booleans(),
         )
-        @settings(max_examples=15, deadline=None)
         def test_property_dry_run_never_invokes_runner(
             self, version: str, purge: bool,
         ) -> None:
