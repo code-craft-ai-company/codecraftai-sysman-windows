@@ -388,7 +388,7 @@ codecraftai-errors = {git = "https://github.com/automationmojo/codecraftai-error
 type = "git"
 url = "https://github.com/automationmojo/codecraftai-credentials.git"
 reference = "main"
-resolved_reference = "7aa969658cc46d9daa000b5fa6faebabceabb0ec"
+resolved_reference = "baa3e88e990a5dd3bc01e51f7bcca2de89cc907e"
 
 [[package]]
 name = "codecraftai-dataprofiles"
@@ -408,7 +408,7 @@ codecraftai-interfaces = {git = "https://github.com/automationmojo/codecraftai-i
 type = "git"
 url = "https://github.com/automationmojo/codecraftai-dataprofiles.git"
 reference = "main"
-resolved_reference = "2372bb5aef454499fb0dda65611bb84e38e0b34c"
+resolved_reference = "f82a683e26ac6dad2303c52aabbb667ad8ce6f6d"
 
 [[package]]
 name = "codecraftai-errors"
@@ -520,7 +520,7 @@ rpyc = "^6.0.1"
 type = "git"
 url = "https://github.com/automationmojo/codecraftai-interop.git"
 reference = "main"
-resolved_reference = "6116ce8ec41daba23b343954fec5163643816b70"
+resolved_reference = "bf31dcd13c640e65292e6604d64cf054255bd02d"
 
 [[package]]
 name = "codecraftai-networking"
@@ -603,7 +603,7 @@ codecraftai-interfaces = {git = "https://github.com/automationmojo/codecraftai-i
 type = "git"
 url = "https://github.com/automationmojo/codecraftai-sysman-common.git"
 reference = "main"
-resolved_reference = "c3e2f235f13c34671cf56e515dea36db461dca3d"
+resolved_reference = "61c65eca05e4009c83a60258ac0787b2c65934ba"
 
 [[package]]
 name = "codecraftai-testbase"
@@ -630,7 +630,7 @@ pyyaml = "^6.0.2"
 type = "git"
 url = "https://github.com/automationmojo/codecraftai-testbase.git"
 reference = "main"
-resolved_reference = "66afd67f8738a78c9f09246d14a16829509f8955"
+resolved_reference = "d8d0c0b037dfa604d5b1ff92f9580a2e9e5943b2"
 
 [[package]]
 name = "codecraftai-this-app"
