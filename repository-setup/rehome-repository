@@ -32,6 +32,7 @@ import argparse
 import collections
 import configparser
 import os
+import re
 import platform
 import sys
 import subprocess
@@ -275,6 +276,84 @@ def generate_vscode_workspace_files():
     return
 
 
+def repoint_virtual_environment():
+    """
+        Repoints the virtual environment's recorded paths at this location.
+
+        A virtual environment records the absolute path of the interpreter that
+        created it -- in the '#!' line of every console script, in the
+        activation files and in 'pyvenv.cfg'.  Moving the repository leaves all
+        of it naming the old location, and the console scripts then fail with
+        'bad interpreter' rather than anything that points at the cause.
+
+        Only paths that name a '.venv' interpreter are rewritten.  A script
+        whose shebang names a system interpreter, or uses '/usr/bin/env', is
+        left alone: that is a deliberate choice by whatever produced it, not a
+        stale path.
+    """
+
+    if not os.path.isdir(VENV_BIN_FOLDER):
+        return
+
+    activators = ("activate", "activate.csh", "activate.fish", "Activate.ps1",
+                  "activate.nu", "activate.bat", "deactivate.bat")
+
+    shebang_expr = re.compile(r"^#!(?P<path>\S*[/\\]\.venv[/\\][^\s]*python[\d.]*)\s*$")
+    venv_path_expr = re.compile(r"[A-Za-z]?:?[/\\][^\s\"';:]*[/\\]\.venv(?=[\"'\s/\\:;]|$)")
+
+    repointed = 0
+
+    for entry_name in sorted(os.listdir(VENV_BIN_FOLDER)):
+        entry_path = os.path.join(VENV_BIN_FOLDER, entry_name)
+
+        if os.path.islink(entry_path) or not os.path.isfile(entry_path):
+            continue
+
+        try:
+            with open(entry_path, "r", encoding="utf-8") as content_file:
+                content = content_file.read()
+        except (OSError, UnicodeDecodeError):
+            # A compiled binary or something else we should not rewrite.
+            continue
+
+        original = content
+
+        if entry_name in activators:
+            content = venv_path_expr.sub(VENV_FOLDER, content)
+        else:
+            lines = content.split(os.linesep)
+            if len(lines) == 0:
+                continue
+            matched = shebang_expr.match(lines[0])
+            if matched is None:
+                continue
+            lines[0] = "#!{}".format(VENV_PYTHON_BINARY)
+            content = os.linesep.join(lines)
+
+        if content != original:
+            mode = os.stat(entry_path).st_mode
+            with open(entry_path, "w", encoding="utf-8") as content_file:
+                content_file.write(content)
+            os.chmod(entry_path, mode)
+            repointed += 1
+
+    config_file_name = os.path.join(VENV_FOLDER, "pyvenv.cfg")
+    if os.path.isfile(config_file_name):
+        with open(config_file_name, "r", encoding="utf-8") as config_file:
+            config_content = config_file.read()
+        updated_content = venv_path_expr.sub(VENV_FOLDER, config_content)
+        if updated_content != config_content:
+            with open(config_file_name, "w", encoding="utf-8") as config_file:
+                config_file.write(updated_content)
+            repointed += 1
+
+    if repointed > 0:
+        print("Repointed {} virtual environment file(s) at '{}'.".format(
+            repointed, VENV_FOLDER))
+
+    return
+
+
 def rehome_repository_main():
 
     parser = argparse.ArgumentParser(
@@ -286,6 +365,7 @@ def rehome_repository_main():
     args = parser.parse_args()
 
     generate_directories()
+    repoint_virtual_environment()
     generate_development_env_file()
 
     if not args.skip_workspaces:
