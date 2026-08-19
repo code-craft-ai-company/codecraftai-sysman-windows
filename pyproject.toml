@@ -17,18 +17,18 @@ packages = [{include="ccai", from="source/packages"}]
 
 [tool.poetry.dependencies]
 python = ">=3.10,<4.0"
-codecraftai-this-app = { git = "https://github.com/automationmojo/codecraftai-this-app.git", branch = "main" }
-codecraftai-arcli = { git = "https://github.com/automationmojo/codecraftai-arcli.git", branch = "main" }
-codecraftai-errors = { git = "https://github.com/automationmojo/codecraftai-errors.git", branch = "main" }
-codecraftai-credentials = { git = "https://github.com/automationmojo/codecraftai-credentials.git", branch = "main" }
-codecraftai-dataprofiles = { git = "https://github.com/automationmojo/codecraftai-dataprofiles.git", branch = "main" }
-codecraftai-interfaces = { git = "https://github.com/automationmojo/codecraftai-interfaces.git", branch = "main" }
-codecraftai-interop = { git = "https://github.com/automationmojo/codecraftai-interop.git", branch = "main" }
-codecraftai-sysman-common = { git = "https://github.com/automationmojo/codecraftai-sysman-common.git", branch = "main" }
-codecraftai-waiting = { git = "https://github.com/automationmojo/codecraftai-waiting.git", branch = "main" }
+codecraftai-this-app = { git = "https://github.com/code-craft-ai-company/codecraftai-this-app.git", branch = "main" }
+codecraftai-arcli = { git = "https://github.com/code-craft-ai-company/codecraftai-arcli.git", branch = "main" }
+codecraftai-errors = { git = "https://github.com/code-craft-ai-company/codecraftai-errors.git", branch = "main" }
+codecraftai-credentials = { git = "https://github.com/code-craft-ai-company/codecraftai-credentials.git", branch = "main" }
+codecraftai-dataprofiles = { git = "https://github.com/code-craft-ai-company/codecraftai-dataprofiles.git", branch = "main" }
+codecraftai-interfaces = { git = "https://github.com/code-craft-ai-company/codecraftai-interfaces.git", branch = "main" }
+codecraftai-interop = { git = "https://github.com/code-craft-ai-company/codecraftai-interop.git", branch = "main" }
+codecraftai-sysman-common = { git = "https://github.com/code-craft-ai-company/codecraftai-sysman-common.git", branch = "main" }
+codecraftai-waiting = { git = "https://github.com/code-craft-ai-company/codecraftai-waiting.git", branch = "main" }
 
 [tool.poetry.group.dev.dependencies]
-codecraftai-testbase = { git = "https://github.com/automationmojo/codecraftai-testbase.git", branch = "main" }
+codecraftai-testbase = { git = "https://github.com/code-craft-ai-company/codecraftai-testbase.git", branch = "main" }
 
 
 [build-system]
