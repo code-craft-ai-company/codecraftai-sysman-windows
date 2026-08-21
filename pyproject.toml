@@ -1,7 +1,7 @@
 [tool.poetry]
 name = "codecraftai-sysman-windows"
 description = "Code Craft AI - System Management Windows"
-version = "0.0.1"
+version = "1.0.0"
 authors = ["Myron Walker <myron.walker@gmail.com>"]
 readme = "README.rst"
 license = "LicenseRef-CodeCraftAI-Dual-License"
@@ -17,19 +17,25 @@ packages = [{include="ccai", from="source/packages"}]
 
 [tool.poetry.dependencies]
 python = ">=3.10,<4.0"
-codecraftai-this-app = { git = "https://github.com/code-craft-ai-company/codecraftai-this-app.git", branch = "main" }
-codecraftai-arcli = { git = "https://github.com/code-craft-ai-company/codecraftai-arcli.git", branch = "main" }
-codecraftai-errors = { git = "https://github.com/code-craft-ai-company/codecraftai-errors.git", branch = "main" }
-codecraftai-credentials = { git = "https://github.com/code-craft-ai-company/codecraftai-credentials.git", branch = "main" }
-codecraftai-dataprofiles = { git = "https://github.com/code-craft-ai-company/codecraftai-dataprofiles.git", branch = "main" }
-codecraftai-interfaces = { git = "https://github.com/code-craft-ai-company/codecraftai-interfaces.git", branch = "main" }
-codecraftai-interop = { git = "https://github.com/code-craft-ai-company/codecraftai-interop.git", branch = "main" }
-codecraftai-sysman-common = { git = "https://github.com/code-craft-ai-company/codecraftai-sysman-common.git", branch = "main" }
-codecraftai-waiting = { git = "https://github.com/code-craft-ai-company/codecraftai-waiting.git", branch = "main" }
+codecraftai-this-app = { version = "<2.0.0", source = "codecraftai" }
+codecraftai-arcli = { version = "<2.0.0", source = "codecraftai" }
+codecraftai-errors = { version = "<2.0.0", source = "codecraftai" }
+codecraftai-credentials = { version = "<2.0.0", source = "codecraftai" }
+codecraftai-dataprofiles = { version = "<2.0.0", source = "codecraftai" }
+codecraftai-interfaces = { version = "<2.0.0", source = "codecraftai" }
+codecraftai-interop = { version = "<2.0.0", source = "codecraftai" }
+codecraftai-sysman-common = { version = "<2.0.0", source = "codecraftai" }
+codecraftai-waiting = { version = "<2.0.0", source = "codecraftai" }
 
 [tool.poetry.group.dev.dependencies]
-codecraftai-testbase = { git = "https://github.com/code-craft-ai-company/codecraftai-testbase.git", branch = "main" }
+codecraftai-testbase = { version = "<2.0.0", source = "codecraftai" }
 
+
+
+[[tool.poetry.source]]
+name = "codecraftai"
+url = "https://code-craft.ai/licensed-repository/simple/"
+priority = "supplemental"
 
 [build-system]
 requires = ["poetry-core"]

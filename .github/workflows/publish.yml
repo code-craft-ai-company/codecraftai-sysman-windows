@@ -1,0 +1,153 @@
+# Package publish pipeline.
+#
+# Runs when the version in pyproject.toml changes on main, and on demand
+# via workflow_dispatch. Builds the wheel + sdist with poetry and
+# twine-uploads them to the Code Craft AI package repository at
+# https://code-craft.ai/repository/legacy.
+#
+# Auth: the endpoint accepts ``Basic <ignored>:<publish-token>`` —
+# the username is ignored server-side; the password must be an
+# ACTIVE publish token minted in the site's internal dashboard
+# (Publishing → publish tokens). The token is stored as the
+# organization-level secret ``CCAI_ORG_ARTIFACT_PUBLISHING`` with
+# selected-repository access; this repository must be on that
+# secret's access list or the guard step below fails the run with
+# instructions.
+
+name: Publish
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - pyproject.toml
+  workflow_dispatch:
+    inputs:
+      force:
+        description: "Publish even if the version did not change"
+        type: boolean
+        default: false
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          # HEAD~1 is needed to tell whether the version actually changed.
+          fetch-depth: 2
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Determine whether the version changed
+        id: version
+        run: |
+          read_version () {
+            python3 - "$1" <<'PY'
+          import sys, tomllib
+          try:
+              data = tomllib.loads(sys.argv[1])
+          except Exception:
+              print("")
+              sys.exit(0)
+          print(data.get("tool", {}).get("poetry", {}).get("version", ""))
+          PY
+          }
+
+          current=$(read_version "$(cat pyproject.toml)")
+          if [ -z "$current" ]; then
+            echo "::error::pyproject.toml declares no [tool.poetry] version."
+            exit 1
+          fi
+
+          if git rev-parse HEAD~1 >/dev/null 2>&1; then
+            previous=$(read_version "$(git show HEAD~1:pyproject.toml 2>/dev/null || true)")
+          else
+            previous=""
+          fi
+
+          echo "current=${current}" >> "$GITHUB_OUTPUT"
+
+          if [ "${current}" = "${previous}" ] && [ "${{ inputs.force }}" != "true" ]; then
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+            echo "Version is unchanged at ${current}; nothing to publish."
+          else
+            echo "changed=true" >> "$GITHUB_OUTPUT"
+            echo "Version ${previous:-<none>} -> ${current}; publishing."
+          fi
+
+      - name: Verify publishing secret is visible to this repo
+        if: steps.version.outputs.changed == 'true'
+        env:
+          PUBLISH_TOKEN: ${{ secrets.CCAI_ORG_ARTIFACT_PUBLISHING }}
+        run: |
+          if [ -z "$PUBLISH_TOKEN" ]; then
+            echo "::error::CCAI_ORG_ARTIFACT_PUBLISHING resolved empty in this repository. It is an ORGANIZATION secret with selected-repository access — add THIS repo to its access list: org Settings -> Secrets and variables -> Actions -> CCAI_ORG_ARTIFACT_PUBLISHING -> Repository access." >&2
+            exit 1
+          fi
+          echo "publishing secret is visible"
+
+      - name: Install build tools
+        if: steps.version.outputs.changed == 'true'
+        run: |
+          pipx install poetry
+          pipx install twine
+
+      - name: Pin internal dependencies for the published artifact
+        if: steps.version.outputs.changed == 'true'
+        run: |
+          # Source keeps 'branch = "main"' so day-to-day development tracks
+          # the tip of each sibling. A published wheel cannot: a git URL
+          # pointing at a private repository is not installable by a
+          # subscriber. Rewrite those to a compatible-release range here, in
+          # the build tree only -- the change is never committed.
+          python3 - <<'PY'
+          import re
+
+          PIN = ">=1.0,<2.0"
+
+          with open("pyproject.toml", encoding="utf-8") as handle:
+              content = handle.read()
+
+          pattern = re.compile(
+              r'^(?P<name>codecraftai-[a-z0-9-]+)\s*=\s*\{[^}]*git\s*=\s*"[^"]+"[^}]*\}',
+              re.M,
+          )
+
+          rewritten = []
+
+          def replace(match):
+              name = match.group("name")
+              rewritten.append(name)
+              return '{} = "{}"'.format(name, PIN)
+
+          content = pattern.sub(replace, content)
+
+          with open("pyproject.toml", "w", encoding="utf-8") as handle:
+              handle.write(content)
+
+          if len(rewritten) > 0:
+              print("Pinned {} internal dependencies to '{}':".format(len(rewritten), PIN))
+              for name in rewritten:
+                  print("    {}".format(name))
+          else:
+              print("No internal git dependencies to pin.")
+          PY
+
+      - name: Build wheel + sdist
+        if: steps.version.outputs.changed == 'true'
+        run: |
+          poetry build
+          ls -l dist/
+
+      - name: Publish to code-craft.ai
+        if: steps.version.outputs.changed == 'true'
+        env:
+          TWINE_USERNAME: publisher
+          TWINE_PASSWORD: ${{ secrets.CCAI_ORG_ARTIFACT_PUBLISHING }}
+          TWINE_REPOSITORY_URL: https://code-craft.ai/repository/legacy
+        run: |
+          twine upload --non-interactive --disable-progress-bar dist/*
+          echo "Published ${{ github.repository }} ${{ steps.version.outputs.current }}"
