@@ -3,7 +3,13 @@
 # Runs when the version in pyproject.toml changes on main, and on demand
 # via workflow_dispatch. Builds the wheel + sdist with poetry and
 # twine-uploads them to the Code Craft AI package repository at
-# https://code-craft.ai/repository/legacy.
+# https://artifacts.code-craft.ai/repository/legacy.
+#
+# The host is the artifacts service's own canonical name. The apex
+# (https://code-craft.ai/repository/legacy) still works and is a
+# permanent compatibility surface -- the website's nginx proxies it
+# here -- but publishing straight at the canonical host removes a
+# hop and a dependency on the website being up to push a package.
 #
 # Auth: the endpoint accepts ``Basic <ignored>:<publish-token>`` —
 # the username is ignored server-side; the password must be an
@@ -142,12 +148,12 @@ jobs:
           poetry build
           ls -l dist/
 
-      - name: Publish to code-craft.ai
+      - name: Publish to artifacts.code-craft.ai
         if: steps.version.outputs.changed == 'true'
         env:
           TWINE_USERNAME: publisher
           TWINE_PASSWORD: ${{ secrets.CCAI_ORG_ARTIFACT_PUBLISHING }}
-          TWINE_REPOSITORY_URL: https://code-craft.ai/repository/legacy
+          TWINE_REPOSITORY_URL: https://artifacts.code-craft.ai/repository/legacy
         run: |
           twine upload --non-interactive --disable-progress-bar dist/*
           echo "Published ${{ github.repository }} ${{ steps.version.outputs.current }}"
