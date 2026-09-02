@@ -1,7 +1,7 @@
 [tool.poetry]
 name = "codecraftai-sysman-windows"
 description = "Code Craft AI - System Management Windows"
-version = "1.0.0"
+version = "1.0.1"
 authors = ["Myron Walker <myron.walker@gmail.com>"]
 readme = "README.rst"
 license = "LicenseRef-CodeCraftAI-Dual-License"
@@ -19,13 +19,11 @@ packages = [{include="ccai", from="source/packages"}]
 python = ">=3.10,<4.0"
 codecraftai-this-app = { version = "<2.0.0", source = "codecraftai" }
 codecraftai-arcli = { version = "<2.0.0", source = "codecraftai" }
-codecraftai-errors = { version = "<2.0.0", source = "codecraftai" }
+codecraftai-foundations = { version = "<2.0.0", source = "codecraftai" }
 codecraftai-credentials = { version = "<2.0.0", source = "codecraftai" }
 codecraftai-dataprofiles = { version = "<2.0.0", source = "codecraftai" }
-codecraftai-interfaces = { version = "<2.0.0", source = "codecraftai" }
 codecraftai-interop = { version = "<2.0.0", source = "codecraftai" }
 codecraftai-sysman-common = { version = "<2.0.0", source = "codecraftai" }
-codecraftai-waiting = { version = "<2.0.0", source = "codecraftai" }
 
 [tool.poetry.group.dev.dependencies]
 codecraftai-testbase = { version = "<2.0.0", source = "codecraftai" }
