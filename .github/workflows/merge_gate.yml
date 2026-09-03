@@ -56,5 +56,5 @@ jobs:
       - name: Run Tests
         run: |
           source ./.venv/bin/activate
-          testbase testing run --root ./source/testroots/testbase --includes=ccai.tests
+          testbase testing run --root ./source/testroots/testbase --includes=testbase.ccai.tests
           deactivate
