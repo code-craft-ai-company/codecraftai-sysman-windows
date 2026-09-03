@@ -471,8 +471,36 @@ Here are the rules:
 
 5. 'SemanticError' should NEVER be handled. There are raised when an API is being used improperly. This means there
    is a definitive test code failure. They should ALWAYS be allowed to bubble so the improper usage can be fixed.
+   Treat one with the same severity as a compile-time error: halt and report the condition so it can be fixed, do
+   not proceed under false pretences.
 
-6. In all other cases, exceptions should be allowed to bubble
+6. 'ConfigurationError' should NEVER be suppressed. These are raised when the code has been given incorrect
+   information that it cannot rely on in order to run. The process was kicked off with wrong or corrupt input, so
+   continuing would derive results from data that is already known to be untrustworthy. Detect configuration
+   problems as early as possible and let them end the run. The one sanctioned pattern is aggregation that still
+   terminates: a schema or spec validator MAY collect several configuration problems and raise a single
+   'ConfigurationError' enumerating all of them, so an operator can fix them in one pass.
+
+7. 'SemanticError' and 'ConfigurationError' both derive from 'BaseException' rather than 'Exception' so that they
+   pass through every 'except Exception' handler and end the run no matter how much intervening code is catching
+   broadly. Do NOT change those base classes. Do NOT catch, translate, or re-raise either of them as an 'Exception'
+   subclass. Downgrading one into a catchable error hands a later 'except Exception' the chance to continue, and
+   the subsequent error that then occurs usually carries no information about this original cause -- the real
+   problem ends up hidden behind noise. The only sanctioned use of 'except SemanticError' is the guard idiom:
+   catching it purely to 'raise' it again so that a broader 'except Exception' further down the same handler chain
+   cannot swallow it.
+
+8. When an API detects that a requested item is known but simply not available in the current context (a venue that
+   does not offer a catalogued accelerator or image family, for example), that is a validation finding rather than
+   improper use of the API. Raise an ordinary 'Exception'-derived error for it so a validator MAY aggregate it into
+   a report. Reserve 'SemanticError' for the case where the requested item does not exist at all.
+
+9. API and library code should only handle an exception under an 'Aspects' contract. The application layer is always
+   the entity that decides persistence and flow of control. It MAY delegate those decisions to an API through an
+   Aspects contract, but library code must never take that control away in a way that leaves the application layer
+   with no say in how an exceptional condition is handled.
+
+10. In all other cases, exceptions should be allowed to bubble
 
 Special Exceptions
 ------------------
