@@ -49,6 +49,14 @@ jobs:
       - name: Configure the package index credential
         run: poetry config http-basic.codecraftai deployment "${{ secrets.CCAI_ORG_READ_TOKEN }}"
 
+      - name: Lint - exception-handling gate
+        # A bare `except:` swallows ConfigurationError and SemanticError, which
+        # derive from BaseException so that they end a run. See
+        # userguide/10-00-coding-standards.rst, exception-handling rules 5-7.
+        run: |
+          python3 -m pip install --quiet ruff
+          python3 -m ruff check --select E722 .
+
       - name: Setup the Virtual Environment
         run: |
           ./development/setup-environment
