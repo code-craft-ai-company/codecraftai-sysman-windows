@@ -58,13 +58,14 @@ jobs:
           except Exception:
               print("")
               sys.exit(0)
-          print(data.get("tool", {}).get("poetry", {}).get("version", ""))
+          project = data.get("project", {})
+          print(project.get("version") or data.get("tool", {}).get("poetry", {}).get("version", ""))
           PY
           }
 
           current=$(read_version "$(cat pyproject.toml)")
           if [ -z "$current" ]; then
-            echo "::error::pyproject.toml declares no [tool.poetry] version."
+            echo "::error::pyproject.toml declares no [project] version."
             exit 1
           fi
 
