@@ -1,39 +1,46 @@
-# This is a basic workflow to help you get started with Actions
-
 name: Merge Gate
 
-# Controls when the action will run. 
+# Runs on every push and pull request to main, and on demand. One job per
+# operating system: the suite is expected to work on Linux, macOS and Windows.
+
 on:
-  # Triggers the workflow on push or pull request events but only for the main branch
   push:
     branches: [ main ]
   pull_request:
     branches: [ main ]
-
-  # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
 
-# A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
-  # This workflow contains a single job called "build"
   build:
-    # The type of runner that the job will run on
-    runs-on: ubuntu-latest
+    runs-on: ${{ matrix.os }}
     timeout-minutes: 60
 
     strategy:
+      # Let every OS finish so one platform failure does not hide another.
+      fail-fast: false
       matrix:
-        os: [ubuntu-latest]
-        python-version: ['3.10']
+        os: [ubuntu-latest, macos-latest, windows-latest]
+        python-version: ['3.12']
 
-    # Steps represent a sequence of tasks that will be executed as part of the job
+    defaults:
+      run:
+        # bash on every runner (Git Bash on Windows) so the steps below are
+        # written once.
+        shell: bash
+
     steps:
-      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
-      - uses: actions/checkout@v2
-      - uses: Gr1N/setup-poetry@v8
+      - uses: actions/checkout@v7
+
+      - uses: actions/setup-python@v7
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Install poetry
+        # pipx is preinstalled on all three runner images.
+        run: pipx install poetry
 
       - name: Print Python Version
-        run: python3 -c "import sys; print(sys.version)"
+        run: python -c "import sys; print(sys.version)"
 
       - name: Configure Git Store
         run: git config --global credential.helper store
@@ -43,7 +50,7 @@ jobs:
 
       - name: Re-Home the Repository
         run: |
-          ./repository-setup/rehome-repository
+          python ./repository-setup/rehome-repository
           cat ./.env
 
       - name: Configure the package index credential
@@ -53,17 +60,18 @@ jobs:
         # A bare `except:` swallows ConfigurationError and SemanticError, which
         # derive from BaseException so that they end a run. See
         # userguide/10-00-coding-standards.rst, exception-handling rules 5-7.
-        run: |
-          python3 -m pip install --quiet ruff
-          python3 -m ruff check --select E722 .
+        # pipx run avoids installing into the runner's system python (PEP 668).
+        run: pipx run ruff check --select E722 .
 
       - name: Setup the Virtual Environment
         run: |
-          ./development/setup-environment
+          python ./development/setup-environment
           poetry install --all-extras
-      
+
       - name: Run Tests
         run: |
-          source ./.venv/bin/activate
+          # Activate the in-project venv (bin/ on POSIX, Scripts/ on Windows) and
+          # load the development environment file that rehome-repository wrote.
+          source ./.venv/bin/activate 2>/dev/null || source ./.venv/Scripts/activate
+          set -a; . ./.env; set +a
           testbase testing run --root ./source/testroots/testbase --includes=testbase.ccai.tests
-          deactivate

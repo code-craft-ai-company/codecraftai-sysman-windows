@@ -639,14 +639,14 @@ reference = "codecraftai"
 
 [[package]]
 name = "codecraftai-testbase"
-version = "1.1.0"
+version = "1.1.3"
 description = "Code Craft AI - TestBase"
 optional = false
 python-versions = ">=3.10,<4.0"
 groups = ["main", "dev"]
 files = [
-    {file = "codecraftai_testbase-1.1.0-py3-none-any.whl", hash = "sha256:39ac65cf5d7c1dc03597a79fb6e747a970ecb9a6258e3107eedda9d8e2036b3d"},
-    {file = "codecraftai_testbase-1.1.0.tar.gz", hash = "sha256:7de5d0c62c61fe8f4406ff71b22523f4b17408fe57d8c7965331cdf8e082afb6"},
+    {file = "codecraftai_testbase-1.1.3-py3-none-any.whl", hash = "sha256:cdb99d439503bcda619e5440b8d5f80b59a6cae6e4bd14fbd274fc6f4fa37462"},
+    {file = "codecraftai_testbase-1.1.3.tar.gz", hash = "sha256:5aeb9d4e3add17bb0e79fc63916b851cdd765825c4bb599e24a2e2cb6188e6b1"},
 ]
 
 [package.dependencies]
