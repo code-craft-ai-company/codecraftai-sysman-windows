@@ -441,10 +441,10 @@ Properties should be simple accessors to internal data and avoid:
 Exception Handling
 ==================
 
-The 'AutomationKit' is a test framework and library so a majority of the function, class and method
-implementations should behave like a library component and release control over the resolution of
-exceptional conditions to the 'Application' level of code. In the case of a test run, the code that
-would be considered to be at the 'Application' level is the code that is controlling the flow of execution.
+The code in this project is library code, so a majority of the function, class and method implementations
+should behave like a library component and release control over the resolution of exceptional conditions
+to the 'Application' level of code. The code at the 'Application' level is the code that is controlling the
+flow of execution. In a test run, that is the test and the test sequencing code.
 
 Here are the rules:
 
@@ -462,7 +462,7 @@ Here are the rules:
         errmsg = "Failure while importing job package %r"  % job_package
         raise argparse.ArgumentError("--job", errmsg) from imperr
 
-3. 'AutomationKit' exceptions will display the code from which they were raised. An API or library SHOULD catch
+3. Failure reports display the code from which an exception was raised. An API or library SHOULD catch
    and reclassify an exception if doing so will improve the code context view related to the nature of the problem
    that caused the exceptional condition. (raise exceptions from the code you want to show in the test failure reports)
 
@@ -505,7 +505,7 @@ Here are the rules:
 Special Exceptions
 ------------------
 
-The 'AutomationKit' utilizes very specific exception in order to classify or categorize exceptional conditions
+This project utilizes very specific exceptions in order to classify or categorize exceptional conditions
 that occur during an automation run into specific groups which help to provide quick and immediate information
 about the nature of an issue and the potential team or individual that should get involved with resolving the issue.
 The groups we attempt to classify exceptional conditions into are:
@@ -531,9 +531,9 @@ AssertionError
 ^^^^^^^^^^^^^^
 An important feature of any great test framework is that it attempts to classify issues. An important distinction
 is to identify when the test code has encountered a situation which points to an improper condition in the state
-of a target under test. The 'AutomationKit' provides the 'AssertionError' for this purpose. Raising a normal
-'AssertionError' or the 'AutomationKit' derivative class 'AssertionError' will result in an issue being classified
-as a failure of condition or state associated with the target of the test scenario.
+of a target under test. The 'AssertionError' is used for this purpose. Raising an 'AssertionError', or an
+exception class derived from it, will result in an issue being classified as a failure of condition or state
+associated with the target of the test scenario.
 
 Return Statements
 =================
@@ -648,7 +648,7 @@ this coding style results in reduced quality code. The reason the code is reduce
 because you cannot see the context of the return value being generated.
 
 Code Legibility
-------------
+---------------
 
 Finally, `return` statements are important to improve the legibility of code. Because python code
 uses indentation to determine scope, the repeated indentation of successive code blocks can present
@@ -660,116 +660,259 @@ and methods. Any function or method that is not a generator, since generators do
 InterOp and Persistence Decorators
 ==================================
 
-Distributed automation scenarios engage in an awful lot of interop activity. When your engaging in
-any type of interop activity, there can be problems with reliability. One of the major aspects of
-distributed testing is to place reliability expectations on the performance of interop APIS under
-both success and failure conditions. Let me highlight that, test framework APIs **must** be usable by
-test code for both **success** and **failure** conditions. They must allow for the caller to pass
-**valid** and **invalid** data so the behavior of the remote endpoint can be tested under different
-conditions.
+Distributed automation scenarios engage in a lot of interop activity, and any interop activity brings
+problems with reliability. A major part of distributed testing is placing reliability expectations on
+interop APIs under both success and failure conditions. To highlight that: framework APIs **must** be
+usable by the calling code for both **success** and **failure** conditions. They must allow the caller
+to pass **valid** and **invalid** data so the behavior of the remote endpoint can be tested under
+different conditions.
 
-An experienced Test Framework Architect is aware of this important aspect of test framework APIs that is
-much different from maybe a production API and will design the APIs accordingly.
+An experienced framework architect is aware of this important difference between framework APIs and
+production APIs and designs the APIs accordingly.
 
-One pattern that you might see in a production environment for APIs is the use of a `@retry` decorator
-on an API that might not have 100% reliability.
+Why Not a Retry Decorator
+-------------------------
+
+A pattern that is common in production code is to put a `@retry` decorator on an API that might not
+have 100% reliability.
 
 .. code-block:: python
 
-  @retry(attempts=3)
-  def run_command(command):
-      status, stdout, stderr = self.ssh_agent.run_cmd(command)
-      return
-  
-This might work fine in a production environment where calling the API successfully is the main goal,
-but for test code, our main goal for interop APIs is not just to make successful calls. We also have
-several competing goals:
+    @retry(attempts=3, delay=5)
+    def run_command(self, command: str) -> Tuple[int, str, str]:
+        status, stdout, stderr = self._ssh_client.run(command)
+        return status, stdout, stderr
+
+This might work fine in a production environment where calling the API successfully is the only goal,
+but for test code, interop APIs have several competing goals:
 
 * Check expected behavior (for success and failure)
 * Capture detailed data in failure contexts
 * Let tests and higher level code have control of behaviors and expectations
 
-The use of retry decorations negatively impacts these goals. First of all, a `@retry` decoration always
-assumes a call should succeed. Good test framework code **does not assume** or make decisions for the
-code that is controlling the flow of a test. Flow control and error handling should be the responsibility
-of the higher level test code. Good test framework code lets the higher level code **make expectations**
-on the behavior of the code under test in varying conditions. Good test framework code also allows
-the higher level code to make decisions about behavior under success and failure conditions so the
-higher level code can decide what to do based on the current context of the test.
+A `@retry` decorator works against every one of these goals:
 
-A better approach to design inter-operability APIs used by the **Automation Kit**
-is to allow the tests to pass parameters to the API to allow higher level code to change the behavior of
-the APIs.
+* It assumes the call should succeed. A test that expects the call to fail cannot make a single attempt
+  and observe the failure, it has to wait out every retry first.
+* The number of attempts and the delay are locked in when the module is imported. A test that needs to
+  wait ten minutes for a host to finish an install and a test that needs a fast answer get the same
+  behavior.
+* It cannot express other persistence patterns, such as calling an API for as long as it keeps
+  succeeding in order to detect when a service goes down.
+* The failures from the earlier attempts are swallowed inside the decorator, so the details of what went
+  wrong are lost to the caller.
 
-The pattern that should be used is to tack on behavior modification parameters to the end of the
-inter-op APIs. Another important aspect of designing APIs and behavior parameters is to be consistent.
-An example of a behavior parameter might be that on every API that modifies the remote state shared by
-devices should have a `sync` parameter to indicate the API should wait for a `sync` of shared state. 
+Good framework code **does not assume** or make decisions for the code that is controlling the flow of
+a test. Flow control and error handling are the responsibility of the higher level code. Good framework
+code lets the higher level code **make expectations** on the behavior of the code under test and decide
+what to do on success or failure based on the current context of the test.
 
-.. code-block:: python
+Behavior Parameters
+-------------------
 
-  def add_member(name: str, sync: bool=True) -> int:
-      return id
-  
-  def delete_member(id: int, sync: bool=True):
-      return
-
-  def get_members() -> List[str]:
-      return
-
-  def rename_member(id: int, new_name: str, old_name: str, sync: bool=True):
-      return
-
-Note on the above API(s), the APIs that `add`, `delete` and `modify` data have a sync parameter and
-the APIs that do not modify state do not offer a sync behavior.
-
-This sort of adding parameters can be a problem when you have lots of different ways you want
-to offer control over a set of interop API(s). You can quickly have a longer list of parameters
-that are needed to control the behavior of the lower level code. If you have 500 interop APIs
-in your test framework, this can lead to maintenance issues when adding new parameters. The
-**Automation Kit** deals with this nicely by having one Object parameter, that is used to contain
-the behavior modification parameters. Here is an example of a way to handle this that will scale
-nicely.
+A better way to design interop APIs is to let the caller pass parameters that change the behavior of the
+API. The obvious way to do that is to add individual behavior parameters to the end of each API.
 
 .. code-block:: python
 
-  class Aspects:
-      """
-          Aspects are utilized with the interop APIs and agents such as the :class:`SSHAgent` class in order
-          to modify the behavior of APIs with respect to retry parameter such as timeout, interval, looping patterns
-          logging, etc.  The aspects object provides a way to package this common criteria into a single parameter
-          or constant you can  pass to multiple APIs
-      """
+    def run_cmd(self, command: str, exp_status: int = 0, repeat_until_success: bool = False,
+                timeout: float = 600, interval: float = 10, log_failures: bool = True) -> Tuple[int, str, str]:
 
-      def __init__(self, action_pattern: ActionPattern = ActionPattern.SINGULAR, completion_timeout: float = DEFAULT_COMPLETION_TIMEOUT, completion_interval: float = DEFAULT_COMPLETION_INTERVAL,
-                        inactivity_timeout: float = DEFAULT_INACTIVITY_TIMEOUT, inactivity_interval: float = DEFAULT_INACTIVITY_INTERVAL, monitor_delay: float = DEFAULT_MONITOR_DELAY,
-                        logging_pattern: LoggingPattern = DEFAULT_LOGGING_PATTERN, logger: Optional["Logger"]=None):
-          """
-              Creates an :class:`Aspects` package.
+This does not scale. Each new behavior adds a parameter to every interop API, and every API that calls
+another interop API has to accept and forward each of them. With hundreds of interop APIs, adding one new
+behavior becomes a large change, and the parameter names and defaults drift apart from one API to the
+next.
 
-              :param action_pattern: The :class:`ActionPattern` that the API should exhibit such as SINGULAR, DO_UNTIL_SUCCESS, DO_WHILE_SUCCESS
-              :param completion_timeout: The time in seconds as a float that is the max time before timeout for the activity to complete.
-              :param completion_interval: The time in seconds as a float that is waited before reattempting an activity.
-              :param inactivity_timeout: The time in seconds as a float that is the max time before timeout that is waited before a :class:`TimeoutError`
-                                        is raised due to inactivity.
-              :param inactivity_interval: The time in seconds as a float that is waited before reattempting an activity.
-          """
-          self.action_pattern = action_pattern
-          self.completion_timeout = completion_timeout
-          self.completion_interval = completion_interval
-          self.inactivity_timeout = inactivity_timeout
-          self.inactivity_interval = inactivity_interval
-          self.monitor_delay = monitor_delay
-          self.logging_pattern = logging_pattern
+The Aspects Parameter
+---------------------
 
-          if logger is None:
-              self.logger = getAutomatonKitLogger()
-          else:
-              self.logger = logger
+Instead, the behavior modification parameters are packaged into a single object, an **aspects** object,
+that is passed to the API as one parameter. The root of the aspects hierarchy is
+:class:`ccai.aspects.aspects.Aspects`. Interop packages extend it with the fields they need. For example,
+:class:`ccai.interop.aspects.Aspects` adds action and logging patterns, :class:`AspectsCmd` adds command
+specific fields, and the REST clients add their own ``AspectsRest`` derivatives.
 
-          return
+The following is a shortened version of the interop :class:`Aspects` class.
 
-This pattern scales well and very very very important aspects of how we write code is that it
-needs to be consumable, reliable and must be maintainable at scale.
+.. code-block:: python
 
+    class Aspects(AspectsBase):
 
+        def __init__(self, action_pattern: ActionPattern = ActionPattern.SINGLE_CALL,
+                           completion_timeout: float = DEFAULT_COMPLETION_TIMEOUT,
+                           completion_interval: float = DEFAULT_COMPLETION_INTERVAL,
+                           connection_timeout: float = DEFAULT_CONNECTION_TIMEOUT,
+                           inactivity_timeout: float = DEFAULT_INACTIVITY_TIMEOUT,
+                           logging_pattern: LoggingPattern = DEFAULT_LOGGING_PATTERN,
+                           max_attempts: int = 1,
+                           logger: Optional[logging.Logger] = None):
+            ...
+            self.freeze()
+            return
+
+    DEFAULT_ASPECTS = Aspects()
+
+The most important field is ``action_pattern``, which tells the API what persistence to apply:
+
+* ``SINGLE_CALL`` - Make exactly one attempt and return the result, success or failure, to the caller.
+  This is the default.
+* ``DO_UNTIL_SUCCESS`` - Repeat the call every ``completion_interval`` seconds until it succeeds. If it
+  has not succeeded within ``completion_timeout`` seconds, raise a :class:`TimeoutError` that includes the
+  details of the last attempt.
+* ``DO_WHILE_SUCCESS`` - Repeat the call every ``completion_interval`` seconds for as long as it keeps
+  succeeding. This is used to wait for something to stop, such as a service shutting down. If it is still
+  succeeding after ``completion_timeout`` seconds, raise a :class:`TimeoutError`.
+
+:class:`ActionPattern` also defines connection oriented patterns, ``SINGLE_CONNECTED_CALL`` and
+``DO_UNTIL_CONNECTION_FAILURE``, that only some APIs support.
+
+Aspects objects are frozen at the end of their constructor and cannot be modified after they are created.
+This lets a single instance, including the module level defaults, be shared safely by any number of
+calls. To get different behavior, create a new aspects object, do not modify an existing one.
+
+Declaring an API That Accepts Aspects
+-------------------------------------
+
+Interop APIs that accept aspects follow these rules:
+
+* The parameter is named ``aspects`` and it is the last parameter of the API.
+* The parameter is keyword only (it follows a ``*``) so that it is always passed by name.
+* The type hint is the most specific aspects class the API uses, and the default is the matching frozen
+  module level default, such as ``DEFAULT_CMD_ASPECTS``.
+* Every interop API takes an ``aspects`` parameter, including APIs that only read state. Reads need
+  persistence and timeouts as much as writes do, and a consistent signature means callers never have to
+  check which APIs support it.
+* An API that calls other interop APIs passes its ``aspects`` through to them. If it drops the aspects,
+  the calls it makes fall back to the defaults and the caller loses control part way down the call stack.
+* The persistence loop that honors ``action_pattern`` is implemented once, in the lowest level API that
+  talks to the remote endpoint, such as ``run_cmd``. Higher level APIs forward the aspects and do not add
+  loops or retries of their own.
+* An API that does not support a particular ``action_pattern`` raises a :class:`SemanticError` rather than
+  quietly ignoring it.
+
+An agent or client MAY accept an aspects object in its constructor to use as the default for its calls.
+In that case its methods declare ``aspects: Optional[AspectsCmd] = None`` and use the instance's aspects
+when ``None`` is passed. The :class:`SshAgent` works this way.
+
+The following example shows a service agent whose APIs all take the same ``aspects`` parameter and pass
+it through to ``run_cmd``, which implements the action patterns.
+
+.. code-block:: python
+
+    from typing import Tuple
+
+    from ccai.interop.aspects import AspectsCmd, DEFAULT_CMD_ASPECTS
+    from ccai.interop.protocols.ssh.sshagent import SshAgent
+
+    class ServiceAgent:
+        """
+            Starts, stops and checks the state of services on a remote host.
+        """
+
+        def __init__(self, ssh_agent: SshAgent):
+            self._ssh_agent = ssh_agent
+            return
+
+        def start_service(self, name: str, *, aspects: AspectsCmd = DEFAULT_CMD_ASPECTS) -> Tuple[int, str, str]:
+            """
+                Starts the service named ``name``.
+
+                :param name: The name of the service to start.
+                :param aspects: The aspects that control how the command is run.
+
+                :returns: The status, stdout and stderr of the start command.
+            """
+            command = "sudo systemctl start {}".format(name)
+            status, stdout, stderr = self._ssh_agent.run_cmd(command, aspects=aspects)
+            return status, stdout, stderr
+
+        def stop_service(self, name: str, *, aspects: AspectsCmd = DEFAULT_CMD_ASPECTS) -> Tuple[int, str, str]:
+            """
+                Stops the service named ``name``.
+
+                :param name: The name of the service to stop.
+                :param aspects: The aspects that control how the command is run.
+
+                :returns: The status, stdout and stderr of the stop command.
+            """
+            command = "sudo systemctl stop {}".format(name)
+            status, stdout, stderr = self._ssh_agent.run_cmd(command, aspects=aspects)
+            return status, stdout, stderr
+
+        def is_service_active(self, name: str, *, aspects: AspectsCmd = DEFAULT_CMD_ASPECTS) -> bool:
+            """
+                Checks whether the service named ``name`` is active.
+
+                :param name: The name of the service to check.
+                :param aspects: The aspects that control how the command is run.
+
+                :returns: True if the service is active, otherwise False.
+            """
+            command = "systemctl is-active {}".format(name)
+            status, _, _ = self._ssh_agent.run_cmd(command, aspects=aspects)
+            active = status == 0
+            return active
+
+Passing Aspects From the Calling Code
+-------------------------------------
+
+The caller decides how much persistence each call needs, based on what the test is trying to do at that
+point. The same API is used for every step, only the aspects change.
+
+.. code-block:: python
+
+    from ccai.interop.aspects import ActionPattern, AspectsCmd, LoggingPattern
+
+    # Run the check until the service is active, for up to five minutes.
+    UNTIL_ACTIVE = AspectsCmd(action_pattern=ActionPattern.DO_UNTIL_SUCCESS,
+                              completion_timeout=300, completion_interval=5)
+
+    # Run the check for as long as the service is active, for up to two minutes.
+    WHILE_ACTIVE = AspectsCmd(action_pattern=ActionPattern.DO_WHILE_SUCCESS,
+                              completion_timeout=120, completion_interval=2)
+
+    def test_service_restart(service_agent: ServiceAgent):
+
+        service_agent.stop_service("nginx")
+        service_agent.is_service_active("nginx", aspects=WHILE_ACTIVE)
+
+        service_agent.start_service("nginx")
+        service_agent.is_service_active("nginx", aspects=UNTIL_ACTIVE)
+
+        return
+
+In the example above, ``is_service_active`` did not need ``wait_for_stop`` or ``wait_for_start`` variants
+or timeout parameters of its own. The test expressed "wait until it stops" and "wait until it starts" by
+passing different aspects. If the service does not reach the expected state in time, ``run_cmd`` raises a
+:class:`TimeoutError` that includes the output of the last attempt.
+
+The same APIs also have to serve tests that expect a call to fail. In the next example the test wants
+exactly one attempt, and it does not want the refusal it is expecting to be logged as an error.
+``SINGLE_CALL`` is already the default, but passing it explicitly states the intent of the test and
+guards against an agent that was created with a retrying default.
+
+.. code-block:: python
+
+    # Make exactly one attempt and only log the result if the command succeeds.
+    SINGLE_ATTEMPT = AspectsCmd(action_pattern=ActionPattern.SINGLE_CALL,
+                                logging_pattern=LoggingPattern.SUCCESS_ONLY)
+
+    def test_unprivileged_stop_is_refused(guest_service_agent: ServiceAgent):
+
+        status, stdout, stderr = guest_service_agent.stop_service("nginx", aspects=SINGLE_ATTEMPT)
+
+        if status == 0:
+            errmsg = "An unprivileged user was able to stop the 'nginx' service."
+            raise AssertionError(errmsg)
+
+        return
+
+With a `@retry` decorator on ``stop_service``, this test would sit through every retry before it could
+check the result, and nothing in the test would show that the retries happened.
+
+Passing aspects keeps the application layer in charge. An API only persists, retries or waits when the
+caller asks it to through the aspects it is given, which is the contract the `Exception Handling`_ rules
+refer to. Because aspects objects are frozen and passed through, a test can define its aspects once as
+module level constants and reuse them across many APIs, and new behaviors can be added to the aspects
+classes without changing the signature of any API. This pattern scales, and code needs to be consumable,
+reliable and maintainable at scale.
