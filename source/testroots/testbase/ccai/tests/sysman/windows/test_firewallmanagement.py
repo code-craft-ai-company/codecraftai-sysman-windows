@@ -16,13 +16,10 @@ from ccai import testbase
 from ccai.interfaces.icommandrunner import RunResult
 
 from ccai.sysman.windows.firewallmanagement import (
-    WindowsFirewallActionResult,
     WindowsFirewallActionStatus,
     WindowsFirewallManager,
     WindowsFirewallManagerConfig,
     WindowsFirewallQueryError,
-    WindowsFirewallState,
-    WindowsZoneInfo,
     _classify_rule,
     _extract_display_name,
     _port_display_name,

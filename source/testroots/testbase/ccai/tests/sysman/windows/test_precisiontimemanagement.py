@@ -315,8 +315,10 @@ def test_add_time_source_invokes_w32tm():
         config_calls[0]["args"],
         [
             "w32tm", "/config",
-            "/manualpeerlist:ntp1.example.com ntp2.example.com "
-            "ntp3.example.com",
+            (
+                "/manualpeerlist:ntp1.example.com ntp2.example.com "
+                "ntp3.example.com"
+            ),
             "/syncfromflags:manual",
             "/update",
         ],

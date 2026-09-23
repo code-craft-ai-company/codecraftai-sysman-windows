@@ -17,7 +17,6 @@ from ccai import testbase
 from ccai.interfaces.icommandrunner import RunResult
 
 from ccai.sysman.windows.encryptionmanagement import (
-    WindowsEncryptedVolumeInfo,
     WindowsEncryptionActionStatus,
     WindowsEncryptionManager,
     WindowsEncryptionManagerConfig,
@@ -25,7 +24,6 @@ from ccai.sysman.windows.encryptionmanagement import (
     _DESTRUCTIVE_GUARD_DETAIL,
     _is_record_encrypted,
     _parse_get_bitlockervolume,
-    _record_to_status,
     _sanitise_script_passwords,
 )
 

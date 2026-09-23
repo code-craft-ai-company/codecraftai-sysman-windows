@@ -16,15 +16,11 @@ from ccai import testbase
 from ccai.interfaces.icommandrunner import RunResult
 
 from ccai.sysman.windows.storagemanagement import (
-    WindowsDiskInfo,
     WindowsPoolSpec,
     WindowsStorageActionStatus,
     WindowsStorageManager,
     WindowsStorageManagerConfig,
-    WindowsVolumeInfo,
     WindowsVolumeSpec,
-    _build_disks_from_records,
-    _build_volumes_from_records,
     _disk_number_token,
     _looks_like_drive_letter,
     _normalise_drive_letter,

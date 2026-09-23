@@ -19,7 +19,6 @@ from ccai.sysman.windows.mailtransportmanagement import (
     WindowsMtaConfig,
     WindowsMtaKind,
     WindowsMtaManagerConfig,
-    WindowsMtaQueueStatus,
     _build_iissmtp_get_script,
     _build_iissmtp_queue_status_script,
     _build_iissmtp_set_script,

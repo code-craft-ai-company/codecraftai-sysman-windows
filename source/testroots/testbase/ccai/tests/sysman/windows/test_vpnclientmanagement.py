@@ -21,12 +21,10 @@ from ccai.interfaces.icommandrunner import RunResult
 
 from ccai.sysman.windows.vpnclientmanagement import (
     VPNProvider,
-    WindowsVPNActionResult,
     WindowsVPNActionStatus,
     WindowsVPNClientManager,
     WindowsVPNClientManagerConfig,
     WindowsVPNClientQueryError,
-    WindowsVPNClientStatus,
     _parse_get_service_json,
     _parse_tailscale_status_json,
     _ps_escape_single_quoted,
@@ -949,7 +947,7 @@ def test_reads_never_elevate():
 
 
 try:
-    from hypothesis import given, settings
+    from hypothesis import given
     from hypothesis import strategies as st
 
     _HYPOTHESIS_AVAILABLE = True

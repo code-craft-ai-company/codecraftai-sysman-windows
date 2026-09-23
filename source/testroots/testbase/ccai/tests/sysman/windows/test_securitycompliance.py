@@ -18,14 +18,10 @@ from ccai.interfaces.icommandrunner import RunResult
 from ccai.sysman.windows.securitycompliance import (
     WindowsBaselineInfo,
     WindowsComplianceFinding,
-    WindowsComplianceProfile,
-    WindowsComplianceReport,
-    WindowsSecurityComplianceActionResult,
     WindowsSecurityComplianceActionStatus,
     WindowsSecurityComplianceManager,
     WindowsSecurityComplianceManagerConfig,
     WindowsSecurityComplianceQueryError,
-    _build_findings,
     _count_findings,
     _evaluate_defender,
     _evaluate_firewall,
@@ -380,8 +376,6 @@ def test_run_compliance_profile_builds_report_with_findings():
         return RunResult(exit_code=0, stdout="", stderr="")
 
     # Patch the runner.run to use the stdout_for resolver.
-    original_run = runner.run
-
     def patched_run(args, **kwargs):
         runner.calls.append({"args": list(args), "elevated": kwargs.get("elevated", False)})
         return stdout_for(args)

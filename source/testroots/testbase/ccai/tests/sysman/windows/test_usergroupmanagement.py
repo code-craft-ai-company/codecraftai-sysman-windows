@@ -16,16 +16,13 @@ from ccai import testbase
 from ccai.interfaces.icommandrunner import RunResult
 
 from ccai.sysman.windows.usergroupmanagement import (
-    WindowsGroupInfo,
     WindowsGroupSpec,
     WindowsPrincipalKind,
     WindowsUserChanges,
-    WindowsUserGroupActionResult,
     WindowsUserGroupActionStatus,
     WindowsUserGroupManager,
     WindowsUserGroupManagerConfig,
     WindowsUserGroupQueryError,
-    WindowsUserInfo,
     WindowsUserSpec,
     _parse_get_localgroup,
     _parse_get_localgroupmember,

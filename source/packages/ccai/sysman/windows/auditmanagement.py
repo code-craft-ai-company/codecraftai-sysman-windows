@@ -67,7 +67,7 @@
 
 import os
 
-from dataclasses import dataclass, field
+from dataclasses import dataclass
 from typing import Optional
 
 from ccai.sysman.common.featurebase import (
@@ -87,13 +87,6 @@ _PS_NONINTERACTIVE = "-NonInteractive"
 _PS_COMMAND = "-Command"
 
 _DEFAULT_LOG_CHANNEL = "Security"
-
-_VALID_SETTINGS = (
-    "No Auditing",
-    "Success",
-    "Failure",
-    "Success and Failure",
-)
 
 
 WindowsAuditActionStatus = ActionStatus

@@ -16,12 +16,10 @@ from ccai import testbase
 from ccai.interfaces.icommandrunner import RunResult
 
 from ccai.sysman.windows.scheduledtasks import (
-    WindowsScheduledTaskActionResult,
     WindowsScheduledTaskActionStatus,
     WindowsScheduledTaskQueryError,
     WindowsScheduledTasksManager,
     WindowsScheduledTasksManagerConfig,
-    WindowsTaskInfo,
     WindowsTaskOwner,
     WindowsTaskSpec,
     _parse_get_scheduledtask,

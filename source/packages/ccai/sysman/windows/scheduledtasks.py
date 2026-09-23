@@ -1490,7 +1490,6 @@ class WindowsScheduledTasksManager(BaseFeatureManager):
         existing_user = str(existing_user_raw)
 
         if spec.owner == WindowsTaskOwner.SYSTEM:
-            wanted_user_upper = _SYSTEM_PRINCIPAL_USER.upper()
             if "SYSTEM" not in existing_user.upper():
                 rtnval = False
                 return rtnval

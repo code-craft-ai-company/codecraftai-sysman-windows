@@ -152,7 +152,6 @@ def test_run_does_not_prepend_sudo_or_anything_when_elevated():
         command to the argv when ``elevated=True``.  The argv passes
         through unmodified.
     """
-    runner = WindowsLocalCommandRunner(WindowsLocalRunnerConfig())
     completed = subprocess.CompletedProcess(
         args=["whoami"], returncode=0, stdout="ADMIN", stderr="",
     )

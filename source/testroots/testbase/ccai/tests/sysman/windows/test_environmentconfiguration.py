@@ -16,13 +16,11 @@ from ccai import testbase
 from ccai.interfaces.icommandrunner import RunResult
 
 from ccai.sysman.windows.environmentconfiguration import (
-    WindowsEnvActionResult,
     WindowsEnvActionStatus,
     WindowsEnvironmentConfigurationManager,
     WindowsEnvironmentConfigurationManagerConfig,
     WindowsEnvQueryError,
     WindowsEnvScope,
-    WindowsEnvValue,
 )
 
 

@@ -16,11 +16,7 @@ from ccai import testbase
 from ccai.interfaces.icommandrunner import RunResult
 
 from ccai.sysman.windows.logmanagement import (
-    WindowsLogActionResult,
     WindowsLogActionStatus,
-    WindowsLogEntries,
-    WindowsLogEntry,
-    WindowsLogInfo,
     WindowsLogManager,
     WindowsLogManagerConfig,
     WindowsLogQueryError,

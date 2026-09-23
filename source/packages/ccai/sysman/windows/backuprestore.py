@@ -108,10 +108,6 @@ _PS_NOPROFILE = "-NoProfile"
 _PS_NONINTERACTIVE = "-NonInteractive"
 _PS_COMMAND = "-Command"
 
-_WBADMIN = "wbadmin"
-_ROBOCOPY = "Robocopy"
-_RESTIC = "restic"
-
 _DEFAULT_JOB_DIR = r"C:\ProgramData\CodeCraftAI\backup\jobs"
 
 _REDACTION_SENTINEL = "***REDACTED***"

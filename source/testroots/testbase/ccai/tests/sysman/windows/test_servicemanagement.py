@@ -17,12 +17,10 @@ from ccai.interfaces.icommandrunner import RunResult
 
 from ccai.sysman.windows.servicemanagement import (
     WindowsServiceActionStatus,
-    WindowsServiceInfo,
     WindowsServiceManager,
     WindowsServiceManagerConfig,
     WindowsServiceQueryError,
     WindowsServiceScope,
-    WindowsServiceStatus,
 )
 
 

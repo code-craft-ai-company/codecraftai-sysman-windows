@@ -16,12 +16,10 @@ from ccai import testbase
 from ccai.interfaces.icommandrunner import RunResult
 
 from ccai.sysman.windows.configurationmanagement import (
-    WindowsConfigActionResult,
     WindowsConfigActionStatus,
     WindowsConfigManagerConfig,
     WindowsConfigQueryError,
     WindowsConfigurationManager,
-    WindowsSettingValue,
 )
 
 

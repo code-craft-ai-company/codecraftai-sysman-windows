@@ -105,9 +105,6 @@ _REGISTRY_PREFIXES = (
     "registry::",
 )
 
-_HKLM_PREFIX = "hklm:"
-_HKCU_PREFIX = "hkcu:"
-
 # Stderr / FullyQualifiedErrorId fragments emitted by registry cmdlets
 # when the property or path does not exist.
 _NOT_FOUND_FRAGMENTS = (

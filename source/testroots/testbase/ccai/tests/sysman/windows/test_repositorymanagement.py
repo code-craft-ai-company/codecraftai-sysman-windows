@@ -15,7 +15,6 @@ from ccai.interfaces.icommandrunner import RunResult
 
 from ccai.sysman.windows.repositorymanagement import (
     WindowsRepositoryActionStatus,
-    WindowsRepositoryInfo,
     WindowsRepositoryManager,
     WindowsRepositoryManagerConfig,
     WindowsRepositoryQueryError,

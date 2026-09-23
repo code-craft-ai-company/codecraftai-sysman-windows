@@ -16,13 +16,10 @@ from ccai import testbase
 from ccai.interfaces.icommandrunner import RunResult
 
 from ccai.sysman.windows.networkconfiguration import (
-    WindowsInterfaceInfo,
-    WindowsNetworkActionResult,
     WindowsNetworkActionStatus,
     WindowsNetworkConfigurationManager,
     WindowsNetworkConfigurationManagerConfig,
     WindowsNetworkQueryError,
-    WindowsRouteInfo,
     _dotted_quad_to_prefix,
     _merge_adapter_and_ip,
     _parse_get_dns,

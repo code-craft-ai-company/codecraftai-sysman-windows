@@ -16,7 +16,6 @@ from ccai.interfaces.icommandrunner import RunResult
 
 from ccai.sysman.windows.authenticationmanagement import (
     WINDOWS_AUTH_LOGON,
-    WINDOWS_AUTH_NETWORK,
     WindowsAuthActionStatus,
     WindowsAuthConfig,
     WindowsAuthEntry,

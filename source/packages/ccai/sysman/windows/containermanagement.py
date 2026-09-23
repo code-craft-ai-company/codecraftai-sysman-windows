@@ -385,7 +385,6 @@ class WindowsContainerManager(BaseFeatureManager):
             Enumerate images via
             ``<engine> images --format '{{json .}}'``.
         """
-        engine_value = self._typed_config().engine
         prefix = self._engine_prefix()
         command = list(prefix) + ["images", "--format", "{{json .}}"]
         run_result = self._runner.run(list(command), elevated=False)

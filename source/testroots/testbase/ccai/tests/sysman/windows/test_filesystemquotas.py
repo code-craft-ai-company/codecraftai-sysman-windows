@@ -17,11 +17,8 @@ from ccai.sysman.windows.filesystemquotas import (
     WindowsFilesystemQuotasManager,
     WindowsFilesystemQuotasManagerConfig,
     WindowsQuotaActionStatus,
-    WindowsQuotaInfo,
     WindowsQuotaPrincipalKind,
     WindowsQuotaQueryError,
-    WindowsQuotaStatus,
-    _parse_fsutil_quota_query,
     _quota_token_to_bytes,
 )
 

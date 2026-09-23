@@ -89,7 +89,7 @@ else:
     
 if pyres.returncode != 0:
     print("The required python version '{}' does not appear to be installed.".format(PYTHON_VERSION), file=sys.stderr)
-    exit(1)
+    sys.exit(1)
 
 VENV_FOLDER = os.path.join(REPOSITORY_FOLDER, ".venv")
 
@@ -127,6 +127,8 @@ try:
         python_path_ext = rehome_repository_ext.python_path_ext
 
 except ImportError as imperr:
+    # The 'rehome_repository_ext' module is optional, when it is not present the default
+    # development environment, macro lookup and python path settings above are used.
     pass
 
 

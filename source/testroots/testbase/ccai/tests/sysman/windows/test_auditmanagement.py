@@ -18,12 +18,9 @@ from ccai.interfaces.icommandrunner import RunResult
 
 from ccai.sysman.windows.auditmanagement import (
     WindowsAuditActionStatus,
-    WindowsAuditEvent,
     WindowsAuditEventQuery,
     WindowsAuditManager,
     WindowsAuditManagerConfig,
-    WindowsAuditQueryError,
-    WindowsAuditRuleInfo,
     WindowsAuditRuleSpec,
     WindowsAuditStatus,
     _build_auditpol_set,

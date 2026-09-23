@@ -98,7 +98,6 @@ _CURRENTUSER_ROOT = r"Cert:\CurrentUser\Root"
 _LOCALMACHINE_CA = r"Cert:\LocalMachine\CA"
 _CURRENTUSER_CA = r"Cert:\CurrentUser\CA"
 
-_LOCALMACHINE_PREFIX = r"Cert:\LocalMachine"
 _CURRENTUSER_PREFIX = r"Cert:\CurrentUser"
 
 _PEM_BEGIN = "-----BEGIN CERTIFICATE-----"

@@ -16,21 +16,17 @@ from ccai import testbase
 from ccai.interfaces.icommandrunner import RunResult
 
 from ccai.sysman.windows.filesystemmanagement import (
-    WindowsFileInfo,
-    WindowsFilesystemActionResult,
     WindowsFilesystemActionStatus,
     WindowsFilesystemManager,
     WindowsFilesystemManagerConfig,
     WindowsFilesystemQueryError,
     WindowsFstabEntry,
-    WindowsMountInfo,
     _coerce_mode_to_int,
     _merge_psdrive_and_volume,
     _mode_to_icacls_grants,
     _normalise_drive_letter,
     _parse_get_acl,
     _parse_get_psdrive,
-    _parse_get_volume,
 )
 
 

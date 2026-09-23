@@ -81,10 +81,6 @@ _PS_COMMAND = "-Command"
 # Registry-type strings accepted by ``Set-ItemProperty -Type``.
 _REG_TYPE_DWORD = "DWord"
 _REG_TYPE_QWORD = "QWord"
-_REG_TYPE_STRING = "String"
-_REG_TYPE_EXPAND_STRING = "ExpandString"
-_REG_TYPE_MULTI_STRING = "MultiString"
-_REG_TYPE_BINARY = "Binary"
 
 # Stderr / FullyQualifiedErrorId fragments emitted by the registry cmdlets
 # when the property or path does not exist.  PowerShell localises the

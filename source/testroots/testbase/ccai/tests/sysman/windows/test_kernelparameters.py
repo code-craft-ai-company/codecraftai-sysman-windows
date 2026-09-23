@@ -19,7 +19,6 @@ from ccai.sysman.windows.kernelparameters import (
     WindowsKernelParameterManagerConfig,
     WindowsKernelParameterMappingEntry,
     WindowsKernelParameterQueryError,
-    WindowsParameterValue,
 )
 
 

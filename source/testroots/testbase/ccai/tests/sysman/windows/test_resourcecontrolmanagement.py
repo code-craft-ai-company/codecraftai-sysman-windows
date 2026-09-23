@@ -16,14 +16,11 @@ from ccai.interfaces.icommandrunner import RunResult
 
 from ccai.sysman.windows.resourcecontrolmanagement import (
     WindowsIoLimitSpec,
-    WindowsResourceControlActionResult,
     WindowsResourceControlActionStatus,
     WindowsResourceControlManager,
     WindowsResourceControlManagerConfig,
     WindowsResourceControlQueryError,
-    WindowsResourceGroupInfo,
     WindowsResourceGroupSpec,
-    WindowsResourceGroupUsage,
     _parse_get_process_output,
     _parse_spec_json,
     _percent_to_priority_class,

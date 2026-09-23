@@ -15,7 +15,6 @@ from ccai.interfaces.icommandrunner import RunResult
 
 from ccai.sysman.windows.packagemanagement import (
     WindowsPackageActionStatus,
-    WindowsPackageInfo,
     WindowsPackageManager,
     WindowsPackageManagerConfig,
     WindowsPackageQueryError,

@@ -51,7 +51,7 @@
 
 import os
 
-from dataclasses import dataclass, field
+from dataclasses import dataclass
 from typing import Optional
 
 from ccai.sysman.common.featurebase import (

@@ -885,9 +885,11 @@ def _build_iissmtp_set_script(*, spec: WindowsMtaConfig) -> str:
         :returns: The PowerShell command text.
     """
     statements: list = [
-        "$s = Get-WmiObject -Class IIsSmtpServerSetting "
-        "-Namespace 'root/MicrosoftIISv2' "
-        "| Select-Object -First 1",
+        (
+            "$s = Get-WmiObject -Class IIsSmtpServerSetting "
+            "-Namespace 'root/MicrosoftIISv2' "
+            "| Select-Object -First 1"
+        ),
         "if ($null -eq $s) { Write-Error 'IIS SMTP not installed'; exit 1 }",
     ]
 

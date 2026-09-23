@@ -46,7 +46,6 @@ from typing import Optional
 from ccai.interfaces.icommandrunner import RunResult
 
 from ccai.sysman.common.featurebase import (
-    ActionStatus,
     BaseFeatureManager,
     FeatureConfig,
 )
@@ -929,7 +928,8 @@ def _merge_win32_operating_system(
         try:
             info.total_bytes = int(total_kb) * 1024
         except ValueError:
-            info.total_bytes = info.total_bytes
+            # An unparseable size leaves the previously merged 'total_bytes' value unchanged.
+            pass
 
     free_kb = record.get("FreePhysicalMemory")
     if isinstance(free_kb, int):
@@ -938,7 +938,8 @@ def _merge_win32_operating_system(
         try:
             info.available_bytes = int(free_kb) * 1024
         except ValueError:
-            info.available_bytes = info.available_bytes
+            # An unparseable size leaves the previously merged 'available_bytes' value unchanged.
+            pass
 
     return
 
