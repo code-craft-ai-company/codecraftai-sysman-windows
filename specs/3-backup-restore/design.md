@@ -186,7 +186,6 @@ operator's installation manifest is responsible for `New-Item -Path
 backuprestore.py
 ├── module-level constants
 │   ├── _POWERSHELL, _PS_NOPROFILE, _PS_NONINTERACTIVE, _PS_COMMAND
-│   ├── _WBADMIN, _ROBOCOPY, _RESTIC
 │   └── _DEFAULT_JOB_DIR (r"C:\ProgramData\CodeCraftAI\backup\jobs")
 ├── enums
 │   └── WindowsBackupKind (WBADMIN, ROBOCOPY, RESTIC)

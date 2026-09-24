@@ -12,8 +12,7 @@ design documents.
       SKU constraint notes, and the schedule-delegation note.
 - [ ] T2. Add the module-level constants for the PowerShell argv shape
       (`_POWERSHELL`, `_PS_NOPROFILE`, `_PS_NONINTERACTIVE`,
-      `_PS_COMMAND`), the backend tool names (`_WBADMIN`, `_ROBOCOPY`,
-      `_RESTIC`), and the default job directory path
+      `_PS_COMMAND`) and the default job directory path
       (`_DEFAULT_JOB_DIR = r"C:\ProgramData\CodeCraftAI\backup\jobs"`).
 - [ ] T3. Add the `WindowsBackupActionStatus = ActionStatus` re-export.
 
