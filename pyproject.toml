@@ -23,6 +23,10 @@ dependencies = [
     "codecraftai-sysman-common<2.0.0",
 ]
 
+[project.urls]
+Repository = "https://github.com/code-craft-ai-company/codecraftai-sysman-windows"
+Issues = "https://github.com/code-craft-ai-company/codecraftai-sysman-windows/issues"
+
 [dependency-groups]
 dev = [
     "codecraftai-testbase<2.0.0",

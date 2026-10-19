@@ -1,24 +1,41 @@
 # Package publish pipeline.
 #
 # Runs when the version in pyproject.toml changes on main, and on demand
-# via workflow_dispatch. Builds the wheel + sdist with poetry and
-# twine-uploads them to the Code Craft AI package repository at
-# https://artifacts.code-craft.ai/repository/legacy.
+# via workflow_dispatch. Builds the wheel + sdist with poetry, checks
+# them with ``twine check --strict`` (the README must render the way
+# PyPI renders it), and uploads them to:
 #
-# The host is the artifacts service's own canonical name. The apex
-# (https://code-craft.ai/repository/legacy) still works and is a
+# 1. The Code Craft AI package repository at
+#    https://artifacts.code-craft.ai/repository/legacy (job ``publish``).
+# 2. PyPI (job ``pypi``), when the organization variable
+#    ``PUBLISH_TO_PYPI`` is ``true``.
+#
+# The artifacts host is the artifacts service's own canonical name. The
+# apex (https://code-craft.ai/repository/legacy) still works and is a
 # permanent compatibility surface -- the website's nginx proxies it
 # here -- but publishing straight at the canonical host removes a
 # hop and a dependency on the website being up to push a package.
 #
-# Auth: the endpoint accepts ``Basic <ignored>:<publish-token>`` —
-# the username is ignored server-side; the password must be an
+# Artifacts auth: the endpoint accepts ``Basic <ignored>:<publish-token>``
+# — the username is ignored server-side; the password must be an
 # ACTIVE publish token minted in the site's internal dashboard
 # (Publishing → publish tokens). The token is stored as the
 # organization-level secret ``CCAI_ORG_ARTIFACT_PUBLISHING`` with
 # selected-repository access; this repository must be on that
 # secret's access list or the guard step below fails the run with
 # instructions.
+#
+# PyPI auth: when the secret ``PYPI_API_TOKEN`` is visible to this
+# repository, the upload uses it. An account-scoped token creates a new
+# PyPI project on its first upload, with nothing to configure per
+# project. When the secret is not set, the upload uses PyPI trusted
+# publishing: the PyPI project (or a pending publisher for it) must
+# trust this repository, workflow ``publish.yml`` and environment
+# ``pypi``.
+#
+# PyPI accepts a version only once. To put a version that is already on
+# the artifacts repository onto PyPI, run this workflow by hand with
+# ``force`` and ``skip_artifacts`` both set.
 
 name: Publish
 
@@ -33,10 +50,16 @@ on:
         description: "Publish even if the version did not change"
         type: boolean
         default: false
+      skip_artifacts:
+        description: "Skip the upload to artifacts.code-craft.ai (publish to PyPI only)"
+        type: boolean
+        default: false
 
 jobs:
   publish:
     runs-on: ubuntu-latest
+    outputs:
+      changed: ${{ steps.version.outputs.changed }}
     steps:
       - uses: actions/checkout@v4
         with:
@@ -86,7 +109,7 @@ jobs:
           fi
 
       - name: Verify publishing secret is visible to this repo
-        if: steps.version.outputs.changed == 'true'
+        if: steps.version.outputs.changed == 'true' && inputs.skip_artifacts != true
         env:
           PUBLISH_TOKEN: ${{ secrets.CCAI_ORG_ARTIFACT_PUBLISHING }}
         run: |
@@ -149,8 +172,20 @@ jobs:
           poetry build
           ls -l dist/
 
-      - name: Publish to artifacts.code-craft.ai
+      - name: Check the distributions
         if: steps.version.outputs.changed == 'true'
+        run: twine check --strict dist/*
+
+      - name: Keep the distributions for the PyPI job
+        if: steps.version.outputs.changed == 'true'
+        uses: actions/upload-artifact@v4
+        with:
+          name: dist
+          path: dist/
+          if-no-files-found: error
+
+      - name: Publish to artifacts.code-craft.ai
+        if: steps.version.outputs.changed == 'true' && inputs.skip_artifacts != true
         env:
           TWINE_USERNAME: publisher
           TWINE_PASSWORD: ${{ secrets.CCAI_ORG_ARTIFACT_PUBLISHING }}
@@ -158,3 +193,26 @@ jobs:
         run: |
           twine upload --non-interactive --disable-progress-bar dist/*
           echo "Published ${{ github.repository }} ${{ steps.version.outputs.current }}"
+
+  pypi:
+    needs: publish
+    if: needs.publish.outputs.changed == 'true' && vars.PUBLISH_TO_PYPI == 'true'
+    runs-on: ubuntu-latest
+    environment:
+      name: pypi
+      url: https://pypi.org/project/codecraftai-sysman-windows/
+    permissions:
+      # Trusted publishing exchanges this job's OIDC token for a PyPI upload token.
+      id-token: write
+    steps:
+      - name: Fetch the distributions
+        uses: actions/download-artifact@v4
+        with:
+          name: dist
+          path: dist/
+
+      - name: Publish to PyPI
+        uses: pypa/gh-action-pypi-publish@release/v1
+        with:
+          # Empty when the secret is not set, which makes the action use trusted publishing.
+          password: ${{ secrets.PYPI_API_TOKEN }}
