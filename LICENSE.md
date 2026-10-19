@@ -7,8 +7,6 @@ Everyone is permitted to copy and distribute verbatim copies of *This License* d
 
 *The Software* is source available.  Its source code is published so that anyone can read it, learn from it, and use it, but *This License* is not an open source license.  *The Software* is free to use for *Non-Commercial Use*.  *Commercial Use* is permitted in exchange for a *Usage Fee* that is based on a reasonable estimation of the income derived from *The Software*, as described in section 5.  When a company migrates a product or service to *The Software* from another code base, the *Profit* from that product or service is not counted toward the *Usage Fee* for two years, as described in section 5.4.  For assurance of costs, a company can disclose its usage and estimated returns to *Licensor* and negotiate a fixed license cost, as described in section 5.10.
 
-Versions of *The Software* that were published under a different license remain under the license they were published with.  *This License* applies to every version of *The Software* that is published with *This License*.
-
 ## 1. Definitions
 
 ### 1.1 *This License* or *The License*
