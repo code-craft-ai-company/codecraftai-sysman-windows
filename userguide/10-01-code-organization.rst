@@ -25,7 +25,7 @@ There are also some files located in the root of the repository folder.
 
 - .env - A local file that ".env" file that is created by the 'repository-setup/rehome-repository' script.
 - .gitignore - File indicating files and folders that git should ignore
-- LICENSE.txt - A file that specifies the licensing terms of the source code contained in the repository.
+- LICENSE.md - A file that specifies the licensing terms of the source code contained in the repository.
 - Makefile - A Makefile that contains targets for building and publishing the packages in the repository.
 - poetry.lock - The poetrsy lock file associated with the python package for this folder.
 - poetry.toml - A poetry project settings file.
