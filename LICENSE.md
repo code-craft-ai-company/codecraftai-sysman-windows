@@ -5,6 +5,8 @@ Copyright (C) 2026, Code Craft AI LLC
 
 Everyone is permitted to copy and distribute verbatim copies of *This License* document, but changing it is not allowed.
 
+*This License* covers the Python Automation Kit, the full suite of software published by *Licensor* that consists of every `codecraftai-*` package, every `pychestrate` package, and the `pychestrate` server.
+
 *The Software* is source available.  Its source code is published so that anyone can read it, learn from it, and use it, but *This License* is not an open source license.  *The Software* is free to use for *Non-Commercial Use*.  *Commercial Use* is permitted in exchange for a *Usage Fee* that is based on a reasonable estimation of the income derived from *The Software*, as described in section 5.  When a company migrates a product or service to *The Software* from another code base, the *Profit* from that product or service is not counted toward the *Usage Fee* for two years, as described in section 5.4.  For assurance of costs, a company can disclose its usage and estimated returns to *Licensor* and negotiate a fixed license cost, as described in section 5.10.
 
 ## 1. Definitions
@@ -16,7 +18,11 @@ Everyone is permitted to copy and distribute verbatim copies of *This License* d
 **Licensor** refers to Code Craft AI LLC.
 
 ### 1.3 The Software
-**The Software** refers to the software, source code, documentation, and other materials that *Licensor* publishes with *This License*.
+**The Software** refers to the Python Automation Kit, the full suite of software that *Licensor* publishes under *This License*.  The Python Automation Kit consists of the following components (each, a **Component**), together with their source code, documentation, and other materials:
+
+1. Every Python package published by *Licensor* whose name begins with `codecraftai-`
+2. Every Python package published by *Licensor* whose name begins with `pychestrate`
+3. The `pychestrate` server
 
 ### 1.4 You
 **You** refers to the individual or legal entity that exercises rights under *This License*.  When an individual exercises rights under *This License* on behalf of a company, organization, or other legal entity, **You** refers to that entity.
@@ -60,6 +66,8 @@ Subject to the terms and conditions of *This License*, *Licensor* hereby grants 
 
 *Licensor* also grants to *You* a license under any patents that *Licensor* can license, and that are necessarily infringed by *The Software*, for the same purposes and subject to the same conditions as the license granted above.
 
+*This License* covers the Python Automation Kit as a whole.  *Use* of one, some, or all of the *Components* is *Use* of *The Software*.
+
 The licenses granted by *This License* are free of charge for *Non-Commercial Use*.  The licenses granted by *This License* for *Commercial Use* are conditioned on the payment of the *Usage Fee* described in section 5.
 
 ## 3. Conditions
@@ -83,7 +91,7 @@ Anyone who receives *The Software* from *You* receives it under the terms of *Th
 ## 5. Commercial Use
 
 ### 5.1 Usage Fee Obligation
-For each *Fiscal Year* in which *You* make *Commercial Use* of *The Software*, *You* must pay *Licensor* a *Usage Fee*.
+For each *Fiscal Year* in which *You* make *Commercial Use* of *The Software*, *You* must pay *Licensor* a *Usage Fee*.  A single *Usage Fee* covers all of *Your* *Commercial Use* of the *Components*.  *Usage Fees* are not owed separately for each *Component*.
 
 ### 5.2 Derived Income
 The *Derived Income* for a *Fiscal Year* is calculated as follows:
@@ -119,7 +127,7 @@ If a *Fiscal Year* is only partly within the *Migration Period* of a product or 
 For example, a company tests product A with *The Software* and pays a *Usage Fee* based on the *Profit* from product A.  On March 1, 2027, the company begins moving the testing of product B from a different test framework to *The Software*.  The company does not count the *Profit* from product B in its *Derived Income* from March 1, 2027 until March 1, 2029.  Starting March 1, 2029, the *Profit* from product B is counted.  If the company later migrates product C, the *Profit* from product C is not counted for two years from the start of its own *Migration*.
 
 ### 5.5 Contribution Estimate
-*You* are responsible for making the *Contribution Estimate*.  A *Contribution Estimate* must be reasonable and made in good faith.  When making the *Contribution Estimate*, *You* should consider how important *The Software* is to the *Commercial Activity*, how much of the *Commercial Activity* depends on *The Software*, and the effort and cost that *You* would otherwise need to spend to accomplish what *The Software* accomplishes for *You*.
+*You* are responsible for making the *Contribution Estimate*.  A *Contribution Estimate* must be reasonable and made in good faith.  The *Contribution Estimate* for a product or service covers all of the *Components* that *You* *Use* for that product or service.  When making the *Contribution Estimate*, *You* should consider how important *The Software* is to the *Commercial Activity*, how much of the *Commercial Activity* depends on *The Software*, and the effort and cost that *You* would otherwise need to spend to accomplish what *The Software* accomplishes for *You*.
 
 The following table is a guide for making the *Contribution Estimate*.  When *Your* *Commercial Use* of *The Software* matches an entry in the table, the *Contribution Estimate* in that entry is a reasonable *Contribution Estimate*.  When *Your* *Commercial Use* does not match an entry in the table, make the *Contribution Estimate* by comparing *Your* *Commercial Use* with the entries in the table.  When more than one entry matches the same *Commercial Activity*, use the entry with the highest *Contribution Estimate*.
 
