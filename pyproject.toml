@@ -1,6 +1,6 @@
 [project]
 name = "codecraftai-sysman-windows"
-version = "1.2.0"
+version = "1.2.1"
 description = "Code Craft AI - System Management Windows"
 readme = "README.rst"
 license = "LicenseRef-CodeCraftAI-Source-Available"
