@@ -53,9 +53,6 @@ jobs:
           python ./repository-setup/rehome-repository
           cat ./.env
 
-      - name: Configure the package index credential
-        run: poetry config http-basic.codecraftai deployment "${{ secrets.CCAI_ORG_READ_TOKEN }}"
-
       - name: Lint - exception-handling gate
         # A bare `except:` swallows ConfigurationError and SemanticError, which
         # derive from BaseException so that they end a run. See
